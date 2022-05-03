@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.Vector;
 
 import javax.swing.JCheckBox;
-import javax.swing.JOptionPane;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IBond;
 import org.openscience.cdk.smiles.SmiFlavor;
@@ -20,8 +19,8 @@ public class Derivados {
     public  ArrayList<Boolean>HydroImpli;
     public Vector <JCheckBox> GruposSustitutosSeleccionados;
     int numRSubst;
-    private ArrayList<IAtomContainer> Result;
-    public ArrayList<String> Smiles; 
+    private ArrayList<IAtomContainer> result;
+    public ArrayList<String> smiles; 
     
     public Derivados(int NumRSubst,IAtomContainer MolPrin,ArrayList<Integer> Selec,ArrayList<IAtomContainer> groupSust,
                      ArrayList<ArrayList<Integer>> groupSelecSust,ArrayList<Boolean>HydroImpli,
@@ -34,8 +33,8 @@ public class Derivados {
         this.groupSelecSust=groupSelecSust;
         this.HydroImpli=HydroImpli;
         this.GruposSustitutosSeleccionados=GruposSustitutosSeleccionados;
-        Smiles=new ArrayList<String>();
-        Result=new ArrayList<IAtomContainer>();
+        smiles=new ArrayList<String>();
+        result=new ArrayList<IAtomContainer>();
         error=0;
         
         Todos(NumRSubst,MolPrin,Selec);
@@ -47,36 +46,36 @@ public class Derivados {
     private void Todos(int NumRSubst,IAtomContainer MolPrin,ArrayList<Integer> Selec) {
         if(NumRSubst<1)
             return ;
-        IAtomContainer CopiaTemp,Hclone;
-        ArrayList<Integer> SelecCopy;    
-        String Smiletemp;
+        IAtomContainer copiaTemp,hclone;
+        ArrayList<Integer> selecCopy;    
+        String smiletemp;
         for(int i: Selec) {
             int p=0;
             for(IAtomContainer H:groupSust ) {
                 for(int j: groupSelecSust.get(p)) {
                     if(GruposSustitutosSeleccionados.get(p).isSelected())
-                    try {
-                        CopiaTemp=MolPrin.clone();
-                        
-                        Hclone =H.clone();
-                        if(HydroImpli.get(p)) {
-                            Hclone.getAtom(j).setImplicitHydrogenCount(CopiaTemp.getAtom(j).getImplicitHydrogenCount()-1);
-                        }        
-                        CopiaTemp.add(Hclone);
-                        CopiaTemp.getAtom(i).setImplicitHydrogenCount(CopiaTemp.getAtom(i).getImplicitHydrogenCount()-1);
-                        CopiaTemp.addBond(i,MolPrin.getAtomCount()+j,IBond.Order.SINGLE);
-                        Result.add(CopiaTemp);
-                        SelecCopy = (ArrayList<Integer>) Selec.clone();
-                        SelecCopy.remove((Object) i);
-                        Todos(NumRSubst-1,CopiaTemp,SelecCopy);
-                        
-                        SmilesGenerator generator = new SmilesGenerator(SmiFlavor.Isomeric);
-                        Smiletemp=generator.create(CopiaTemp);
-                        if(!Smiles.contains(Smiletemp))
-                            Smiles.add(Smiletemp);
-                    } catch (Exception e) {
-                        error++;
-                    }                    
+                        try {
+                            copiaTemp=MolPrin.clone();
+                            
+                            hclone =H.clone();
+                            if(HydroImpli.get(p)) {
+                                hclone.getAtom(j).setImplicitHydrogenCount(copiaTemp.getAtom(j).getImplicitHydrogenCount()-1);
+                            }        
+                            copiaTemp.add(hclone);
+                            copiaTemp.getAtom(i).setImplicitHydrogenCount(copiaTemp.getAtom(i).getImplicitHydrogenCount()-1);
+                            copiaTemp.addBond(i,MolPrin.getAtomCount()+j,IBond.Order.SINGLE);
+                            result.add(copiaTemp);
+                            selecCopy = (ArrayList<Integer>) Selec.clone();
+                            selecCopy.remove((Object) i);
+                            Todos(NumRSubst-1,copiaTemp,selecCopy);
+                            
+                            SmilesGenerator generator = new SmilesGenerator(SmiFlavor.Isomeric);
+                            smiletemp=generator.create(copiaTemp);
+                            if(!smiles.contains(smiletemp))
+                                smiles.add(smiletemp);
+                        } catch (Exception e) {
+                            error++;
+                        }                    
                 }
                 p++;
             }
@@ -85,13 +84,13 @@ public class Derivados {
     
     public String TodosSmilesJuntos() {
         String y="";
-        Smiles.sort(new Comparator<String>() {
+        smiles.sort(new Comparator<String>() {
             @Override
             public int compare(String arg0, String arg1) {
                 return arg0.compareTo(arg1);
             }
         });
-        for(String x :Smiles) {
+        for(String x :smiles) {
             y+=x;
             y+="\n";
         }

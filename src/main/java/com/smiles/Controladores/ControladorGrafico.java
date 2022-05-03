@@ -45,7 +45,7 @@ import javax.swing.border.TitledBorder;
 
 import com.smiles.Generadores.Derivados;
 import com.smiles.InertacesGraficas.AddSubs;
-import com.smiles.InertacesGraficas.Pantalla_Mol;
+import com.smiles.InertacesGraficas.PantallaMol;
 import com.smiles.InertacesGraficas.Substients;
 
 import java.awt.Button;
@@ -57,14 +57,14 @@ import javax.swing.Box;
 
 public class ControladorGrafico {
 
-    public static ArrayList<Integer> Selec;
+    public static ArrayList<Integer> selec;
     public static IAtomContainer MolPrin;
     public static ArrayList<ArrayList<Integer>> SelecSust;
     public static ArrayList<IAtomContainer> MolSust;
     public static String Mensaje;
     private JFrame frame;
     Substients Nuevos = new Substients(SelecSust);
-    Pantalla_Mol panel_3;
+    PantallaMol panel_3;
     public ScrollPane scrollPane_3;
     Vector<JCheckBox> Sustituto;
     public JPanel panel_2;
@@ -76,7 +76,7 @@ public class ControladorGrafico {
      * @throws InvalidSmilesException
      */
     public static void main(String[] args) throws InvalidSmilesException {
-        Selec = new ArrayList<Integer>();
+        selec = new ArrayList<Integer>();
         SmilesParser sp = new SmilesParser(DefaultChemObjectBuilder.getInstance());
         MolPrin = sp.parseSmiles("C1CCNCC1");
         SelecSust = new ArrayList<ArrayList<Integer>>();
@@ -118,8 +118,8 @@ public class ControladorGrafico {
         panel.add(scrollPane_1);
         JScrollPane scrollPane_2 = new JScrollPane();
         scrollPane_2.setBounds(557, 58, 260, 260);
-        Pantalla_Mol panel_1 = new Pantalla_Mol(MolPrin, Selec, scrollPane_1.getWidth(), scrollPane_1.getHeight());
-        panel_3 = new Pantalla_Mol(MolPrin, Selec, scrollPane_2.getWidth(), scrollPane_2.getHeight());
+        PantallaMol panel_1 = new PantallaMol(MolPrin, selec, scrollPane_1.getWidth(), scrollPane_1.getHeight());
+        panel_3 = new PantallaMol(MolPrin, selec, scrollPane_2.getWidth(), scrollPane_2.getHeight());
 
         scrollPane_1.setViewportView(panel_1);
         panel_1.setBackground(Color.white);
@@ -244,11 +244,11 @@ public class ControladorGrafico {
 
                     try {
                         MolPrin = sp.parseSmiles(textPane.getText().replaceAll(" ", ""));
-                        Selec.removeAll(Selec);
+                        selec.removeAll(selec);
                     } catch (InvalidSmilesException e1) {
                         e1.printStackTrace();
                     }
-                    panel_1.addg2(textPane.getText().replaceAll(" ", ""), panel_3.ReturnPrin(), Selec);
+                    panel_1.addg2(textPane.getText().replaceAll(" ", ""), panel_3.returnPrin(), selec);
                     panel_1.repaint();
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage());
@@ -269,7 +269,7 @@ public class ControladorGrafico {
                     return;
                 }
                 int x = (int) spinner.getValue();
-                if (x > Selec.size()) {
+                if (x > selec.size()) {
                     JOptionPane.showMessageDialog(null,"The number of r-substitutions is greather than selected items.");
                     panel.repaint();
                     new Exception("No se puede El numero de R sustituyentes es mayor a los Seleccionados");
@@ -287,7 +287,7 @@ public class ControladorGrafico {
                     p++;
                 }
                 label.setText("");
-                Derivados pol = new Derivados(x, MolPrin, Selec, MolSust, SelecSust, Nuevos.HydroImpli, Sustituto);
+                Derivados pol = new Derivados(x, MolPrin, selec, MolSust, SelecSust, Nuevos.HydroImpli, Sustituto);
                 FileWriter fw;
                 try {
 
@@ -297,7 +297,7 @@ public class ControladorGrafico {
                     PrintWriter bw = new PrintWriter(fw);
                     SmilesGenerator generator = new SmilesGenerator(SmiFlavor.Absolute);
                     bw.println(generator.create(MolPrin));
-                    for (String Con : pol.Smiles)
+                    for (String Con : pol.smiles)
                         bw.println(Con);
                     fw.close();
                     bw.close();

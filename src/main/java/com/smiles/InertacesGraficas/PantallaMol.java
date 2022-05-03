@@ -26,32 +26,31 @@ import org.openscience.cdk.renderer.generators.IGenerator;
 import org.openscience.cdk.renderer.generators.standard.StandardGenerator;
 import org.openscience.cdk.renderer.visitor.AWTDrawVisitor;
 import org.openscience.cdk.smiles.SmilesParser;
+import org.openscience.cdk.templates.TestMoleculeFactory;
 
-import com.smiles.ParchesCDK.TestMoleculeFactory;
-
-public class Pantalla_Mol extends JPanel {
+public class PantallaMol extends JPanel {
     /**
      * @return
      * 
      */
     public String smile;
-    
+
     public IAtomContainer mol = TestMoleculeFactory.makeEthylPropylPhenantren();
     public ArrayList<Integer> Selec;
     public ArrayList<Point2d> CordenadasReales;
-    
+
     private int numSus;
-    private double k=1;
+    private double k = 1;
     int x;
     int y;
     int NumExplicito;
-    public Pantalla_Mol(IAtomContainer mol,ArrayList<Integer> Select, int x, int y) {
-        numSus= 0xFFFFFF;
+
+    public PantallaMol(IAtomContainer mol, ArrayList<Integer> Select, int x, int y) {
+        numSus = 0xFFFFFF;
         this.mol = mol;
-        Selec=Select;
-    //    Selec.removeAll(Selec);
-        this.x=x;
-        this.y=y;
+        Selec = Select;
+        this.x = x;
+        this.y = y;
         CordenadasReales = new ArrayList<Point2d>();
         addMouseListener(new MouseAdapter() {
             @Override
@@ -61,130 +60,87 @@ public class Pantalla_Mol extends JPanel {
                     System.out.println("No hay nada");
                     return;
                 }
-            
+
                 int i = 0;
 
                 for (Point2d x : CordenadasReales) {
-                    if (x.distance(a) < 8*k         && mol.getAtomCount()>1) {
-                    //    System.out.println("Le diste a: " + mol.getAtom(i).getSymbol());
+                    if (x.distance(a) < 8 * k && mol.getAtomCount() > 1) {
                         if (Selec.contains(i)) {
-                    //        System.out.println("Se Quita");
                             Selec.remove((Object) i);
                         } else {
-                    //        System.out.println("Se Pone");
                             Selec.add(i);
                         }
                     }
                     i++;
                 }
                 repaint();
-                /*
-                 * Graphics2D g2D = (Graphics2D) getGraphics(); myRectangle = new
-                 * Rectangle2D.Double(0, 0, 10, 10);
-                 * 
-                 * g2D.setPaint(Color.red); g2D.fill(myRectangle);
-                 * 
-                 * g2D.dispose(); repaint();
-                 */
-
             }
         });
         definek();
 
-        
     }
 
-    public Pantalla_Mol(IAtomContainer mol,ArrayList<Integer> Select,int x) {
-        numSus=x;
+    public PantallaMol(IAtomContainer mol,
+            ArrayList<Integer> select,
+            int x) {
+        numSus = x;
         this.mol = mol;
-        
-        Selec = Select;
+        Point2d a = MiPos();
+        Selec = select;
         CordenadasReales = new ArrayList<Point2d>();
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
-                Point2d a = MiPos();
-                if (mol.getAtomCount() <= 1) {
-                    return;
-                }
-                if (NumExplicito <= 1) {
+                if (NumExplicito <= 1 || mol.getAtomCount() <= 1) {
                     System.out.println("No hay nada");
                     return;
                 }
-                System.out.print(".");
-                
                 int i = 0;
                 for (Point2d x : CordenadasReales) {
-                    if (x.distance(a) < 8 && mol.getAtomCount()>1) {
-                //        System.out.println("Le diste a: " + mol.getAtom(i).getSymbol());
-                        
-                        if (Selec.contains(i)) {
-                        //    System.out.println("Se Quita");
-                            Selec.remove((Object) i);
-                        } else {
-                            if(Selec.size()<numSus) {
-                        //        System.out.println("Se Pone");
-                                Selec.add(i);
-                            }else {
-                                Selec.remove(Selec.size()-1);
-                    //            System.out.println("Se Pone");
-                                Selec.add(i);                            
-                            }
-                        }
+                    if (x.distance(a) >= 8 || mol.getAtomCount() <= 1) {
+                        i++;
+                        continue;
                     }
+                    if (Selec.contains(i))
+                        Selec.remove((Object) i);
+                    else {
+                        if (Selec.size() >= numSus)
+                            Selec.remove(Selec.size() - 1);
+                        Selec.add(i);
+                    }
+
                     i++;
                 }
                 repaint();
-                /*
-                 * Graphics2D g2D = (Graphics2D) getGraphics(); myRectangle = new
-                 * Rectangle2D.Double(0, 0, 10, 10);
-                 * 
-                 * g2D.setPaint(Color.red); g2D.fill(myRectangle);
-                 * 
-                 * g2D.dispose(); repaint();
-                 */
                 definek();
-
             }
         });
-        
+
     }
+
     protected void paintComponent(Graphics g2) {
         super.paintComponent(g2);
         try {
-            // CN(C(C1=O)C)(=N1C=CC=CC=1)
-            // mol.removeAtom( mol.getAtom(mol.getAtomCount()-1));
             List<IGenerator<IAtomContainer>> generators = new ArrayList<IGenerator<IAtomContainer>>();
             StandardGenerator genera = new StandardGenerator(new Font("Arial", Font.BOLD, 14));
             generators.add(genera);
-//            generators.add(new AtomNumberGenerator());
             generators.add(new BasicSceneGenerator());
-            // generators.add(new StandardGenerator(new Font("Arial", Font.BOLD, 10)));
-            // generators.add(new BasicAtomGenerator());
-            // generators.add();
             AtomContainerRenderer renderer = new AtomContainerRenderer(generators, new AWTFontManager());
             Rectangle drawArea = new Rectangle(x, y);
             renderer.setZoom(k);
-            renderer.setup(mol, drawArea);
-            
+            try{                
+                renderer.setup(mol, drawArea);
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
             Point2d temp;
             CordenadasReales.removeAll(CordenadasReales);
             for (int i = 0; i < mol.getAtomCount(); i++) {
                 temp = renderer.toScreenCoordinates(mol.getAtom(i).getPoint2d().x, mol.getAtom(i).getPoint2d().y);
                 CordenadasReales.add(temp);
-                // System.out.println(mol.getAtom(i).getSymbol()+" "+(
-                // mol.getAtom(i).getPoint2d())+" Cordenadas Reales "+temp);
             }
-
-            // System.out.println("-Mi Centro del modelo respecto al 0 del modelo: "+
-            // renderer.getModelCenter());
-            // System.out.println("-Mi Centro respecto a la matalla : "+
-            // renderer.toScreenCoordinates(-0.938,0.5441));
-
-            /*
-             * Image image = new BufferedImage(200, 200, BufferedImage.TYPE_INT_RGB); g2 =
-              */
-             definek();
+            definek();
             Graphics2D g2D = (Graphics2D) g2;
  
             g2D.setStroke(new BasicStroke(2));
@@ -198,17 +154,15 @@ public class Pantalla_Mol extends JPanel {
                     myPolygon.lineTo(CordenadasReales.get(x).x+0*k, CordenadasReales.get(x).y+10*k);
                     myPolygon.lineTo(CordenadasReales.get(x).x+10*k, CordenadasReales.get(x).y-0*k);
                     g2D.setPaint(new Color(Color.green.getRGB()*3));
-                //    myPolygon.lineTo(CordenadasReales.get(x).x+10*k, CordenadasReales.get(x).y+10*k);
-                //    myPolygon.moveTo(CordenadasReales.get(x).x-(6*k), CordenadasReales.get(x).y-6*k);
-
                     myPolygon.closePath();
-            //        Double myRectangle = new Rectangle2D.Double( CordenadasReales.get(x).x-6*k, CordenadasReales.get(x).y-6*k, 12*k, 12*k);
                     g2D.fill(myPolygon);
-            // ImageIO.write((RenderedImage)g2D, "PNG",new File("RenderMolecule.png"));
-                    }
-        } catch (Exception e) {
+                }
+        }catch(
 
-        }
+    Exception e)
+    {
+        e.printStackTrace();
+    }
 
     }
 
@@ -217,8 +171,8 @@ public class Pantalla_Mol extends JPanel {
     public void addg2(String smile) throws Exception {
         k=1;
         if(Selec.size()>0) {
-        Selec.removeAll(Selec);
-        CordenadasReales.removeAll(CordenadasReales);
+            Selec.removeAll(Selec);
+            CordenadasReales.removeAll(CordenadasReales);
         }this.smile = smile;
         SmilesParser sp = new SmilesParser(DefaultChemObjectBuilder.getInstance());
         StructureDiagramGenerator sdg = new StructureDiagramGenerator();
@@ -231,28 +185,26 @@ public class Pantalla_Mol extends JPanel {
         Selec.removeAll(Selec);
         if(mol.getAtomCount()==1) {
             Selec.removeAll(Selec);
-            Selec.add(0);
-            
+            Selec.add(0); 
         }
         repaint();
 
     }
-    public void addg2(String smile,IAtomContainer mol,ArrayList<Integer> Select) throws Exception {
-        
-        this.mol= mol;
-        this.Selec=Select;
+
+    public void addg2(String smile, IAtomContainer mol, ArrayList<Integer> Select) throws Exception {
+
+        this.mol = mol;
+        this.Selec = Select;
         this.smile = smile;
         SmilesParser sp = new SmilesParser(DefaultChemObjectBuilder.getInstance());
         StructureDiagramGenerator sdg = new StructureDiagramGenerator();
-    //    mol.removeAllElements();
         this.mol = sp.parseSmiles(smile);
         sdg.setMolecule(this.mol);
         sdg.generateCoordinates();
         this.mol = sdg.getMolecule();
-        mol=this.mol;
-    //    System.out.println("Mol");
-        NumExplicito=mol.getAtomCount();
-        if(mol.getAtomCount()==1) {
+        mol = this.mol;
+        NumExplicito = mol.getAtomCount();
+        if (mol.getAtomCount() == 1) {
             Selec.removeAll(Selec);
             Selec.add(0);
         }
@@ -260,25 +212,31 @@ public class Pantalla_Mol extends JPanel {
         definek();
 
     }
+
     private Point2d MiPos() {
-        Point2d d = new Point2d(getMousePosition().getX(), getMousePosition().getY());
-        return d;
+        return new Point2d(getMousePosition().getX(), getMousePosition().getY());
+
     }
-     public void definek(float k) {
-        this.k=k;
+
+    public void definek(float k) {
+        this.k = k;
     }
+
     void definek() {
-        k=1;try {
-        if(mol.getAtomCount()<6)
-            k=1.5;
-        if(mol.getAtomCount()>9)
-            k=0.7;
-        if(mol.getAtomCount()>13)
-            k=.5;
-        }catch(Exception e) {}
-        
+        k = 1;
+        try {
+            if (mol.getAtomCount() < 6)
+                k = 1.5;
+            if (mol.getAtomCount() > 9)
+                k = 0.7;
+            if (mol.getAtomCount() > 13)
+                k = .5;
+        } catch (Exception e) {
+        }
+
     }
-    public IAtomContainer ReturnPrin() {
+
+    public IAtomContainer returnPrin() {
         return mol;
     }
 }
