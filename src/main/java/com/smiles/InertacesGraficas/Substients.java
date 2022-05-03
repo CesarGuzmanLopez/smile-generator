@@ -33,7 +33,7 @@ public class Substients {
                 MOLSmile.add(valor.getSmi());
                 SubsName.add(valor.name());
                 Mol.add(mol);
-                HydroImpli.add(new Boolean(valor.getHydrogen()));
+                HydroImpli.add(Boolean.valueOf(valor.getHydrogen()));
             } catch (Exception e) {
                 System.out.println("No se puede: " + e.getMessage());
             }

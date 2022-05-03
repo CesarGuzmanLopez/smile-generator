@@ -8,7 +8,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.smiles.Controladores.Controlador_Grafico;
+import com.smiles.Controladores.ControladorGrafico;
 
 import java.awt.TextField;
 import javax.swing.JCheckBox;
@@ -49,7 +49,7 @@ public class AddSubs extends JDialog {
     public String Smile;
     boolean Impli;
     boolean termina;
-    public AddSubs(Substients a,Controlador_Grafico Pantalla) {
+    public AddSubs(Substients a,ControladorGrafico Pantalla) {
         setType(Type.POPUP);
         setResizable(false);
         setAlwaysOnTop(true);

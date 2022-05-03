@@ -4,8 +4,8 @@
   <artifactId>smiles</artifactId>
   <version>1.0-SNAPSHOT</version>
   <properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <junit.version>5.6.0</junit.version>
     <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
@@ -21,6 +21,19 @@
     <jacoco.unit-tests.limit.method-complexity>5</jacoco.unit-tests.limit.method-complexity>
   </properties>
   <dependencies>
+
+    <dependency>
+      <groupId>net.sf.jni-inchi</groupId>
+      <artifactId>jni-inchi</artifactId>
+      <version>0.8</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.openscience.cdk</groupId>
+      <artifactId>cdk-inchi</artifactId>
+      <version>2.7.1</version>
+    </dependency>
+
 
     <dependency>
       <groupId>org.openscience.cdk</groupId>
@@ -121,6 +134,11 @@
         </configuration>
         <executions>
           <execution>
+            <id>checkstyle-validation</id>
+            <phase>none</phase>
+        </execution>
+          <execution>
+            <?m2e ignore?>
             <id>checkstyle</id>
             <phase>validate</phase>
             <goals>

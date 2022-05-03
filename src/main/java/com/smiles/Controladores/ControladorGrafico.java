@@ -55,7 +55,7 @@ import java.awt.Label;
 import java.awt.Component;
 import javax.swing.Box;
 
-public class Controlador_Grafico {
+public class ControladorGrafico {
 
     public static ArrayList<Integer> Selec;
     public static IAtomContainer MolPrin;
@@ -84,7 +84,7 @@ public class Controlador_Grafico {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    Controlador_Grafico window = new Controlador_Grafico();
+                    ControladorGrafico window = new ControladorGrafico();
                     window.frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -96,7 +96,7 @@ public class Controlador_Grafico {
     /**
      * Create the application.
      */
-    public Controlador_Grafico() {
+    public ControladorGrafico() {
         initialize();
     }
 

@@ -2,7 +2,7 @@ package com.smiles.Generadores;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Stack;
+
 import java.util.Vector;
 
 import javax.swing.JCheckBox;
@@ -19,46 +19,28 @@ public class Derivados {
     public  ArrayList<ArrayList<Integer>> groupSelecSust;
     public  ArrayList<Boolean>HydroImpli;
     public Vector <JCheckBox> GruposSustitutosSeleccionados;
-    int NumRSubst;
+    int numRSubst;
     private ArrayList<IAtomContainer> Result;
-    public Stack<String> Smiles; 
+    public ArrayList<String> Smiles; 
+    
     public Derivados(int NumRSubst,IAtomContainer MolPrin,ArrayList<Integer> Selec,ArrayList<IAtomContainer> groupSust,
                      ArrayList<ArrayList<Integer>> groupSelecSust,ArrayList<Boolean>HydroImpli,
                      Vector <JCheckBox> GruposSustitutosSeleccionados){
-        this.NumRSubst=NumRSubst;
+
+        this.numRSubst=NumRSubst;
         this.Selec=Selec;
         this.MolPrin=MolPrin;
         this.groupSust=groupSust;
         this.groupSelecSust=groupSelecSust;
         this.HydroImpli=HydroImpli;
         this.GruposSustitutosSeleccionados=GruposSustitutosSeleccionados;
-        Smiles=new Stack<String>();
+        Smiles=new ArrayList<String>();
         Result=new ArrayList<IAtomContainer>();
-    //    SmilesGenerator generator = new SmilesGenerator(SmiFlavor.Absolute);
-
-    //    System.out.println("--------------------\n");
-        //try {
-    //        System.out.println("---"+generator.create(MolPrin)+"-----");
-    //    } catch (CDKException e) {
-        //    e.printStackTrace();
-    //    }
         error=0;
-        try {
-            Todos(NumRSubst,MolPrin,Selec);
-            Smiles.sort(new Comparator<String>() {
-                @Override
-                public int compare(String arg0, String arg1) {
-                    return arg0.compareTo(arg1);
-                }
-            });
-            
-        }catch(Exception e){
-            JOptionPane.showMessageDialog( null,"Expedited time limit, try with less r-substitutes");
-        }
-        if(error>0) {
-            JOptionPane.showMessageDialog( null,"Ended with "+error+" errors");    
-        }
+        
+        Todos(NumRSubst,MolPrin,Selec);
     }
+   
 
     private int error=0;
     @SuppressWarnings("unchecked")
@@ -91,7 +73,7 @@ public class Derivados {
                         SmilesGenerator generator = new SmilesGenerator(SmiFlavor.Isomeric);
                         Smiletemp=generator.create(CopiaTemp);
                         if(!Smiles.contains(Smiletemp))
-                        Smiles.add(Smiletemp);
+                            Smiles.add(Smiletemp);
                     } catch (Exception e) {
                         error++;
                     }                    
@@ -103,7 +85,6 @@ public class Derivados {
     
     public String TodosSmilesJuntos() {
         String y="";
-        
         Smiles.sort(new Comparator<String>() {
             @Override
             public int compare(String arg0, String arg1) {
