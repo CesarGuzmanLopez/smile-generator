@@ -225,6 +225,9 @@ public class GraphicController {
 
         AddSubs Add = new AddSubs(Nuevos, this);
         Add.setVisible(false);
+        
+        About about = new About(this);
+        about.setVisible(false);
 
         JSpinner spinner = new JSpinner();
         spinner.setBounds(503, 370, 54, 20);
@@ -335,7 +338,7 @@ public class GraphicController {
         JMenuItem mntmNewMenuItem_1 = new JMenuItem("About");
         mntmNewMenuItem_1.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		System.out.println("Hola como estas");
+        		about.setVisible(true);
         	}
         });
         mnHelp.add(mntmNewMenuItem_1);
