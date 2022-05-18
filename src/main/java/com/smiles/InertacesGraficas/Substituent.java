@@ -32,7 +32,7 @@ public class Substituent {
                 Mol.add(mol);
                 getHydroImpli().add(Boolean.valueOf(valor.getHydrogen()));
             }catch(Exception e){
-                
+                e.printStackTrace();
             }
         }
     }
