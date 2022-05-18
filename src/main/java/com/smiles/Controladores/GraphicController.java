@@ -226,7 +226,7 @@ public class GraphicController {
         AddSubs Add = new AddSubs(Nuevos, this);
         Add.setVisible(false);
         
-        About about = new About(this);
+        About about = new About();
         about.setVisible(false);
 
         JSpinner spinner = new JSpinner();
