@@ -331,6 +331,14 @@ public class GraphicController {
         
         JMenu mnHelp = new JMenu("Help");
         menuBar.add(mnHelp);
+        
+        JMenuItem mntmNewMenuItem_1 = new JMenuItem("About");
+        mntmNewMenuItem_1.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		System.out.println("Hola como estas");
+        	}
+        });
+        mnHelp.add(mntmNewMenuItem_1);
         btnGo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 try {

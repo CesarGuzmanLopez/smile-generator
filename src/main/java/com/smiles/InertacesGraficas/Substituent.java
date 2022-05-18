@@ -2,7 +2,6 @@ package com.smiles.InertacesGraficas;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
 import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.layout.StructureDiagramGenerator;
