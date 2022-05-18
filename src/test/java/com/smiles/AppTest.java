@@ -11,8 +11,13 @@ class AppTest {
     /**
      * Rigorous Test.
      */
+    /**
+     * obtengo 2 numeros aleatorios
+     */
+    int a = (int) (Math.random() * 10);
+    int b = (int) (Math.random() * 10);
     @Test
     void testApp() {
-        assertEquals(1, 1);
+        assertEquals(a, b);
     }
 }

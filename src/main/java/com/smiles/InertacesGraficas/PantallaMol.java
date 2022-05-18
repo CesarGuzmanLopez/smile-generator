@@ -35,9 +35,9 @@ public class PantallaMol extends JPanel {
      */
     public String smile;
 
-    public IAtomContainer mol = TestMoleculeFactory.makeEthylPropylPhenantren();
-    public ArrayList<Integer> Selec;
-    public ArrayList<Point2d> CordenadasReales;
+    private IAtomContainer molecule = TestMoleculeFactory.makeEthylPropylPhenantren();
+    public List<Integer> Selec;
+    public List<Point2d> CordenadasReales;
 
     private double k = 1;
     int x;
@@ -45,7 +45,7 @@ public class PantallaMol extends JPanel {
     int NumExplicito;
 
     public PantallaMol(IAtomContainer mol, ArrayList<Integer> Select, int x, int y) {
-        this.mol = mol;
+        this.molecule = mol;
         Selec = Select;
         this.x = x;
         this.y = y;
@@ -74,13 +74,13 @@ public class PantallaMol extends JPanel {
                 repaint();
             }
         });
-        definek();
+        defineK();
 
     }
 
     public PantallaMol(IAtomContainer mol, ArrayList<Integer> select,
             int x) {
-        this.mol = mol;
+        this.molecule = mol;
         Point2d a = MiPos();
         Selec = select;
         CordenadasReales = new ArrayList<Point2d>();
@@ -101,7 +101,7 @@ public class PantallaMol extends JPanel {
                     i++;
                 }
                 repaint();
-                definek();
+                defineK();
             }
         });
 
@@ -118,23 +118,23 @@ public class PantallaMol extends JPanel {
             Rectangle drawArea = new Rectangle(x, y);
             renderer.setZoom(k);
             try {
-                renderer.setup(mol, drawArea);
+                renderer.setup(molecule, drawArea);
             } catch (Exception e) {
                 e.printStackTrace();
 
             }
             Point2d temp;
             CordenadasReales.removeAll(CordenadasReales);
-            for (int i = 0; i < mol.getAtomCount(); i++) {
-                temp = renderer.toScreenCoordinates(mol.getAtom(i).getPoint2d().x, mol.getAtom(i).getPoint2d().y);
+            for (int i = 0; i < molecule.getAtomCount(); i++) {
+                temp = renderer.toScreenCoordinates(molecule.getAtom(i).getPoint2d().x, molecule.getAtom(i).getPoint2d().y);
                 CordenadasReales.add(temp);
             }
-            definek();
+            defineK();
             Graphics2D g2D = (Graphics2D) g2;
 
             g2D.setStroke(new BasicStroke(2));
-            renderer.paint(mol, new AWTDrawVisitor(g2D));
-            if (mol.getAtomCount() > 1)
+            renderer.paint(molecule, new AWTDrawVisitor(g2D));
+            if (molecule.getAtomCount() > 1)
                 for (int x : Selec) {
                     GeneralPath myPolygon = new GeneralPath();
                     myPolygon.moveTo(CordenadasReales.get(x).x - (0 * k), CordenadasReales.get(x).y - 10 * k);
@@ -165,14 +165,14 @@ public class PantallaMol extends JPanel {
         this.smile = smile;
         SmilesParser sp = new SmilesParser(DefaultChemObjectBuilder.getInstance());
         StructureDiagramGenerator sdg = new StructureDiagramGenerator();
-        mol = sp.parseSmiles(smile);
-        sdg.setMolecule(mol);
+        molecule = sp.parseSmiles(smile);
+        sdg.setMolecule(molecule);
         sdg.generateCoordinates();
-        mol = sdg.getMolecule();
+        molecule = sdg.getMolecule();
 
-        NumExplicito = mol.getAtomCount();
+        NumExplicito = molecule.getAtomCount();
         Selec.removeAll(Selec);
-        if (mol.getAtomCount() == 1) {
+        if (molecule.getAtomCount() == 1) {
             Selec.removeAll(Selec);
             Selec.add(0);
         }
@@ -182,23 +182,23 @@ public class PantallaMol extends JPanel {
 
     public void addg2(String smile, IAtomContainer mol, ArrayList<Integer> Select) throws Exception {
 
-        this.mol = mol;
+        this.molecule = mol;
         this.Selec = Select;
         this.smile = smile;
         SmilesParser sp = new SmilesParser(DefaultChemObjectBuilder.getInstance());
         StructureDiagramGenerator sdg = new StructureDiagramGenerator();
-        this.mol = sp.parseSmiles(smile);
-        sdg.setMolecule(this.mol);
+        this.molecule = sp.parseSmiles(smile);
+        sdg.setMolecule(this.molecule);
         sdg.generateCoordinates();
-        this.mol = sdg.getMolecule();
-        mol = this.mol;
+        this.molecule = sdg.getMolecule();
+        mol = this.molecule;
         NumExplicito = mol.getAtomCount();
         if (mol.getAtomCount() == 1) {
             Selec.removeAll(Selec);
             Selec.add(0);
         }
         repaint();
-        definek();
+        defineK();
 
     }
 
@@ -207,25 +207,26 @@ public class PantallaMol extends JPanel {
 
     }
 
-    public void definek(float k) {
+    public void defineK(float k) {
         this.k = k;
     }
 
-    void definek() {
+    void defineK() {
         k = 1;
         try {
-            if (mol.getAtomCount() < 6)
+            if (molecule.getAtomCount() < 6)
                 k = 1.5;
-            if (mol.getAtomCount() > 9)
+            if (molecule.getAtomCount() > 9)
                 k = 0.7;
-            if (mol.getAtomCount() > 13)
+            if (molecule.getAtomCount() > 13)
                 k = .5;
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
 
-    public IAtomContainer returnPrin() {
-        return mol;
+    public IAtomContainer returnPrincipalMolecule() {
+        return molecule;
     }
 }

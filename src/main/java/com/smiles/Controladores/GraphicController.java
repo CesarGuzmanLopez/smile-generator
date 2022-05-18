@@ -353,7 +353,7 @@ public class GraphicController {
                     } catch (InvalidSmilesException e1) {
                         e1.printStackTrace();
                     }
-                    panel_1.addg2(textPane.getText().replaceAll(" ", ""), panel_3.returnPrin(), selec);
+                    panel_1.addg2(textPane.getText().replaceAll(" ", ""), panel_3.returnPrincipalMolecule(), selec);
                     panel_1.repaint();
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage());
