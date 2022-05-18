@@ -21,7 +21,7 @@ public class About extends JDialog {
          */
         JLabel lblNewLabel = new JLabel("About Us.");
         
-        
+       
         
         lblNewLabel.setBackground(Color.WHITE);
         lblNewLabel.setVerticalAlignment(SwingConstants.TOP);

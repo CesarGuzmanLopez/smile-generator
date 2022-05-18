@@ -19,7 +19,7 @@ public class Substituent {
         setMOLSmile(new ArrayList<>());
         setHydroImpli(new ArrayList<>());
         for (Substitutes valor : Substitutes.values()) {
-            try {
+           try{
                 SmilesParser sp = new SmilesParser(DefaultChemObjectBuilder.getInstance());
                 StructureDiagramGenerator sdg = new StructureDiagramGenerator();
                 IAtomContainer mol = sp.parseSmiles(valor.getSmi());
@@ -31,9 +31,8 @@ public class Substituent {
                 getSubsName().add(valor.name());
                 Mol.add(mol);
                 getHydroImpli().add(Boolean.valueOf(valor.getHydrogen()));
-            } catch (Exception e) {
-                System.out.println("Error en el smiles " + valor.getSmi());
-            
+            }catch(Exception e){
+                
             }
         }
     }
