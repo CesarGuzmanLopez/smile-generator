@@ -28,14 +28,14 @@ public class Substients {
                 sdg.setMolecule(mol);
                 sdg.generateCoordinates();
                 mol = sdg.getMolecule();
-//            System.out.println("LLEGUE: "+ mol.getAtomCount());
-                SustitutosSelec.add(new ArrayList<Integer>());
+                SustitutosSelec.add(new ArrayList<>());
                 MOLSmile.add(valor.getSmi());
                 SubsName.add(valor.name());
                 Mol.add(mol);
                 HydroImpli.add(Boolean.valueOf(valor.getHydrogen()));
             } catch (Exception e) {
-                System.out.println("No se puede: " + e.getMessage());
+                System.out.println("Error en el smiles " + valor.getSmi());
+            
             }
         }
     }
