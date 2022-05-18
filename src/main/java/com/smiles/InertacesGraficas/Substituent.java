@@ -1,26 +1,25 @@
 package com.smiles.InertacesGraficas;
 
 import java.util.ArrayList;
-
+import java.util.List;
+import org.apache.log4j.Logger;
 import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.layout.StructureDiagramGenerator;
 import org.openscience.cdk.smiles.SmilesParser;
 
-public class Substients {
-    public ArrayList<String> SubsName;
-    public ArrayList<String> MOLSmile;
-    public ArrayList<IAtomContainer> Mol;
-    public ArrayList<ArrayList<Integer>> SustitutosSelec;
-    public ArrayList<Boolean> HydroImpli;
-
-    public Substients(ArrayList<ArrayList<Integer>> SustitutosSelec) {
-        Mol = new ArrayList<IAtomContainer>();
-        SubsName = new ArrayList<String>();
-        MOLSmile = new ArrayList<String>();
-        this.SustitutosSelec =SustitutosSelec ;
-        HydroImpli= new ArrayList<Boolean>();
-        for (Sust valor : Sust.values()) {
+public class Substituent {
+    private List<String> SubsName;
+    private List<String> MOLSmile;
+    private List<IAtomContainer> Mol;
+    private List<Boolean> HydroImpli;
+    
+    public Substituent(List<ArrayList<Integer>> SustitutosSelec) {
+        Mol = new ArrayList<>();
+        setSubsName(new ArrayList<>());
+        setMOLSmile(new ArrayList<>());
+        setHydroImpli(new ArrayList<>());
+        for (Substitutes valor : Substitutes.values()) {
             try {
                 SmilesParser sp = new SmilesParser(DefaultChemObjectBuilder.getInstance());
                 StructureDiagramGenerator sdg = new StructureDiagramGenerator();
@@ -29,15 +28,39 @@ public class Substients {
                 sdg.generateCoordinates();
                 mol = sdg.getMolecule();
                 SustitutosSelec.add(new ArrayList<>());
-                MOLSmile.add(valor.getSmi());
-                SubsName.add(valor.name());
+                getMOLSmile().add(valor.getSmi());
+                getSubsName().add(valor.name());
                 Mol.add(mol);
-                HydroImpli.add(Boolean.valueOf(valor.getHydrogen()));
+                getHydroImpli().add(Boolean.valueOf(valor.getHydrogen()));
             } catch (Exception e) {
                 System.out.println("Error en el smiles " + valor.getSmi());
             
             }
         }
+    }
+
+    public List<String> getMOLSmile() {
+        return MOLSmile;
+    }
+
+    public void setMOLSmile(List<String> mOLSmile) {
+        this.MOLSmile = mOLSmile;
+    }
+
+    public List<Boolean> getHydroImpli() {
+        return HydroImpli;
+    }
+
+    public void setHydroImpli(List<Boolean> hydroImpli) {
+        this.HydroImpli = hydroImpli;
+    }
+
+    public List<String> getSubsName() {
+        return SubsName;
+    }
+
+    public void setSubsName(List<String> subsName) {
+        this.SubsName = subsName;
     }
 
     public boolean AddSubs(String Smile,String name, boolean Impli) {
@@ -50,9 +73,9 @@ public class Substients {
             sdg.generateCoordinates();
             mol = sdg.getMolecule();
             Mol.add(mol);
-            MOLSmile.add(Smile);
-            SubsName.add(name);
-            HydroImpli.add(Impli);
+            getMOLSmile().add(Smile);
+            getSubsName().add(name);
+            getHydroImpli().add(Impli);
             return true;
         } catch (Exception e) {
             return false;

@@ -1,35 +1,32 @@
 package com.smiles.Generadores;
-
 import java.util.ArrayList;
 import java.util.Comparator;
-
-import java.util.Vector;
-
+import java.util.List;
 import javax.swing.JCheckBox;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IBond;
 import org.openscience.cdk.smiles.SmiFlavor;
 import org.openscience.cdk.smiles.SmilesGenerator;
-
 public class Derivados {
     public  IAtomContainer MolPrin;
-    public  ArrayList<Integer> Selec;
-    public  ArrayList<IAtomContainer> groupSust;
-    public  ArrayList<ArrayList<Integer>> groupSelecSust;
-    public  ArrayList<Boolean>HydroImpli;
-    public Vector <JCheckBox> GruposSustitutosSeleccionados;
+    public  List<Integer> Selec;
+    public  List<IAtomContainer> groupSust;
+    public  List<ArrayList<Integer>> groupSelecSust;
+    public  List<Boolean>HydroImpli;
+    public List <JCheckBox> GruposSustitutosSeleccionados;
     int numRSubst;
-    private ArrayList<IAtomContainer> result;
-    public ArrayList<String> smiles; 
+    private List<IAtomContainer> result;
+    public List<String> smiles; 
     
-    public Derivados(int NumRSubst,IAtomContainer MolPrin,ArrayList<Integer> Selec,ArrayList<IAtomContainer> groupSust,
-                     ArrayList<ArrayList<Integer>> groupSelecSust,ArrayList<Boolean>HydroImpli,
-                     Vector <JCheckBox> GruposSustitutosSeleccionados){
+    public Derivados(int nRSubstituent,IAtomContainer moleculePrincipal,ArrayList<Integer> selections,List<IAtomContainer> groupSubstitutes,
+                     List<ArrayList<Integer>> groupSelecSust,List<Boolean>HydroImpli,
+                     List <JCheckBox> GruposSustitutosSeleccionados){
 
-        this.numRSubst=NumRSubst;
-        this.Selec=Selec;
-        this.MolPrin=MolPrin;
-        this.groupSust=groupSust;
+        
+        this.numRSubst=nRSubstituent;
+        this.Selec=selections;
+        this.MolPrin=moleculePrincipal;
+        this.groupSust=groupSubstitutes;
         this.groupSelecSust=groupSelecSust;
         this.HydroImpli=HydroImpli;
         this.GruposSustitutosSeleccionados=GruposSustitutosSeleccionados;
@@ -37,7 +34,7 @@ public class Derivados {
         result=new ArrayList<IAtomContainer>();
         error=0;
         
-        Todos(NumRSubst,MolPrin,Selec);
+        Todos(nRSubstituent,moleculePrincipal,selections);
     }
    
 
@@ -46,9 +43,10 @@ public class Derivados {
     private void Todos(int NumRSubst,IAtomContainer MolPrin,ArrayList<Integer> Selec) {
         if(NumRSubst<1)
             return ;
-        IAtomContainer copiaTemp,hclone;
-        ArrayList<Integer> selecCopy;    
-        String smiletemp;
+        IAtomContainer copiaTemp;
+        IAtomContainer h_clone;
+        ArrayList<Integer> select_Copy;    
+        String smile_temp;
         for(int i: Selec) {
             int p=0;
             for(IAtomContainer H:groupSust ) {
@@ -57,22 +55,22 @@ public class Derivados {
                         try {
                             copiaTemp=MolPrin.clone();
                             
-                            hclone =H.clone();
+                            h_clone =H.clone();
                             if(HydroImpli.get(p)) {
-                                hclone.getAtom(j).setImplicitHydrogenCount(copiaTemp.getAtom(j).getImplicitHydrogenCount()-1);
+                                h_clone.getAtom(j).setImplicitHydrogenCount(copiaTemp.getAtom(j).getImplicitHydrogenCount()-1);
                             }        
-                            copiaTemp.add(hclone);
+                            copiaTemp.add(h_clone);
                             copiaTemp.getAtom(i).setImplicitHydrogenCount(copiaTemp.getAtom(i).getImplicitHydrogenCount()-1);
                             copiaTemp.addBond(i,MolPrin.getAtomCount()+j,IBond.Order.SINGLE);
                             result.add(copiaTemp);
-                            selecCopy = (ArrayList<Integer>) Selec.clone();
-                            selecCopy.remove((Object) i);
-                            Todos(NumRSubst-1,copiaTemp,selecCopy);
+                            select_Copy = (ArrayList<Integer>) Selec.clone();
+                            select_Copy.remove((Object) i);
+                            Todos(NumRSubst-1,copiaTemp,select_Copy);
                             
                             SmilesGenerator generator = new SmilesGenerator(SmiFlavor.Isomeric);
-                            smiletemp=generator.create(copiaTemp);
-                            if(!smiles.contains(smiletemp))
-                                smiles.add(smiletemp);
+                            smile_temp=generator.create(copiaTemp);
+                            if(!smiles.contains(smile_temp))
+                                smiles.add(smile_temp);
                         } catch (Exception e) {
                             error++;
                         }                    
@@ -81,7 +79,7 @@ public class Derivados {
             }
         }
     }
-    
+     
     public String TodosSmilesJuntos() {
         String y="";
         smiles.sort(new Comparator<String>() {

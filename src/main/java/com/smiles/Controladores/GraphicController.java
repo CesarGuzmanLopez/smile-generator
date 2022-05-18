@@ -29,6 +29,9 @@ import java.util.ArrayList;
 import java.util.Vector;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -46,7 +49,7 @@ import javax.swing.border.TitledBorder;
 import com.smiles.Generadores.Derivados;
 import com.smiles.InertacesGraficas.AddSubs;
 import com.smiles.InertacesGraficas.PantallaMol;
-import com.smiles.InertacesGraficas.Substients;
+import com.smiles.InertacesGraficas.Substituent;
 
 import java.awt.Button;
 import java.awt.Window.Type;
@@ -54,8 +57,11 @@ import java.awt.ScrollPane;
 import java.awt.Label;
 import java.awt.Component;
 import javax.swing.Box;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
-public class ControladorGrafico {
+public class GraphicController {
 
     public static ArrayList<Integer> selec;
     public static IAtomContainer MolPrin;
@@ -63,7 +69,7 @@ public class ControladorGrafico {
     public static ArrayList<IAtomContainer> MolSust;
     public static String Mensaje;
     private JFrame frame;
-    Substients Nuevos = new Substients(SelecSust);
+    Substituent Nuevos = new Substituent(SelecSust);
     PantallaMol panel_3;
     public ScrollPane scrollPane_3;
     Vector<JCheckBox> Sustituto;
@@ -76,6 +82,7 @@ public class ControladorGrafico {
      * @throws InvalidSmilesException
      */
     public static void main(String[] args) throws InvalidSmilesException {
+    	seleccionarGUI();
         selec = new ArrayList<Integer>();
         SmilesParser sp = new SmilesParser(DefaultChemObjectBuilder.getInstance());
         MolPrin = sp.parseSmiles("C1CCNCC1");
@@ -84,7 +91,7 @@ public class ControladorGrafico {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    ControladorGrafico window = new ControladorGrafico();
+                    GraphicController window = new GraphicController();
                     window.frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -96,10 +103,84 @@ public class ControladorGrafico {
     /**
      * Create the application.
      */
-    public ControladorGrafico() {
+    public GraphicController() {
         initialize();
     }
 
+    
+    private static void seleccionarGUI ()
+	{
+		String temaDelSistema = null ;
+		
+		String temaWindows = null ;
+		String temaMac = null ;
+		String temaGTK = null ;
+		String temaDefault = null ;
+		
+		UIManager.LookAndFeelInfo [] lf = UIManager.getInstalledLookAndFeels() ;
+		
+		for (UIManager.LookAndFeelInfo tema : lf )
+		{
+			if ( tema.getClassName().equals ( "com.sun.java.swing.plaf.windows.WindowsLookAndFeel" ) )
+			{
+				temaWindows = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel" ;
+			}
+/*			
+			else if ()
+			{
+				temaMac = "" ;
+			}
+*/			
+			else if ( tema.getClassName().equals ( "com.sun.java.swing.plaf.gtk.GTKLookAndFeel" ) )
+			{
+				temaGTK = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel" ;
+			}
+			
+			else
+			{
+				temaDefault = "javax.swing.plaf.metal.MetalLookAndFeel" ;
+			}
+		}
+
+		if ( temaGTK != null )
+			temaDelSistema = temaGTK ;
+		
+		else if ( temaWindows != null )
+			temaDelSistema = temaWindows ;
+		
+		else
+			temaDelSistema = temaDefault ;
+	
+		try
+		{
+
+			UIManager.setLookAndFeel( temaDelSistema );
+		}
+		
+		catch ( UnsupportedLookAndFeelException e)
+		{
+			System.out.println ( "Sin soporte." ) ;
+		}
+
+		catch ( ClassNotFoundException e )
+		{
+			System.out.println ( "Clase no encontrada." ) ;
+		}
+
+		catch ( InstantiationException e )
+		{
+			System.out.println ( "Problemas de instanciación." ) ;
+		}
+
+		catch ( IllegalAccessException e )
+		{
+			System.out.println ( "Acceso ilegal." ) ;
+		}
+
+	}
+	
+    
+    
     /**
      * Initialize the contents of the frame.
      */
@@ -108,16 +189,16 @@ public class ControladorGrafico {
         frame = new JFrame();
         frame.setType(Type.POPUP);
         frame.setResizable(false);
-        frame.setBounds(100, 100, 838, 443);
+        frame.setBounds(100, 100, 869, 508);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panel = new JPanel();
         frame.getContentPane().add(panel, BorderLayout.CENTER);
         panel.setLayout(null);
         JScrollPane scrollPane_1 = new JScrollPane();
-        scrollPane_1.setBounds(18, 71, 315, 315);
+        scrollPane_1.setBounds(37, 100, 315, 315);
         panel.add(scrollPane_1);
         JScrollPane scrollPane_2 = new JScrollPane();
-        scrollPane_2.setBounds(557, 58, 260, 260);
+        scrollPane_2.setBounds(575, 93, 260, 260);
         PantallaMol panel_1 = new PantallaMol(MolPrin, selec, scrollPane_1.getWidth(), scrollPane_1.getHeight());
         panel_3 = new PantallaMol(MolPrin, selec, scrollPane_2.getWidth(), scrollPane_2.getHeight());
 
@@ -135,30 +216,30 @@ public class ControladorGrafico {
 
         Button btnGo_1 = new Button("Generate");
         scrollPane_3 = new ScrollPane();
-        scrollPane_3.setBounds(370, 75, 169, 254);
+        scrollPane_3.setBounds(388, 110, 169, 254);
         panel.add(scrollPane_3);
         scrollPane_3.add(panel_2);
 
-        btnGo_1.setBounds(650, 370, 89, 23);
+        btnGo_1.setBounds(668, 405, 89, 23);
         panel.add(btnGo_1);
 
         AddSubs Add = new AddSubs(Nuevos, this);
         Add.setVisible(false);
 
         JSpinner spinner = new JSpinner();
-        spinner.setBounds(485, 335, 54, 20);
+        spinner.setBounds(503, 370, 54, 20);
         panel.add(spinner);
         spinner.setValue(1);
 
         JLabel lblRsubstitutions = new JLabel(" r-substitutions:");
         lblRsubstitutions.setForeground(Color.BLUE);
         lblRsubstitutions.setFont(new Font("Tahoma", Font.BOLD, 12));
-        lblRsubstitutions.setBounds(370, 335, 110, 20);
+        lblRsubstitutions.setBounds(388, 370, 110, 20);
         panel.add(lblRsubstitutions);
 
         JPanel panel_4 = new JPanel();
         panel_4.setBorder(new TitledBorder(null, "CANONICAL SMILE INPUT: ", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-        panel_4.setBounds(40, 15, 258, 50);
+        panel_4.setBounds(62, 28, 258, 50);
         panel.add(panel_4);
         panel_4.setLayout(null);
 
@@ -172,7 +253,7 @@ public class ControladorGrafico {
 
         JLabel lblFuunctionalsGroups = new JLabel("Functional groups:");
         lblFuunctionalsGroups.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        lblFuunctionalsGroups.setBounds(370, 45, 110, 14);
+        lblFuunctionalsGroups.setBounds(388, 80, 110, 14);
         panel.add(lblFuunctionalsGroups);
 
         Button button = new Button("+");
@@ -191,7 +272,7 @@ public class ControladorGrafico {
             }
         });
 
-        button.setBounds(496, 42, 43, 23);
+        button.setBounds(514, 77, 43, 23);
         panel.add(button);
 
         Button button_1 = new Button("Save as");
@@ -217,18 +298,18 @@ public class ControladorGrafico {
                 }
             }
         });
-        button_1.setBounds(356, 370, 70, 22);
+        button_1.setBounds(374, 405, 70, 22);
         panel.add(button_1);
 
         textField_1 = new JTextField();
-        textField_1.setBounds(432, 370, 174, 20);
+        textField_1.setBounds(450, 405, 174, 20);
         panel.add(textField_1);
 
         Label label = new Label("");
         label.setEnabled(false);
         label.setAlignment(Label.CENTER);
         label.setForeground(Color.DARK_GRAY);
-        label.setBounds(746, 371, 62, 22);
+        label.setBounds(764, 406, 62, 22);
         panel.add(label);
         Component verticalGlue = Box.createVerticalGlue();
         verticalGlue.setBounds(344, 389, 7, -368);
@@ -237,6 +318,19 @@ public class ControladorGrafico {
         Component verticalGlue_1 = Box.createVerticalGlue();
         verticalGlue_1.setBounds(549, 11, -204, 344);
         panel.add(verticalGlue_1);
+        
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.setToolTipText("help");
+        frame.setJMenuBar(menuBar);
+        
+        JMenu mnNewMenu = new JMenu("File");
+        menuBar.add(mnNewMenu);
+        
+        JMenuItem mntmNewMenuItem = new JMenuItem("Save");
+        mnNewMenu.add(mntmNewMenuItem);
+        
+        JMenu mnHelp = new JMenu("Help");
+        menuBar.add(mnHelp);
         btnGo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 try {
@@ -280,14 +374,14 @@ public class ControladorGrafico {
                 for(JCheckBox i: Sustituto) {
                     if(i.isSelected()) {
                         if(SelecSust.get(p).size()<1) {
-                            JOptionPane.showMessageDialog(null,"No tags selected in "+ Nuevos.SubsName.get(p));
+                            JOptionPane.showMessageDialog(null,"No tags selected in "+ Nuevos.getSubsName().get(p));
                             return;
                         }
                     }
                     p++;
                 }
                 label.setText("");
-                Derivados pol = new Derivados(x, MolPrin, selec, MolSust, SelecSust, Nuevos.HydroImpli, Sustituto);
+                Derivados pol = new Derivados(x, MolPrin, selec, MolSust, SelecSust, Nuevos.getHydroImpli(), Sustituto);
                 FileWriter fw;
                 try {
 
@@ -329,10 +423,10 @@ public class ControladorGrafico {
         int i = 0;
         panel_2.removeAll();
         try {
-            for (String n : Nuevos.SubsName) {
+            for (String n : Nuevos.getSubsName()) {
                 int j = i;
                 JCheckBox X = new JCheckBox(n);
-                String smile = Nuevos.MOLSmile.get(i);
+                String smile = Nuevos.getMOLSmile().get(i);
                 Sustituto.add(X);
                 panel_2.add(Sustituto.elementAt(i));
                 SelecSust.add(new ArrayList<Integer>());

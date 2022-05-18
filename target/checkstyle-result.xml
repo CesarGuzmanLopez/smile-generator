@@ -695,7 +695,7 @@
 <error line="281" column="5" severity="error" message="&apos;METHOD_DEF&apos; debe estar separado de la línea anterior." source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
 <error line="281" column="27" severity="error" message="Method name &apos;ReturnPrin&apos; must match pattern &apos;^[a-z][a-z0-9][a-zA-Z0-9_]*$&apos;." source="com.puppycrawl.tools.checkstyle.checks.naming.MethodNameCheck"/>
 </file>
-<file name="C:\Users\88-8\Documents\Proyectos\smiles\src\main\java\com\smiles\InertacesGraficas\Substients.java">
+<file name="C:\Users\88-8\Documents\Proyectos\smiles\src\main\java\com\smiles\InertacesGraficas\Substituent.java">
 <error line="1" column="9" severity="error" message="El nombre &apos;com.smiles.InertacesGraficas&apos; debe coincidir con el patrón &apos;^[a-z]+(\.[a-z][a-z0-9]*)*$&apos;." source="com.puppycrawl.tools.checkstyle.checks.naming.PackageNameCheck"/>
 <error line="5" column="1" severity="error" message="Separación extra en el grupo de importación antes &apos;org.openscience.cdk.DefaultChemObjectBuilder&apos;" source="com.puppycrawl.tools.checkstyle.checks.imports.ImportOrderCheck"/>
 <error line="10" column="1" severity="error" message="Falta el comentario Javadoc." source="com.puppycrawl.tools.checkstyle.checks.javadoc.MissingJavadocTypeCheck"/>
