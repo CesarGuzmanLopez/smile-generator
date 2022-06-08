@@ -78,7 +78,7 @@ public class GraphicController {
 
     /**
      * Launch the application.
-     * 
+     *
      * @throws InvalidSmilesException
      */
     public static void main(String[] args) throws InvalidSmilesException {
@@ -107,35 +107,30 @@ public class GraphicController {
         initialize();
     }
 
-    
+
     private static void seleccionarGUI ()
 	{
 		String temaDelSistema = null ;
-		
+
 		String temaWindows = null ;
 		String temaMac = null ;
 		String temaGTK = null ;
 		String temaDefault = null ;
-		
+
 		UIManager.LookAndFeelInfo [] lf = UIManager.getInstalledLookAndFeels() ;
-		
+
 		for (UIManager.LookAndFeelInfo tema : lf )
 		{
 			if ( tema.getClassName().equals ( "com.sun.java.swing.plaf.windows.WindowsLookAndFeel" ) )
 			{
 				temaWindows = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel" ;
 			}
-/*			
-			else if ()
-			{
-				temaMac = "" ;
-			}
-*/			
+
 			else if ( tema.getClassName().equals ( "com.sun.java.swing.plaf.gtk.GTKLookAndFeel" ) )
 			{
 				temaGTK = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel" ;
 			}
-			
+
 			else
 			{
 				temaDefault = "javax.swing.plaf.metal.MetalLookAndFeel" ;
@@ -144,19 +139,19 @@ public class GraphicController {
 
 		if ( temaGTK != null )
 			temaDelSistema = temaGTK ;
-		
+
 		else if ( temaWindows != null )
 			temaDelSistema = temaWindows ;
-		
+
 		else
 			temaDelSistema = temaDefault ;
-	
+
 		try
 		{
 
 			UIManager.setLookAndFeel( temaDelSistema );
 		}
-		
+
 		catch ( UnsupportedLookAndFeelException e)
 		{
 			System.out.println ( "Sin soporte." ) ;
@@ -178,9 +173,9 @@ public class GraphicController {
 		}
 
 	}
-	
-    
-    
+
+
+
     /**
      * Initialize the contents of the frame.
      */
@@ -225,7 +220,7 @@ public class GraphicController {
 
         AddSubs Add = new AddSubs(Nuevos, this);
         Add.setVisible(false);
-        
+
         About about = new About();
         about.setVisible(false);
 
@@ -281,25 +276,10 @@ public class GraphicController {
         Button button_1 = new Button("Save as");
         button_1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                JFileChooser fc = new JFileChooser();
-
-                int seleccion = fc.showSaveDialog(fc);
-
-                File archivo = fc.getSelectedFile();
-
-                if (seleccion == JFileChooser.APPROVE_OPTION) {
-                    if (fc.getSelectedFile().exists()) {
-                        int response;
-                        response = JOptionPane.showConfirmDialog(null,
-                                fc.getSelectedFile().toString() + " exists. Overwrite?", "Confirm Save",
-                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                        if (response == JOptionPane.NO_OPTION) {
-                            return;
-                        }
-                    }
-                    textField_1.setText(archivo.getPath());
-                }
+                guardar();
             }
+
+
         });
         button_1.setBounds(374, 405, 70, 22);
         panel.add(button_1);
@@ -321,20 +301,25 @@ public class GraphicController {
         Component verticalGlue_1 = Box.createVerticalGlue();
         verticalGlue_1.setBounds(549, 11, -204, 344);
         panel.add(verticalGlue_1);
-        
+
         JMenuBar menuBar = new JMenuBar();
         menuBar.setToolTipText("help");
         frame.setJMenuBar(menuBar);
-        
+
         JMenu mnNewMenu = new JMenu("File");
         menuBar.add(mnNewMenu);
-        
+
         JMenuItem mntmNewMenuItem = new JMenuItem("Save");
+        mntmNewMenuItem.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		guardar() ;
+        	}
+        });
         mnNewMenu.add(mntmNewMenuItem);
-        
+
         JMenu mnHelp = new JMenu("Help");
         menuBar.add(mnHelp);
-        
+
         JMenuItem mntmNewMenuItem_1 = new JMenuItem("About");
         mntmNewMenuItem_1.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
@@ -380,7 +365,7 @@ public class GraphicController {
                     new Exception("No se puede El numero de R sustituyentes es mayor a los Seleccionados");
                     return;
                 }
-    
+
                 int p=0;
                 for(JCheckBox i: Sustituto) {
                     if(i.isSelected()) {
@@ -420,6 +405,28 @@ public class GraphicController {
         });
     }
 
+	private void guardar() {
+		JFileChooser fc = new JFileChooser();
+
+        int seleccion = fc.showSaveDialog(fc);
+
+        File archivo = fc.getSelectedFile();
+
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            if (fc.getSelectedFile().exists()) {
+                int response;
+                response = JOptionPane.showConfirmDialog(null,
+                        fc.getSelectedFile().toString() + " exists. Overwrite?", "Confirm Save",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (response == JOptionPane.NO_OPTION) {
+                    return;
+                }
+            }
+            textField_1.setText(archivo.getPath());
+        }
+	}
+    
+    
     public void llena_panel() {
 
         SelecSust = new ArrayList<ArrayList<Integer>>();
