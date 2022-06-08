@@ -1,4 +1,4 @@
-package com.smiles.Generadores;
+package com.smiles.v1.Generadores;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -16,13 +16,13 @@ public class Derivados {
     public List <JCheckBox> GruposSustitutosSeleccionados;
     int numRSubst;
     private List<IAtomContainer> result;
-    public List<String> smiles; 
-    
+    public List<String> smiles;
+
     public Derivados(int nRSubstituent,IAtomContainer moleculePrincipal,ArrayList<Integer> selections,List<IAtomContainer> groupSubstitutes,
                      List<ArrayList<Integer>> groupSelecSust,List<Boolean>HydroImpli,
                      List <JCheckBox> GruposSustitutosSeleccionados){
 
-        
+
         this.numRSubst=nRSubstituent;
         this.Selec=selections;
         this.MolPrin=moleculePrincipal;
@@ -33,10 +33,10 @@ public class Derivados {
         smiles=new ArrayList<String>();
         result=new ArrayList<IAtomContainer>();
         error=0;
-        
+
         Todos(nRSubstituent,moleculePrincipal,selections);
     }
-   
+
 
     private int error=0;
     @SuppressWarnings("unchecked")
@@ -45,7 +45,7 @@ public class Derivados {
             return ;
         IAtomContainer copiaTemp;
         IAtomContainer h_clone;
-        ArrayList<Integer> select_Copy;    
+        ArrayList<Integer> select_Copy;
         String smile_temp;
         for(int i: Selec) {
             int p=0;
@@ -54,11 +54,11 @@ public class Derivados {
                     if(GruposSustitutosSeleccionados.get(p).isSelected())
                         try {
                             copiaTemp=MolPrin.clone();
-                            
+
                             h_clone =H.clone();
                             if(HydroImpli.get(p)) {
                                 h_clone.getAtom(j).setImplicitHydrogenCount(copiaTemp.getAtom(j).getImplicitHydrogenCount()-1);
-                            }        
+                            }
                             copiaTemp.add(h_clone);
                             copiaTemp.getAtom(i).setImplicitHydrogenCount(copiaTemp.getAtom(i).getImplicitHydrogenCount()-1);
                             copiaTemp.addBond(i,MolPrin.getAtomCount()+j,IBond.Order.SINGLE);
@@ -66,20 +66,20 @@ public class Derivados {
                             select_Copy = (ArrayList<Integer>) Selec.clone();
                             select_Copy.remove((Object) i);
                             Todos(NumRSubst-1,copiaTemp,select_Copy);
-                            
+
                             SmilesGenerator generator = new SmilesGenerator(SmiFlavor.Isomeric);
                             smile_temp=generator.create(copiaTemp);
                             if(!smiles.contains(smile_temp))
                                 smiles.add(smile_temp);
                         } catch (Exception e) {
                             error++;
-                        }                    
+                        }
                 }
                 p++;
             }
         }
     }
-     
+
     public String TodosSmilesJuntos() {
         String y="";
         smiles.sort(new Comparator<String>() {

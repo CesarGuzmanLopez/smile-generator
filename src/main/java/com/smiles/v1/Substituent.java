@@ -1,4 +1,4 @@
-package com.smiles.InertacesGraficas;
+package com.smiles.v1;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ public class Substituent {
     private List<String> MOLSmile;
     private List<IAtomContainer> Mol;
     private List<Boolean> HydroImpli;
-    
+
     public Substituent(List<ArrayList<Integer>> SustitutosSelec) {
         Mol = new ArrayList<>();
         setSubsName(new ArrayList<>());

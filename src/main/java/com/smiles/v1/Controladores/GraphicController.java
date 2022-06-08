@@ -1,4 +1,4 @@
-package com.smiles.Controladores;
+package com.smiles.v1.Controladores;
 
 import java.awt.EventQueue;
 
@@ -46,10 +46,10 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import javax.swing.border.TitledBorder;
 
-import com.smiles.Generadores.Derivados;
-import com.smiles.InertacesGraficas.AddSubs;
-import com.smiles.InertacesGraficas.PantallaMol;
-import com.smiles.InertacesGraficas.Substituent;
+import com.smiles.v1.AddSubs;
+import com.smiles.v1.PantallaMol;
+import com.smiles.v1.Substituent;
+import com.smiles.v1.Generadores.Derivados;
 
 import java.awt.Button;
 import java.awt.Window.Type;
@@ -425,8 +425,8 @@ public class GraphicController {
             textField_1.setText(archivo.getPath());
         }
 	}
-    
-    
+
+
     public void llena_panel() {
 
         SelecSust = new ArrayList<ArrayList<Integer>>();

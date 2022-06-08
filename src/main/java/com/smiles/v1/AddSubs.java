@@ -1,4 +1,4 @@
-package com.smiles.InertacesGraficas;
+package com.smiles.v1;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -8,7 +8,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.smiles.Controladores.GraphicController;
+import com.smiles.v1.Controladores.GraphicController;
 
 import java.awt.TextField;
 import javax.swing.JCheckBox;
@@ -22,7 +22,7 @@ import java.awt.event.ActionEvent;
 public class AddSubs extends JDialog {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
     private final JPanel contentPanel = new JPanel();
@@ -58,23 +58,23 @@ public class AddSubs extends JDialog {
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
         contentPanel.setLayout(null);
-        
+
         TextField textField = new TextField();
         textField.setBounds(155, 33, 140, 22);
         contentPanel.add(textField);
-        
+
         TextField textField_1 = new TextField();
         textField_1.setBounds(155, 61, 140, 22);
         contentPanel.add(textField_1);
-        
+
         JCheckBox chckbxHydrogenImpl = new JCheckBox("Explicit Hydrogens");
         chckbxHydrogenImpl.setBounds(153, 89, 142, 23);
         contentPanel.add(chckbxHydrogenImpl);
-        
+
         JLabel lblNameMolecule = new JLabel("Name Molecule");
         lblNameMolecule.setBounds(10, 36, 100, 14);
         contentPanel.add(lblNameMolecule);
-        
+
         JLabel lblSmile = new JLabel("Smile");
         lblSmile.setBounds(10, 69, 100, 14);
         contentPanel.add(lblSmile);
@@ -83,7 +83,7 @@ public class AddSubs extends JDialog {
             buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
             getContentPane().add(buttonPane, BorderLayout.SOUTH);
             {
-                
+
                 JButton okButton = new JButton("OK");
                 okButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent arg0) {
@@ -104,7 +104,7 @@ public class AddSubs extends JDialog {
                         }else {
                             JOptionPane.showMessageDialog(null, "Incorrect smile.");
                         }
-                        
+
                     }
                 });
                 okButton.setActionCommand("OK");
@@ -125,14 +125,14 @@ public class AddSubs extends JDialog {
                 });
                 cancelButton.setActionCommand("Cancel");
                 buttonPane.add(cancelButton);
-                
+
             }
         }
     }
-    
 
-    
-    
+
+
+
 //    public  String Valor() {
     //    return Valora;
 //    }

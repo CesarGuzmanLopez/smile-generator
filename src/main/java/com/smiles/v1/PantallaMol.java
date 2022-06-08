@@ -1,4 +1,4 @@
-package com.smiles.InertacesGraficas;
+package com.smiles.v1;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -31,7 +31,7 @@ import org.openscience.cdk.templates.TestMoleculeFactory;
 public class PantallaMol extends JPanel {
     /**
      * @return
-     * 
+     *
      */
     public String smile;
 

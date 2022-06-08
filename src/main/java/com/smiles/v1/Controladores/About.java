@@ -1,4 +1,4 @@
-package com.smiles.Controladores;
+package com.smiles.v1.Controladores;
 
 
 import javax.swing.JDialog;
@@ -16,13 +16,13 @@ public class About extends JDialog {
         setBounds(100, 100, 598, 384);
         getContentPane().setLayout(null);
         /**
-         * 
+         *
          * Aquí puedes cambiar el texto de la ventana
          */
         JLabel lblNewLabel = new JLabel("About Us.");
-        
-       
-        
+
+
+
         lblNewLabel.setBackground(Color.WHITE);
         lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
         lblNewLabel.setBounds(73, 50, 439, 221);
