@@ -1,12 +1,13 @@
 package com.smiles.v2.main.views;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
-import java.io.Serializable;
-
+import java.awt.ScrollPane;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+
 import java.awt.GridBagConstraints;
 
 import com.smiles.v2.main.interfaces.SmilesList;
@@ -14,7 +15,7 @@ import com.smiles.v2.main.views.panels.Menu;
 import com.smiles.v2.main.views.panels.MoleculePanel;
 import com.smiles.v2.main.views.panels.OptionPanel;
 
-public final class PrincipalView extends javax.swing.JFrame implements Serializable {
+public final class PrincipalView extends javax.swing.JFrame {
     private static final long serialVersionUID = 2L;
     private MoleculePanel MoleculePanelPrincipal;
     private OptionPanel optionPanel;
@@ -86,17 +87,20 @@ public final class PrincipalView extends javax.swing.JFrame implements Serializa
         add(MoleculePanelPrincipal,gbc);
     }
     private void initializeOptionPanel(int gridx, int gridy, double weightx, double weighty) {
+        ScrollPane scroll = new ScrollPane(ScrollPane.SCROLLBARS_AS_NEEDED);
+
         optionPanel = new OptionPanel(smilesList);
-        optionPanel.setPreferredSize(new Dimension(200, 100));
-        optionPanel.setMaximumSize(new Dimension(250, 100));
-        optionPanel.setMinimumSize(new Dimension(190, 100));
+        scroll.add(optionPanel);
+        scroll.setPreferredSize(new Dimension(200,300));
+        scroll.setMaximumSize(new Dimension(250, 400));
+        scroll.setMinimumSize(new Dimension(190, 200));
         GridBagConstraints gbc= new GridBagConstraints();
         gbc.gridx = gridx;
         gbc.gridy = gridy;
         gbc.weightx = weightx;
         gbc.weighty = weighty;
-        gbc.anchor = GridBagConstraints.NORTH;
-        add(optionPanel,gbc);
+        gbc.anchor = GridBagConstraints.CENTER;
+        add(scroll,gbc);
     }
     private void initializeMoleculePreviewPanel(int gridx, int gridy, double weightx, double weighty) {
         moleculePreviewPanel = new MoleculePanel();

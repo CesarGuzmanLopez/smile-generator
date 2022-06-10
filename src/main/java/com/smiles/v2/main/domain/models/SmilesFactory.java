@@ -17,6 +17,7 @@ public class SmilesFactory implements SmilesH {
         if(!smileVerification.isValid(smiles)) {
             throw new IllegalArgumentException("Smiles is not valid");
         }
+        this.name = name;
         this.smiles = smiles;
         this.message = message;
         this.hydrogenImplicit = hydrogenImplicit;
