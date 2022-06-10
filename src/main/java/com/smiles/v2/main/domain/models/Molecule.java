@@ -1,4 +1,4 @@
-package com.smiles.v2.main.models;
+package com.smiles.v2.main.domain.models;
 
 import java.io.Serializable;
 

@@ -1,16 +1,21 @@
 package com.smiles.v2.main.views;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
+import java.io.Serializable;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
+
+import com.smiles.v2.main.interfaces.SmilesList;
 import com.smiles.v2.main.views.panels.Menu;
 import com.smiles.v2.main.views.panels.MoleculePanel;
 import com.smiles.v2.main.views.panels.OptionPanel;
 
-public final class PrincipalView extends javax.swing.JFrame {
+public final class PrincipalView extends javax.swing.JFrame implements Serializable {
+    private static final long serialVersionUID = 2L;
     private MoleculePanel MoleculePanelPrincipal;
     private OptionPanel optionPanel;
     private MoleculePanel moleculePreviewPanel;
@@ -18,16 +23,16 @@ public final class PrincipalView extends javax.swing.JFrame {
     private JButton smileButton;
     private JButton generateButton;
     private JLabel textFieldSavePath;
-
-    public PrincipalView() {
+    private SmilesList smilesList;//NOSONAR
+    public PrincipalView(SmilesList smilesList) {
         super("Smile generator");
         setSize(850, 550);
         setMinimumSize( new Dimension(750, 450));
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        initialize();
-        setVisible(true);
+        this.smilesList = smilesList;
     }
-    private void initialize() {
+
+    public void initialize() {
         setJMenuBar(new Menu());
         setLayout(new GridBagLayout());
         initializeEntrySmile            (0, 0, 1, 0);
@@ -35,6 +40,7 @@ public final class PrincipalView extends javax.swing.JFrame {
         initializeOptionPanel           (1, 1, 0, 1);
         initializeMoleculePreviewPanel  (2, 1, 1, 1);
         initializeActionGenerator       (0, 3, 3, 1);
+        setVisible(true);
     }
     private void initializeEntrySmile(int gridx, int gridy, double weightx, double weighty) {
         JPanel panelSmile = new JPanel();
@@ -80,7 +86,7 @@ public final class PrincipalView extends javax.swing.JFrame {
         add(MoleculePanelPrincipal,gbc);
     }
     private void initializeOptionPanel(int gridx, int gridy, double weightx, double weighty) {
-        optionPanel = new OptionPanel();
+        optionPanel = new OptionPanel(smilesList);
         optionPanel.setPreferredSize(new Dimension(200, 100));
         optionPanel.setMaximumSize(new Dimension(250, 100));
         optionPanel.setMinimumSize(new Dimension(190, 100));

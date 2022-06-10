@@ -1,12 +1,17 @@
 package com.smiles.v2.main;
 
+import com.smiles.v2.main.infrastructure.GeneraSmilesInput;
 import com.smiles.v2.main.views.PrincipalView;
 
 
 public final class SmilesGenerator {
     public static void main(String[] args) {
         seleccionarTema();
-        new PrincipalView();
+        GeneraSmilesInput smiles = new GeneraSmilesInput();
+        PrincipalView principalView = new PrincipalView( smiles );
+
+        principalView.initialize();
+
     }
     private static void seleccionarTema() {
         String temaDefault = "";

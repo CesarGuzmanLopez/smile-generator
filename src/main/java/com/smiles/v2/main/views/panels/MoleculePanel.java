@@ -5,8 +5,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
-import com.smiles.v2.main.models.Molecule;
+import com.smiles.v2.main.domain.models.Molecule;
 //una clase abstracta que representa un panel de una molécula
 public class MoleculePanel extends javax.swing.JPanel implements ActionListener{
     protected Molecule molecule;
