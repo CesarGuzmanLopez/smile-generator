@@ -1,41 +1,103 @@
 package com.smiles.v2.main.views;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
-
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentListener;
 
 import java.awt.GridBagConstraints;
 import com.smiles.v2.main.views.panels.Menu;
 import com.smiles.v2.main.views.panels.MoleculePanel;
 import com.smiles.v2.main.views.panels.OptionPanel;
-
+import com.smiles.v2.main.domain.models.Smiles;
 import com.smiles.v2.main.interfaces.SmileVerificationInterface;
+import com.smiles.v2.main.interfaces.SmilesHInterface;
 import com.smiles.v2.main.interfaces.SmilesListInterface;
 
 @SuppressWarnings("java:S1948")
 public final class PrincipalView extends javax.swing.JFrame {
     private static final long serialVersionUID = 2L;
+
     private MoleculePanel MoleculePanelPrincipal;
     private OptionPanel optionPanel;
     private MoleculePanel moleculePreviewPanel;
-    private JTextField textFieldSmile;
-    private JButton smileButton;
     private JButton generateButton;
     private JLabel textFieldSavePath;
-    SmileVerificationInterface verificarSmile;
-    private SmilesListInterface smilesList;//NOSONAR
-    public PrincipalView(SmilesListInterface smilesList) {
+
+    //entry point for the program
+    private JTextField textFieldSmile;
+    private JTextField textFieldName;
+    private JCheckBox checkBoxHydrogenImplicit;
+    private JButton drawSmileButton;
+
+    //Dependencies to inject
+    private SmileVerificationInterface verifySmile;
+    private SmilesListInterface smilesList;
+
+    SmilesHInterface smileH =null;
+
+    public PrincipalView(SmilesListInterface smilesList, SmileVerificationInterface verifySmile) {
         super("Smile generator");
         setSize(850, 550);
         setMinimumSize( new Dimension(750, 500));
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         this.smilesList = smilesList;
+        this.verifySmile = verifySmile;
+
     }
-    public void setVerificarSmile(SmileVerificationInterface verificarSmile) {
-        this.verificarSmile = verificarSmile;
+    private void createAndDrawSmile(){
+        String smile = textFieldSmile.getText();
+        String name = textFieldName.getText();
+        boolean implicitHydrogen = checkBoxHydrogenImplicit.isSelected();
+        //System.out.println("createAndDrawSmile");
+        try{
+             smileH = new  Smiles(name, smile,"Principal molecule", implicitHydrogen, verifySmile);
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    class changeTextFieldSmile implements DocumentListener{
+        public void changedUpdate(javax.swing.event.DocumentEvent e) {
+           change();
+        }
+        public void insertUpdate(javax.swing.event.DocumentEvent e) {
+            change();
+        }
+        public void removeUpdate(javax.swing.event.DocumentEvent e) {
+            change();
+        }
+        public void change(){
+
+
+            String textSmile=textFieldSmile.getText();
+            drawSmileButton.setEnabled(textSmile.length()>0);
+
+            if(textSmile.length() == 0){
+                textFieldName.setText(textSmile);
+                return;
+            }
+            String textName=textFieldName.getText();
+            if(textName.length() == 0){
+                textFieldName.setText(textSmile);
+                return;
+            }
+            if(textName.equals(textSmile.substring(0, textSmile.length()-1)) ){
+                textFieldName.setText(textSmile);
+                return;
+            }
+            if(textName.length()> textSmile.length() &&
+                textSmile.equals(textName.substring(0, textName.length()-1))){
+                textFieldName.setText(textSmile);
+            }
+
+
+        }
     }
 
     public void initialize() {
@@ -46,7 +108,12 @@ public final class PrincipalView extends javax.swing.JFrame {
         initializeOptionPanel           (1, 1, 0, 1);
         initializeMoleculePreviewPanel  (2, 1, 1, 1);
         initializeActionGeneratorPanel       (0, 3, 3, 1);
+        drawSmileButton.addActionListener(e->createAndDrawSmile());
+        textFieldSmile.getDocument().addDocumentListener(new changeTextFieldSmile());
+        drawSmileButton.setEnabled(false);
+        checkBoxHydrogenImplicit.setSelected(true);
         setVisible(true);
+
     }
     private void initializeEntrySmile(int gridx, int gridy, double weightx, double weighty) {
         JPanel panelSmile = new JPanel();
@@ -54,24 +121,52 @@ public final class PrincipalView extends javax.swing.JFrame {
         panelSmile.setBorder(javax.swing.BorderFactory.createTitledBorder("Entry"));
 
         GridBagConstraints gbcPanel = new GridBagConstraints();
-
+        gbcPanel.ipadx = 10;
         JLabel labelSmile = new JLabel("Smile: ");
+        gbcPanel.gridx = 0;
+        gbcPanel.gridy = 0;
         panelSmile.add(labelSmile,gbcPanel);
 
         textFieldSmile = new JTextField();
-        textFieldSmile.setPreferredSize(new Dimension(300, 30));
+        textFieldSmile.setPreferredSize(new Dimension(200, 30));
         textFieldSmile.setMinimumSize(new Dimension(100, 30));
+        gbcPanel.gridx = 1;
+        gbcPanel.gridy = 0;
         panelSmile.add(textFieldSmile,gbcPanel);
+        checkBoxHydrogenImplicit = new JCheckBox("Implicit hydrogen");
 
-        smileButton = new JButton("Draw");
-        panelSmile.add(smileButton,gbcPanel);
+        JLabel labelSmileName = new JLabel("Name: ");
+        gbcPanel.gridx = 2;
+        gbcPanel.gridy = 0;
+        panelSmile.add(labelSmileName,gbcPanel);
+
+
+        textFieldName = new JTextField();
+        textFieldName.setPreferredSize(new Dimension(200, 30));
+        textFieldName.setMinimumSize(new Dimension(100, 30));
+        gbcPanel.gridx = 3;
+        gbcPanel.gridy = 0;
+        panelSmile.add(textFieldName,gbcPanel);
+
+        gbcPanel.gridx = 4;
+        gbcPanel.gridy = 0;
+        gbcPanel.anchor = GridBagConstraints.EAST;
+        panelSmile.add(checkBoxHydrogenImplicit,gbcPanel);
+        gbcPanel.ipadx = 0;
+        gbcPanel.anchor = GridBagConstraints.EAST;
+
+
+        gbcPanel.gridx = 5;
+        gbcPanel.gridy = 0;
+        drawSmileButton = new JButton("Draw");
+        panelSmile.add(drawSmileButton,gbcPanel);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = gridx;
         gbc.gridy = gridy;
         gbc.weightx = weightx;
         gbc.weighty = weighty;
-        gbc.gridwidth =2;
+        gbc.gridwidth =3;
         gbc.ipadx = 5;
         gbc.ipady = 5;
         gbc.insets = new java.awt.Insets(0, 0, 10, 0);
@@ -93,7 +188,7 @@ public final class PrincipalView extends javax.swing.JFrame {
     }
     private void initializeOptionPanel(int gridx, int gridy, double weightx, double weighty) {
 
-        optionPanel = new OptionPanel(smilesList,verificarSmile);
+        optionPanel = new OptionPanel(smilesList,verifySmile);
 
         optionPanel.setPreferredSize(new Dimension(200,300));
         optionPanel.setMaximumSize(new Dimension(250, 400));

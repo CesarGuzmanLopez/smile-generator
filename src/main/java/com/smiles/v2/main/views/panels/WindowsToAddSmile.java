@@ -11,7 +11,7 @@ import java.awt.GridBagLayout;
 import java.util.EventListener;
 import java.awt.GridBagConstraints;
 
-import com.smiles.v2.main.domain.models.SmilesFactory;
+import com.smiles.v2.main.domain.models.Smiles;
 import com.smiles.v2.main.interfaces.SmileVerificationInterface;
 import com.smiles.v2.main.interfaces.SmilesHInterface;
 import com.smiles.v2.main.views.events.AddSmileHEvent;
@@ -108,7 +108,7 @@ public class WindowsToAddSmile extends JFrame implements EventListener  {
     }
     void add(String smile, String name, String description, boolean hydrogensImplicit){
         try{
-            SmilesHInterface smilesFactory = new SmilesFactory (name,smile,description,hydrogensImplicit,smileVerify);
+            SmilesHInterface smilesFactory = new Smiles (name,smile,description,hydrogensImplicit,smileVerify);
             addSmileHListener.addSmileHEvent( new AddSmileHEvent(this,smilesFactory));
             dispose();
         }

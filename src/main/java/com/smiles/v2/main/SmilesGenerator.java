@@ -10,9 +10,8 @@ public final class SmilesGenerator {
         seleccionarTema();
         VerificarSmile verificarSmile = new VerificarSmile();
         GeneraSmilesInput smiles = new GeneraSmilesInput( verificarSmile );
-        PrincipalView principalView = new PrincipalView( smiles );
+        PrincipalView principalView = new PrincipalView( smiles, verificarSmile );
 
-        principalView.setVerificarSmile( verificarSmile );
         principalView.initialize();
 
     }

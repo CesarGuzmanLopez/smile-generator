@@ -3,13 +3,13 @@ package com.smiles.v2.main.domain.models;
 import com.smiles.v2.main.interfaces.SmileVerificationInterface;
 import com.smiles.v2.main.interfaces.SmilesHInterface;
 
-public class SmilesFactory implements SmilesHInterface {
+public class Smiles implements SmilesHInterface {
 
     private String  smiles="";
     private String  message="";
     private boolean hydrogenImplicit=false;
     private String name="";
-    public SmilesFactory(String name, String smiles, String message, boolean hydrogenImplicit,
+    public Smiles(String name, String smiles, String message, boolean hydrogenImplicit,
                             SmileVerificationInterface smileVerification) {
         if(smiles == null || message == null || name == null) {
             throw new IllegalArgumentException("Smiles, message or name must be not null");
@@ -25,7 +25,7 @@ public class SmilesFactory implements SmilesHInterface {
         this.message = message;
         this.hydrogenImplicit = hydrogenImplicit;
     }
-    public SmilesFactory(SmilesHInterface smile, SmileVerificationInterface smileVerification) {
+    public Smiles(SmilesHInterface smile, SmileVerificationInterface smileVerification) {
         if(smile == null) {
             throw new IllegalArgumentException("Smiles must be not null");
         }

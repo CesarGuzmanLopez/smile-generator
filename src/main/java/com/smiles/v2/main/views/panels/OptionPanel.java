@@ -80,11 +80,8 @@ public final class OptionPanel extends javax.swing.JPanel implements SmilesListI
             fila++;
         }
         repaint();
-
     }
     private void addToPanelCheckBox(int fila, SmilesHInterface smileH) {
-
-
         GridBagConstraints gbcPanel = new GridBagConstraints();
         gbcPanel.anchor = GridBagConstraints.WEST;
         JCheckBox checkBox = new JCheckBox(smileH.getName());
@@ -92,7 +89,6 @@ public final class OptionPanel extends javax.swing.JPanel implements SmilesListI
         substituentCheckBox.add(checkBox);
         gbcPanel.gridy = fila;
         gbcPanel.gridx = 0;
-
         panelWithCheckBox.add(checkBox, gbcPanel);
 
     }

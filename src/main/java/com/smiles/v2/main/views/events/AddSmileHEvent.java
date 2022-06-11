@@ -4,6 +4,7 @@ import java.util.EventObject;
 
 import com.smiles.v2.main.interfaces.SmilesHInterface;
 
+@SuppressWarnings("java:S1948")
 public class AddSmileHEvent extends EventObject {
     private static final long serialVersionUID = 1L;
     private SmilesHInterface smileH;
