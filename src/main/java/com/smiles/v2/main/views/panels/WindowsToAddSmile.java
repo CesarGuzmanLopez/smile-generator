@@ -17,14 +17,14 @@ import com.smiles.v2.main.interfaces.SmilesHInterface;
 import com.smiles.v2.main.views.events.AddSmileHEvent;
 import com.smiles.v2.main.views.events.AddSmileHListener;
 
-
 @SuppressWarnings("java:S1948")
-public class WindowsToAddSmile extends JFrame implements EventListener  {
+public class WindowsToAddSmile extends JFrame implements EventListener {
     private SmileVerificationInterface smileVerify;
     private AddSmileHListener addSmileHListener;
-    public WindowsToAddSmile(SmileVerificationInterface smileVerify,AddSmileHListener addSmileHListener) {
+
+    public WindowsToAddSmile(SmileVerificationInterface smileVerify, AddSmileHListener addSmileHListener) {
         super();
-        if(smileVerify == null) {
+        if (smileVerify == null) {
             throw new NullPointerException("SmileVerificationInterface is null");
         } else {
             this.smileVerify = smileVerify;
@@ -40,6 +40,7 @@ public class WindowsToAddSmile extends JFrame implements EventListener  {
         setVisible(true);
 
     }
+
     private void initialize() {
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -48,49 +49,49 @@ public class WindowsToAddSmile extends JFrame implements EventListener  {
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        add(labelSmile,gbc);
+        add(labelSmile, gbc);
 
         JTextField textFieldSmile = new JTextField();
         textFieldSmile.setPreferredSize(new java.awt.Dimension(200, 30));
         gbc.gridx = 1;
         gbc.gridy = 0;
-        add(textFieldSmile,gbc);
+        add(textFieldSmile, gbc);
 
         JLabel labelSmileName = new JLabel("Name: ");
         labelSmileName.setPreferredSize(new java.awt.Dimension(210, 30));
         gbc.gridx = 0;
         gbc.gridy = 1;
-        add(labelSmileName,gbc);
+        add(labelSmileName, gbc);
 
         JTextField textFieldSmileName = new JTextField();
         textFieldSmileName.setPreferredSize(new java.awt.Dimension(200, 30));
         gbc.gridx = 1;
         gbc.gridy = 1;
-        add(textFieldSmileName,gbc);
+        add(textFieldSmileName, gbc);
 
         JLabel labelSmileDesc = new JLabel("Description: ");
         labelSmileDesc.setPreferredSize(new java.awt.Dimension(210, 30));
         gbc.gridx = 0;
         gbc.gridy = 2;
-        add(labelSmileDesc,gbc);
+        add(labelSmileDesc, gbc);
 
         JTextField textFieldSmileDesc = new JTextField();
         textFieldSmileDesc.setPreferredSize(new java.awt.Dimension(200, 30));
         gbc.gridx = 1;
         gbc.gridy = 2;
-        add(textFieldSmileDesc,gbc);
+        add(textFieldSmileDesc, gbc);
 
         JLabel hydrogensImplicit = new JLabel("Hydrogens are implicit: ");
         hydrogensImplicit.setPreferredSize(new java.awt.Dimension(210, 30));
         gbc.gridx = 0;
         gbc.gridy = 3;
-        add(hydrogensImplicit,gbc);
+        add(hydrogensImplicit, gbc);
 
         JCheckBox checkBoxHydrogenImplicit = new JCheckBox();
         checkBoxHydrogenImplicit.setPreferredSize(new java.awt.Dimension(200, 30));
         gbc.gridx = 1;
         gbc.gridy = 3;
-        add(checkBoxHydrogenImplicit,gbc);
+        add(checkBoxHydrogenImplicit, gbc);
 
         JButton cancelButton = new JButton("cancel");
 
@@ -98,27 +99,25 @@ public class WindowsToAddSmile extends JFrame implements EventListener  {
         gbc.gridy = 4;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         cancelButton.addActionListener(e -> dispose());
-        add(cancelButton,gbc);
+        add(cancelButton, gbc);
         JButton addButton = new JButton("Add");
         gbc.gridx = 1;
         gbc.gridy = 4;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        addButton.addActionListener(e -> add(textFieldSmile.getText(),textFieldSmileName.getText(),textFieldSmileDesc.getText(),checkBoxHydrogenImplicit.isSelected()));
-        add(addButton,gbc);
+        addButton.addActionListener(e -> add(textFieldSmile.getText(), textFieldSmileName.getText(),
+                textFieldSmileDesc.getText(), checkBoxHydrogenImplicit.isSelected()));
+        add(addButton, gbc);
     }
-    void add(String smile, String name, String description, boolean hydrogensImplicit){
-        try{
-            SmilesHInterface smilesFactory = new Smiles (name,smile,description,hydrogensImplicit,smileVerify);
-            addSmileHListener.addSmileHEvent( new AddSmileHEvent(this,smilesFactory));
+
+    void add(String smile, String name, String description, boolean hydrogensImplicit) {
+        try {
+            SmilesHInterface smilesFactory = new Smiles(name, smile, description, hydrogensImplicit, smileVerify);
+            addSmileHListener.addSmileHEvent(new AddSmileHEvent(this, smilesFactory));
             dispose();
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Invalid smile\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-
     }
-
-
 
 }

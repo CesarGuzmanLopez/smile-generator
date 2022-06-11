@@ -23,7 +23,8 @@ import com.smiles.v2.main.views.events.AddSmileHListener;
 import com.smiles.v2.main.views.panels.OptionPanel;
 
 @SuppressWarnings("java:S1948")
-public final class OptionPanel extends javax.swing.JPanel implements SmilesListInterface, ItemListener, AddSmileHListener {
+public final class OptionPanel extends javax.swing.JPanel
+        implements SmilesListInterface, ItemListener, AddSmileHListener {
     private SmilesListInterface smilesList;
 
     private List<JCheckBox> substituentCheckBox;
@@ -49,8 +50,8 @@ public final class OptionPanel extends javax.swing.JPanel implements SmilesListI
     private void initComponents() {
         ScrollPane scroll = new ScrollPane(ScrollPane.SCROLLBARS_AS_NEEDED);
         JLabel label = new JLabel("Add Substituent");
-        JButton  addSmileButton = new JButton("+");
-        addSmileButton.addActionListener(e-> new WindowsToAddSmile(smileVerify, this));
+        JButton addSmileButton = new JButton("+");
+        addSmileButton.addActionListener(e -> new WindowsToAddSmile(smileVerify, this));
         panelWithCheckBox = new JPanel();
 
         GridBagConstraints gbcPanel = new GridBagConstraints();
@@ -70,6 +71,7 @@ public final class OptionPanel extends javax.swing.JPanel implements SmilesListI
         add(scroll, gbcPanel);
         scroll.add(panelWithCheckBox);
     }
+
     private void smilesToCheckBox() {
         List<SmilesHInterface> smilesHList = smilesList.getSmilesHList();
         panelWithCheckBox.setLayout(new GridBagLayout());
@@ -81,6 +83,7 @@ public final class OptionPanel extends javax.swing.JPanel implements SmilesListI
         }
         repaint();
     }
+
     private void addToPanelCheckBox(int fila, SmilesHInterface smileH) {
         GridBagConstraints gbcPanel = new GridBagConstraints();
         gbcPanel.anchor = GridBagConstraints.WEST;
@@ -111,16 +114,18 @@ public final class OptionPanel extends javax.swing.JPanel implements SmilesListI
         return numberSmile;
 
     }
+
     @Override
     public int addSmiles(SmilesHInterface smile) {
         int numberSmile = smilesList.addSmiles(smile);
-        addToPanelCheckBox(numberSmile ,
-            smilesList.getSmilesHList().get(numberSmile));
+        addToPanelCheckBox(numberSmile,
+                smilesList.getSmilesHList().get(numberSmile));
         revalidate();
         repaint();
 
         return numberSmile;
     }
+
     @Override
     public void addSmileHEvent(AddSmileHEvent evt) {
         addSmiles(evt.getSmileH());

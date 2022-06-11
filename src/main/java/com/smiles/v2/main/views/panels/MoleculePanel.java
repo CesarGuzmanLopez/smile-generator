@@ -5,10 +5,7 @@
 
 package com.smiles.v2.main.views.panels;
 
-
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
 import java.awt.FlowLayout;
@@ -19,27 +16,28 @@ import com.smiles.v2.main.interfaces.MoleculeGraphPainterInterface;
 public class MoleculePanel extends javax.swing.JPanel {
     protected MoleculeGraphics molecule;
     protected MoleculeGraphPainterInterface painter;
+    JLabel nameMoleculeLabel;
     public MoleculePanel(MoleculeGraphPainterInterface painter) {
         super();
         setLayout(new FlowLayout());
         setBackground(Color.white);
         this.painter = painter;
+        nameMoleculeLabel = new JLabel();
     }
 
     public void setMolecule(MoleculeGraphics molecule) {
         this.molecule = molecule;
-        if(molecule == null){
+        if (molecule == null) {
             setBackground(Color.white);
             return;
         }
-        JLabel nameMoleculeLabel = new JLabel();
 
-        nameMoleculeLabel.setText(molecule.getName());
-        nameMoleculeLabel.setBounds(0, 0, 100, 20);
+
+        //nameMoleculeLabel.setText(molecule.getName());
+        //nameMoleculeLabel.setBounds(0, 0, 100, 20);
         nameMoleculeLabel.setForeground(Color.black);
-        painter.paintMolecule(this, molecule);
         add(nameMoleculeLabel);
-
+        painter.paintMolecule(this, molecule);
 
         revalidate();
         repaint();
