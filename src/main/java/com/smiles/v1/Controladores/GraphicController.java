@@ -46,10 +46,10 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import javax.swing.border.TitledBorder;
 
-import com.smiles.v1.AddSubs;
-import com.smiles.v1.PantallaMol;
-import com.smiles.v1.Substituent;
 import com.smiles.v1.Generadores.Derivados;
+import com.smiles.v1.InertacesGraficas.AddSubs;
+import com.smiles.v1.InertacesGraficas.PantallaMol;
+import com.smiles.v1.InertacesGraficas.Substituent;
 
 import java.awt.Button;
 import java.awt.Window.Type;

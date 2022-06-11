@@ -10,24 +10,39 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import com.smiles.v2.main.domain.models.Molecule;
-//una clase abstracta que representa un panel de una molécula
-public class MoleculePanel extends javax.swing.JPanel implements ActionListener{
-    protected Molecule molecule;
-    public MoleculePanel() {
+import javax.swing.JLabel;
+import java.awt.FlowLayout;
+import com.smiles.v2.main.domain.models.MoleculeGraphics;
+import com.smiles.v2.main.interfaces.MoleculeGraphPainterInterface;
+
+@SuppressWarnings("java:S1948")
+public class MoleculePanel extends javax.swing.JPanel {
+    protected MoleculeGraphics molecule;
+    protected MoleculeGraphPainterInterface painter;
+    public MoleculePanel(MoleculeGraphPainterInterface painter) {
         super();
+        setLayout(new FlowLayout());
         setBackground(Color.white);
+        this.painter = painter;
     }
 
-    public void setMolecule(Molecule molecule) {
+    public void setMolecule(MoleculeGraphics molecule) {
         this.molecule = molecule;
+        if(molecule == null){
+            setBackground(Color.white);
+            return;
+        }
+        JLabel nameMoleculeLabel = new JLabel();
 
-    }
+        nameMoleculeLabel.setText(molecule.getName());
+        nameMoleculeLabel.setBounds(0, 0, 100, 20);
+        nameMoleculeLabel.setForeground(Color.black);
+        painter.paintMolecule(this, molecule);
+        add(nameMoleculeLabel);
 
-    @Override
-    public void actionPerformed(ActionEvent arg0) {
-        // TODO Auto-generated method stub
 
+        revalidate();
+        repaint();
     }
 
 }

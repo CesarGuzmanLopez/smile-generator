@@ -1,4 +1,4 @@
-package com.smiles.v1;
+package com.smiles.v1.InertacesGraficas;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;

@@ -1,4 +1,4 @@
-package com.smiles.v1;
+package com.smiles.v1.InertacesGraficas;
 
 @SuppressWarnings({"java:S115", "java:S1192"})
 public enum Substitutes {

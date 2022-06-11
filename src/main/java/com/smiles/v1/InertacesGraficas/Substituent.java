@@ -1,4 +1,4 @@
-package com.smiles.v1;
+package com.smiles.v1.InertacesGraficas;
 
 import java.util.ArrayList;
 import java.util.List;
