@@ -1,5 +1,6 @@
 package com.smiles.v2.main;
 
+import com.smiles.v2.main.framework.cdk.VerificarSmile;
 import com.smiles.v2.main.infrastructure.GeneraSmilesInput;
 import com.smiles.v2.main.views.PrincipalView;
 
@@ -7,9 +8,11 @@ import com.smiles.v2.main.views.PrincipalView;
 public final class SmilesGenerator {
     public static void main(String[] args) {
         seleccionarTema();
-        GeneraSmilesInput smiles = new GeneraSmilesInput();
+        VerificarSmile verificarSmile = new VerificarSmile();
+        GeneraSmilesInput smiles = new GeneraSmilesInput( verificarSmile );
         PrincipalView principalView = new PrincipalView( smiles );
 
+        principalView.setVerificarSmile( verificarSmile );
         principalView.initialize();
 
     }

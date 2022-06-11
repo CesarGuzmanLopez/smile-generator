@@ -1,37 +1,44 @@
 package com.smiles.v2.main.domain.models;
 
-import com.smiles.v2.main.interfaces.SmileVerification;
-import com.smiles.v2.main.interfaces.SmilesH;
+import com.smiles.v2.main.interfaces.SmileVerificationInterface;
+import com.smiles.v2.main.interfaces.SmilesHInterface;
 
-public class SmilesFactory implements SmilesH {
+public class SmilesFactory implements SmilesHInterface {
 
     private String  smiles="";
     private String  message="";
     private boolean hydrogenImplicit=false;
     private String name="";
     public SmilesFactory(String name, String smiles, String message, boolean hydrogenImplicit,
-                            SmileVerification smileVerification) {
+                            SmileVerificationInterface smileVerification) {
         if(smiles == null || message == null || name == null) {
             throw new IllegalArgumentException("Smiles, message or name must be not null");
         }
+        if(name .equals( "")) {
+            throw new IllegalArgumentException("Name must be not empty");
+        }
         if(!smileVerification.isValid(smiles)) {
-            throw new IllegalArgumentException("Smiles is not valid");
+            throw new IllegalArgumentException("Smiles: " + smiles+" is not valid");
         }
         this.name = name;
         this.smiles = smiles;
         this.message = message;
         this.hydrogenImplicit = hydrogenImplicit;
     }
-    public SmilesFactory(SmilesH smile, SmileVerification smileVerification) {
+    public SmilesFactory(SmilesHInterface smile, SmileVerificationInterface smileVerification) {
         if(smile == null) {
             throw new IllegalArgumentException("Smiles must be not null");
         }
-        if(!smileVerification.isValid(smile)) {
+        if(smile.getName().equals( "")){
+            throw new IllegalArgumentException("Name must be not empty");
+        }
+        if(!smileVerification.isValid(smile.getSmi())) {
             throw new IllegalArgumentException("Smiles is not valid");
         }
+        this.name = smile.getName();
         this.smiles = smile.getSmi();
         this.message = smile.getMessage();
-        this.hydrogenImplicit = smile.getHydrogen();
+        this.hydrogenImplicit = smile.hasHydrogenImplicit();
     }
     @Override
     public String getName() {
@@ -46,7 +53,7 @@ public class SmilesFactory implements SmilesH {
         return message;
     }
     @Override
-    public boolean getHydrogen() {
+    public boolean hasHydrogenImplicit() {
         return hydrogenImplicit;
     }
 
