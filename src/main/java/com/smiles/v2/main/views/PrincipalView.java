@@ -16,7 +16,7 @@ import com.smiles.v2.main.views.panels.MoleculePanel;
 import com.smiles.v2.main.views.panels.OptionPanel;
 import com.smiles.v2.main.domain.models.MoleculeGraphics;
 import com.smiles.v2.main.domain.models.Smiles;
-import com.smiles.v2.main.interfaces.MoleculeDataOfSmileFactoryInterface;
+import com.smiles.v2.main.interfaces.MoleculeDataFactoryInterface;
 import com.smiles.v2.main.interfaces.MoleculeGraphPainterInterface;
 import com.smiles.v2.main.interfaces.SmileVerificationInterface;
 import com.smiles.v2.main.interfaces.SmilesHInterface;
@@ -45,12 +45,12 @@ public final class PrincipalView extends javax.swing.JFrame {
     private SmilesListInterface smilesList;
     private MoleculeGraphPainterInterface moleculeGraphPainter;
 
-    private MoleculeDataOfSmileFactoryInterface moleculeDataOfSmile;
+    private MoleculeDataFactoryInterface moleculeDataOfSmile;
 
     public PrincipalView(SmilesListInterface smilesList,
             SmileVerificationInterface verifySmile,
             MoleculeGraphPainterInterface moleculeGraphPainter,
-            MoleculeDataOfSmileFactoryInterface moleculeDataOfSmile) {
+            MoleculeDataFactoryInterface moleculeDataOfSmile) {
         super("Smile generator");
         setSize(850, 550);
         setMinimumSize(new Dimension(750, 500));
@@ -72,7 +72,7 @@ public final class PrincipalView extends javax.swing.JFrame {
         try {
             smileH = new Smiles(name, smile, "Principal molecule", implicitHydrogen, verifySmile);
             moleculePanelPrincipal
-                    .setMolecule(new MoleculeGraphics(smileH, verifySmile, moleculeGraphPainter, moleculeDataOfSmile));
+                    .setMolecule(new MoleculeGraphics(smileH, verifySmile,  moleculeDataOfSmile));
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }

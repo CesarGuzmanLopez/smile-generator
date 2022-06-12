@@ -165,8 +165,8 @@ public class PantallaMol extends JPanel {
         }
         this.smile = smile;
         SmilesParser sp = new SmilesParser(DefaultChemObjectBuilder.getInstance());
-        StructureDiagramGenerator sdg = new StructureDiagramGenerator();
         molecule = sp.parseSmiles(smile);
+        StructureDiagramGenerator sdg = new StructureDiagramGenerator();
         sdg.setMolecule(molecule);
         sdg.generateCoordinates();
         molecule = sdg.getMolecule();

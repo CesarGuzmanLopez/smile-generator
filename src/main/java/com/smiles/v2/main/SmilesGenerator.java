@@ -1,16 +1,17 @@
 package com.smiles.v2.main;
 
-import com.smiles.v2.main.framework.cdk.MoleculeDataOfSmileFactory;
+import com.smiles.v2.main.framework.cdk.MoleculeDataFactory;
 import com.smiles.v2.main.framework.cdk.MoleculeGraphPainter;
 import com.smiles.v2.main.framework.cdk.VerifiedSmile;
 import com.smiles.v2.main.infrastructure.GeneraSmilesInput;
 import com.smiles.v2.main.views.PrincipalView;
 
 public final class SmilesGenerator {
+    
     public static void main(String[] args) {
         themeSelected();
         MoleculeGraphPainter moleculeGraphPainter = new MoleculeGraphPainter();
-        MoleculeDataOfSmileFactory moleculeDataOfSmile = new MoleculeDataOfSmileFactory();
+        MoleculeDataFactory moleculeDataOfSmile = new MoleculeDataFactory();
         VerifiedSmile verifierSmile = new VerifiedSmile();
         GeneraSmilesInput smiles = new GeneraSmilesInput(verifierSmile);
         PrincipalView principalView = new PrincipalView(smiles, verifierSmile, moleculeGraphPainter,

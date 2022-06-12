@@ -21,6 +21,7 @@ public class MoleculePanel extends javax.swing.JPanel {
         super();
         setLayout(new FlowLayout());
         setBackground(Color.white);
+        setForeground(Color.black);
         this.painter = painter;
         nameMoleculeLabel = new JLabel();
     }
@@ -28,7 +29,7 @@ public class MoleculePanel extends javax.swing.JPanel {
     public void setMolecule(MoleculeGraphics molecule) {
         this.molecule = molecule;
         if (molecule == null) {
-            setBackground(Color.white);
+            //setBackground(Color.white);
             return;
         }
 

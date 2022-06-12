@@ -3,6 +3,12 @@
     "cSpell.words": [
         "Carboxylic",
         "Chloromethane",
-        "Diichloromethane"
-    ]
+        "Difluoromethane",
+        "Diichloromethane",
+        "Fluoromethane",
+        "mensajebox",
+        "proporcion"
+    ],
+    "DockerRun.DisableAutoGenerateConfig": true
+
 }
