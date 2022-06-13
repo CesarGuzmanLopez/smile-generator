@@ -46,7 +46,7 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
 
     @Override
     public int compareTo(Molecule molecule) {
-        return 0;
+           return getMoleculeData().compareTo(molecule);
     }
 
 }
