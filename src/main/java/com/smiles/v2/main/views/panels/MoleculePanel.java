@@ -29,13 +29,11 @@ public class MoleculePanel extends javax.swing.JPanel {
     public void setMolecule(MoleculeGraphics molecule) {
         this.molecule = molecule;
         if (molecule == null) {
-            //setBackground(Color.white);
+            setBackground(Color.white);
             return;
         }
 
 
-        //nameMoleculeLabel.setText(molecule.getName());
-        //nameMoleculeLabel.setBounds(0, 0, 100, 20);
         nameMoleculeLabel.setForeground(Color.black);
         add(nameMoleculeLabel);
         painter.paintMolecule(this, molecule);

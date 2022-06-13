@@ -35,6 +35,7 @@ abstract class JpanelDrawMoleculeAbstract extends JPanel {
     protected AtomContainerRenderer renderer;
 
     protected  JpanelDrawMoleculeAbstract(Molecule molecule) {
+        setBackground(Color.white);
         this.molecule = molecule;
         MoleculeData moleculeData = (MoleculeData) molecule.getMoleculeData();
         this.iAtomContainer = moleculeData.getMoleculeContainer();
@@ -80,8 +81,6 @@ abstract class JpanelDrawMoleculeAbstract extends JPanel {
         model.set(BasicSceneGenerator.FitToScreen.class, true);
         model.set(BasicSceneGenerator.Scale.class,10.0 );
         model.set(BasicSceneGenerator.ShowMoleculeTitle.class, true);
-        //((Graphics2D) graphicsJpanel).fill(new Rectangle2D.Double(0, 0, width,height ));
-
         renderer.paint(iAtomContainer, new AWTDrawVisitor((Graphics2D) graphicsJpanel),
         new Rectangle2D.Double(0, 0, width, height), false);
         paintHerder(graphicsJpanel);

@@ -20,7 +20,7 @@ import com.smiles.v2.main.interfaces.MoleculeDataFactoryInterface;
 import com.smiles.v2.main.interfaces.MoleculeGraphPainterInterface;
 import com.smiles.v2.main.interfaces.SmileVerificationInterface;
 import com.smiles.v2.main.interfaces.SmilesHInterface;
-import com.smiles.v2.main.interfaces.SmilesListInterface;
+import com.smiles.v2.main.interfaces.MoleculeListInterface;
 
 @SuppressWarnings("java:S1948")
 public final class PrincipalView extends javax.swing.JFrame {
@@ -42,15 +42,15 @@ public final class PrincipalView extends javax.swing.JFrame {
 
     // Dependencies to inject
     private SmileVerificationInterface verifySmile;
-    private SmilesListInterface smilesList;
+    private MoleculeListInterface smilesList;
     private MoleculeGraphPainterInterface moleculeGraphPainter;
 
-    private MoleculeDataFactoryInterface moleculeDataOfSmile;
+    private MoleculeDataFactoryInterface moleculeFactory;
 
-    public PrincipalView(SmilesListInterface smilesList,
+    public PrincipalView(MoleculeListInterface smilesList,
             SmileVerificationInterface verifySmile,
             MoleculeGraphPainterInterface moleculeGraphPainter,
-            MoleculeDataFactoryInterface moleculeDataOfSmile) {
+            MoleculeDataFactoryInterface moleculeFactory) {
         super("Smile generator");
         setSize(850, 550);
         setMinimumSize(new Dimension(750, 500));
@@ -58,7 +58,7 @@ public final class PrincipalView extends javax.swing.JFrame {
         this.smilesList = smilesList;
         this.verifySmile = verifySmile;
         this.moleculeGraphPainter = moleculeGraphPainter;
-        this.moleculeDataOfSmile = moleculeDataOfSmile;
+        this.moleculeFactory = moleculeFactory;
 
     }
 
@@ -70,9 +70,9 @@ public final class PrincipalView extends javax.swing.JFrame {
         String name = textFieldName.getText();
         boolean implicitHydrogen = checkBoxHydrogenImplicit.isSelected();
         try {
-            smileH = new Smiles(name, smile, "Principal molecule", implicitHydrogen, verifySmile);
+            smileH = new Smiles(name, smile, "Select hydrogens to replace", implicitHydrogen, verifySmile);
             moleculePanelPrincipal
-                    .setMolecule(new MoleculeGraphics(smileH, verifySmile,  moleculeDataOfSmile));
+                    .setMolecule(new MoleculeGraphics(smileH, verifySmile,  moleculeFactory));
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }

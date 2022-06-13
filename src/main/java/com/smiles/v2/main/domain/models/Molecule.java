@@ -17,6 +17,13 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
         this.moleculeDataOfSmileFactory = moleculeDataOfSmile;
         initialize();
     }
+    public Molecule(String name, String smiles, String message, boolean hydrogenImplicit,
+                     SmileVerificationInterface smileVerification,
+        MoleculeDataFactoryInterface moleculeDataOfSmile) {
+        super(name, smiles, message, hydrogenImplicit, smileVerification);
+        this.moleculeDataOfSmileFactory = moleculeDataOfSmile;
+        initialize();
+     }
 
     public Molecule(Molecule molecule, SmileVerificationInterface smileVerification,
             MoleculeDataFactoryInterface moleculeDataOfSmile) {
