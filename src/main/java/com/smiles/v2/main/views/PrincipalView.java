@@ -14,7 +14,9 @@ import java.awt.GridBagConstraints;
 import com.smiles.v2.main.views.panels.Menu;
 import com.smiles.v2.main.views.panels.MoleculePanel;
 import com.smiles.v2.main.views.panels.OptionPanel;
+import com.smiles.v2.main.views.panels.WindowsGenerate;
 import com.smiles.v2.main.domain.models.Molecule;
+import com.smiles.v2.main.domain.models.MoleculesList;
 import com.smiles.v2.main.domain.models.Smiles;
 import com.smiles.v2.main.interfaces.MoleculeDataFactoryInterface;
 import com.smiles.v2.main.interfaces.MoleculeGraphPainterInterface;
@@ -26,7 +28,7 @@ public final class PrincipalView extends javax.swing.JFrame {
     private static final long serialVersionUID = 2L;
 
     private MoleculePanel moleculePanelPrincipal;
-
+    private OptionPanel optionPanel;
     private MoleculePanel moleculePreviewPanel;
     private JButton generateButton;
 
@@ -62,6 +64,7 @@ public final class PrincipalView extends javax.swing.JFrame {
         String smile = textFieldSmile.getText();
         if (!verifySmile.isValid(smile)) {
             moleculePanelPrincipal.setMolecule(null);
+            generateButton.setEnabled(false);
         }
         String name = textFieldName.getText();
         boolean implicitHydrogen = checkBoxHydrogenImplicit.isSelected();
@@ -70,8 +73,14 @@ public final class PrincipalView extends javax.swing.JFrame {
             moleculePanelPrincipal
                     .setMolecule(new Molecule(smileH, verifySmile,  moleculeFactory));
         } catch (Exception e) {
+            generateButton.setEnabled(false);
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+        generateButton.setEnabled(true);
+    }
+    private void generate(){
+        MoleculesList selected = MoleculesList.createMoleculesList(verifySmile, moleculeFactory, optionPanel.getMoleculeListMolecule());
+        new WindowsGenerate(moleculePanelPrincipal.getMolecule(), selected);
     }
 
     public void initialize() {
@@ -84,8 +93,10 @@ public final class PrincipalView extends javax.swing.JFrame {
         initializeOptionPanel(1, 1, 0, 1);
         initializeActionGeneratorPanel(0, 3, 3, 1);
         drawSmileButton.addActionListener(e -> createAndDrawSmile());
+        generateButton.addActionListener(e -> generate());
         textFieldSmile.getDocument().addDocumentListener(new ChangeTextFieldSmile());
         drawSmileButton.setEnabled(false);
+        generateButton.setEnabled(false);
         checkBoxHydrogenImplicit.setSelected(true);
         setVisible(true);
     }
@@ -162,7 +173,7 @@ public final class PrincipalView extends javax.swing.JFrame {
 
     private void initializeOptionPanel(int gridx, int gridy, double weightx, double weighty) {
 
-        OptionPanel optionPanel = new OptionPanel(smilesList, verifySmile,moleculePreviewPanel);
+        optionPanel = new OptionPanel(smilesList, verifySmile,moleculePreviewPanel);
 
         optionPanel.setPreferredSize(new Dimension(200, 300));
         optionPanel.setMaximumSize(new Dimension(250, 400));

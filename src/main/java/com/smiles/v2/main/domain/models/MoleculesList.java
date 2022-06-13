@@ -19,7 +19,7 @@ public class MoleculesList implements MoleculeListInterface {
         this.factoryMol = factory;
     }
 
-    public List<Molecule> getMoleculeList() {
+    public List<Molecule> getMoleculeListMolecule() {
               return moleculeList;
     }
 
@@ -57,6 +57,16 @@ public class MoleculesList implements MoleculeListInterface {
             }
         }
         return null;
+    }
+    public static MoleculesList createMoleculesList(SmileVerificationInterface smileVerifier,
+            MoleculeDataFactoryInterface factoryMol, List<Molecule> moleculeList) {
+        MoleculesList moleculesList = new MoleculesList(smileVerifier, factoryMol);
+        moleculesList.moleculeList = moleculeList;
+        return moleculesList;
+    }
+
+    public MoleculeListInterface getMoleculeList() {
+        return this;
     }
 
 }

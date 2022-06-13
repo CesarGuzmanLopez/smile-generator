@@ -79,7 +79,7 @@ public final class OptionPanel extends javax.swing.JPanel
     }
 
     private void smilesToCheckBox() {
-        List<Molecule> smilesHList = moleculeList.getMoleculeList();
+        List<Molecule> smilesHList = moleculeList.getMoleculeListMolecule();
         panelWithCheckBox.setLayout(new GridBagLayout());
         substituentCheckBox = new ArrayList<>();
         int fila = 0;
@@ -105,7 +105,7 @@ public final class OptionPanel extends javax.swing.JPanel
      * Return of list the molecules selected
      */
     @Override
-    public List<Molecule> getMoleculeList() {
+    public List<Molecule> getMoleculeListMolecule() {
         List<Molecule> moleculesSelected = new ArrayList<>();
         for (JCheckBox checkBox : substituentCheckBox) {
             if (checkBox.isSelected()) {
@@ -130,7 +130,7 @@ public final class OptionPanel extends javax.swing.JPanel
     @Override
     public int addSmiles(String name, String smi, String message, boolean hydrogen) {
         int numberSmile = moleculeList.addSmiles(name, smi, message, hydrogen);
-        addToPanelCheckBox(numberSmile, moleculeList.getMoleculeList().get(numberSmile));
+        addToPanelCheckBox(numberSmile, moleculeList.getMoleculeListMolecule().get(numberSmile));
         return numberSmile;
     }
 
@@ -138,7 +138,7 @@ public final class OptionPanel extends javax.swing.JPanel
     public int addSmiles(SmilesHInterface smile) {
         int numberSmile = moleculeList.addSmiles(smile);
         addToPanelCheckBox(numberSmile,
-                moleculeList.getMoleculeList().get(numberSmile));
+                moleculeList.getMoleculeListMolecule().get(numberSmile));
 
         revalidate();
         repaint();
@@ -153,4 +153,6 @@ public final class OptionPanel extends javax.swing.JPanel
     public void addSmileHEvent(AddSmileHEvent evt) {
         addSmiles(evt.getSmileH());
     }
+
+
 }
