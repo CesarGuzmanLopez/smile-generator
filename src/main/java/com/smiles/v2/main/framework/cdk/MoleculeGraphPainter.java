@@ -6,12 +6,12 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.smiles.v2.main.domain.models.MoleculeGraphics;
+import com.smiles.v2.main.domain.models.Molecule;
 import com.smiles.v2.main.interfaces.MoleculeGraphPainterInterface;
 //uso del  CDK
 public class MoleculeGraphPainter implements MoleculeGraphPainterInterface {
     @Override
-    public void paintMolecule(JPanel moleculePanel, MoleculeGraphics molecule) {
+    public void paintMolecule(JPanel moleculePanel, Molecule molecule) {
         if (molecule == null) {
             throw new IllegalArgumentException("Molecule is null");
         }
@@ -26,7 +26,9 @@ public class MoleculeGraphPainter implements MoleculeGraphPainterInterface {
         JLabel smileJLabel = new JLabel("smile: " + molecule.getSmile());
         smileJLabel.setForeground(Color.BLACK);
         moleculePanel.add(smileJLabel);
-
+        JLabel description = new JLabel(molecule.getMessage());
+        description.setForeground(Color.GREEN);
+        moleculePanel.add(description);
         moleculePanel.revalidate();
         moleculePanel.repaint();
     }

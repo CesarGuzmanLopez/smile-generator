@@ -14,12 +14,11 @@ import java.awt.GridBagConstraints;
 import com.smiles.v2.main.views.panels.Menu;
 import com.smiles.v2.main.views.panels.MoleculePanel;
 import com.smiles.v2.main.views.panels.OptionPanel;
-import com.smiles.v2.main.domain.models.MoleculeGraphics;
+import com.smiles.v2.main.domain.models.Molecule;
 import com.smiles.v2.main.domain.models.Smiles;
 import com.smiles.v2.main.interfaces.MoleculeDataFactoryInterface;
 import com.smiles.v2.main.interfaces.MoleculeGraphPainterInterface;
 import com.smiles.v2.main.interfaces.SmileVerificationInterface;
-import com.smiles.v2.main.interfaces.SmilesHInterface;
 import com.smiles.v2.main.interfaces.MoleculeListInterface;
 
 @SuppressWarnings("java:S1948")
@@ -27,18 +26,15 @@ public final class PrincipalView extends javax.swing.JFrame {
     private static final long serialVersionUID = 2L;
 
     private MoleculePanel moleculePanelPrincipal;
-    private OptionPanel optionPanel;
+
     private MoleculePanel moleculePreviewPanel;
     private JButton generateButton;
-    private JLabel textFieldSavePath;
 
     // entry point for the program
     private JTextField textFieldSmile;
     private JTextField textFieldName;
     private JCheckBox checkBoxHydrogenImplicit;
     private JButton drawSmileButton;
-
-    private SmilesHInterface smileH = null;
 
     // Dependencies to inject
     private SmileVerificationInterface verifySmile;
@@ -70,9 +66,9 @@ public final class PrincipalView extends javax.swing.JFrame {
         String name = textFieldName.getText();
         boolean implicitHydrogen = checkBoxHydrogenImplicit.isSelected();
         try {
-            smileH = new Smiles(name, smile, "Select hydrogens to replace", implicitHydrogen, verifySmile);
+            Smiles smileH = new Smiles(name, smile, "Select hydrogens to replace", implicitHydrogen, verifySmile);
             moleculePanelPrincipal
-                    .setMolecule(new MoleculeGraphics(smileH, verifySmile,  moleculeFactory));
+                    .setMolecule(new Molecule(smileH, verifySmile,  moleculeFactory));
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -81,19 +77,18 @@ public final class PrincipalView extends javax.swing.JFrame {
     public void initialize() {
         setJMenuBar(new Menu());
         setLayout(new GridBagLayout());
+        //the order is important in the initialization of the components
         initializeEntrySmile(0, 0, 1, 0);
         initializeMoleculePanelPrincipal(0, 1, 1, 1);
-        initializeOptionPanel(1, 1, 0, 1);
         initializeMoleculePreviewPanel(2, 1, 1, 1);
+        initializeOptionPanel(1, 1, 0, 1);
         initializeActionGeneratorPanel(0, 3, 3, 1);
         drawSmileButton.addActionListener(e -> createAndDrawSmile());
         textFieldSmile.getDocument().addDocumentListener(new ChangeTextFieldSmile());
         drawSmileButton.setEnabled(false);
         checkBoxHydrogenImplicit.setSelected(true);
         setVisible(true);
-
     }
-
     private void initializeEntrySmile(int gridx, int gridy, double weightx, double weighty) {
         JPanel panelSmile = new JPanel();
         panelSmile.setLayout(new GridBagLayout());
@@ -167,7 +162,7 @@ public final class PrincipalView extends javax.swing.JFrame {
 
     private void initializeOptionPanel(int gridx, int gridy, double weightx, double weighty) {
 
-        optionPanel = new OptionPanel(smilesList, verifySmile);
+        OptionPanel optionPanel = new OptionPanel(smilesList, verifySmile,moleculePreviewPanel);
 
         optionPanel.setPreferredSize(new Dimension(200, 300));
         optionPanel.setMaximumSize(new Dimension(250, 400));
@@ -201,11 +196,7 @@ public final class PrincipalView extends javax.swing.JFrame {
         panelAction.setBorder(javax.swing.BorderFactory.createTitledBorder("Action"));
         GridBagConstraints gbcPanel = new GridBagConstraints();
 
-        JLabel labelSaveAs = new JLabel("save in: ");
-        panelAction.add(labelSaveAs, gbcPanel);
-        gbcPanel.ipadx = 5;
-        textFieldSavePath = new JLabel("'no selected'");
-        panelAction.add(textFieldSavePath, gbcPanel);
+
         generateButton = new JButton("Generate");
         panelAction.add(generateButton, gbcPanel);
         GridBagConstraints gbc = new GridBagConstraints();

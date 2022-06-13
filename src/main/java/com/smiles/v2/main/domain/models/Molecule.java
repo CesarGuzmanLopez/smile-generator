@@ -8,32 +8,32 @@ import com.smiles.v2.main.interfaces.SmilesHInterface;
 
 public class Molecule extends Smiles implements MoleculeComparableInterface {
 
-    private MoleculeDataFactoryInterface moleculeDataOfSmileFactory;
+    private MoleculeDataFactoryInterface moleculeDataFactory;
     private MoleculeDataInterface moleculeDataOfSmile;
 
     public Molecule(SmilesHInterface smile, SmileVerificationInterface smileVerification,
-            MoleculeDataFactoryInterface moleculeDataOfSmile) {
+            MoleculeDataFactoryInterface moleculeFactory) {
         super(smile, smileVerification);
-        this.moleculeDataOfSmileFactory = moleculeDataOfSmile;
+        this.moleculeDataFactory = moleculeFactory;
         initialize();
     }
     public Molecule(String name, String smiles, String message, boolean hydrogenImplicit,
                      SmileVerificationInterface smileVerification,
         MoleculeDataFactoryInterface moleculeDataOfSmile) {
         super(name, smiles, message, hydrogenImplicit, smileVerification);
-        this.moleculeDataOfSmileFactory = moleculeDataOfSmile;
+        this.moleculeDataFactory = moleculeDataOfSmile;
         initialize();
      }
 
     public Molecule(Molecule molecule, SmileVerificationInterface smileVerification,
             MoleculeDataFactoryInterface moleculeDataOfSmile) {
         super(molecule, smileVerification);
-        this.moleculeDataOfSmileFactory = moleculeDataOfSmile;
+        this.moleculeDataFactory = moleculeDataOfSmile;
         initialize();
     }
 
     void initialize() {
-        moleculeDataOfSmile = moleculeDataOfSmileFactory.getMoleculeDataOfSmile(this);
+        moleculeDataOfSmile = moleculeDataFactory.getMoleculeDataOfSmile(this);
     }
     public int getNumberAtoms() {
         return moleculeDataOfSmile.getNumberAtoms();
@@ -45,8 +45,7 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
     }
 
     @Override
-    public int compareTo(SmilesHInterface arg0) {
-        // TODO Auto-generated method stub
+    public int compareTo(Molecule molecule) {
         return 0;
     }
 

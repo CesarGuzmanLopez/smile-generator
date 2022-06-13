@@ -7,7 +7,7 @@ import com.smiles.v2.main.framework.cdk.VerifiedSmile;
 import com.smiles.v2.main.infrastructure.FirstSubstituent;
 import com.smiles.v2.main.views.PrincipalView;
 
-public final class SmilesGenerator {
+public final class Smiles_Generator {//NOSONAR
 
     public static void main(String[] args) {
         themeSelected();

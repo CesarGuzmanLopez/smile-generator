@@ -2,7 +2,7 @@ package com.smiles.v2.main.interfaces;
 
 import java.util.List;
 
-public interface MoleculeDataInterface {
+public interface MoleculeDataInterface extends MoleculeComparableInterface {
     public int getNumberAtoms();
     public void selectOrderAtom(AtomInterface atom);
     public List<AtomInterface> getListAtoms();

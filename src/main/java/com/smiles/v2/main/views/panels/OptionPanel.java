@@ -31,8 +31,8 @@ public final class OptionPanel extends javax.swing.JPanel
     private List<JCheckBox> substituentCheckBox;
     private JPanel panelWithCheckBox;
     private SmileVerificationInterface smileVerify;
-
-    public OptionPanel(MoleculeListInterface smilesList, SmileVerificationInterface smileVerify) {
+    private MoleculePanel moleculePreview;
+    public OptionPanel(MoleculeListInterface smilesList, SmileVerificationInterface smileVerify,MoleculePanel moleculePreview) {
         super();
         if (smilesList == null) {
             throw new NullPointerException("SmilesList is null");
@@ -44,7 +44,11 @@ public final class OptionPanel extends javax.swing.JPanel
         } else {
             this.smileVerify = smileVerify;
         }
-
+        if (moleculePreview == null) {
+            throw new NullPointerException("MoleculePanel is null");
+        } else {
+            this.moleculePreview = moleculePreview;
+        }
         initComponents();
         smilesToCheckBox();
     }
@@ -97,16 +101,30 @@ public final class OptionPanel extends javax.swing.JPanel
         panelWithCheckBox.add(checkBox, gbcPanel);
 
     }
-
+    /**
+     * Return of list the molecules selected
+     */
     @Override
     public List<Molecule> getMoleculeList() {
-        // TODO Lista de smiles que se seleccionaron
-        return null;
+        List<Molecule> moleculesSelected = new ArrayList<>();
+        for (JCheckBox checkBox : substituentCheckBox) {
+            if (checkBox.isSelected()) {
+                Molecule molecule = this.moleculeList.getMolecule(checkBox.getText());
+                moleculesSelected.add(molecule);
+            }
+        }
+        return moleculesSelected;
     }
 
     @Override
     public void itemStateChanged(ItemEvent arg0) {
-        // TODO Auto-generated method stub
+
+        if (arg0.getStateChange() == ItemEvent.SELECTED) {
+            JCheckBox checkBox = (JCheckBox) arg0.getSource();
+            String name = checkBox.getText();
+            Molecule molecule = moleculeList.getMolecule(name);
+            moleculePreview.setMolecule(molecule);
+        }
     }
 
     @Override
@@ -127,7 +145,10 @@ public final class OptionPanel extends javax.swing.JPanel
 
         return numberSmile;
     }
-
+    @Override
+    public Molecule getMolecule(String name) {
+        return moleculeList.getMolecule(name);
+    }
     @Override
     public void addSmileHEvent(AddSmileHEvent evt) {
         addSmiles(evt.getSmileH());

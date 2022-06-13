@@ -8,6 +8,7 @@ import org.openscience.cdk.renderer.generators.BasicBondGenerator;
 import org.openscience.cdk.renderer.generators.BasicGenerator;
 import org.openscience.cdk.renderer.generators.BasicSceneGenerator;
 import org.openscience.cdk.renderer.generators.IGenerator;
+import org.openscience.cdk.renderer.generators.standard.StandardGenerator;
 import org.openscience.cdk.renderer.visitor.AWTDrawVisitor;
 
 import com.smiles.v2.main.domain.models.Molecule;
@@ -59,28 +60,29 @@ abstract class JpanelDrawMoleculeAbstract extends JPanel {
             e.printStackTrace();
         }
         // make generators
-        List<IGenerator<IAtomContainer>> generators = new ArrayList<IGenerator<IAtomContainer>>();
+        List<IGenerator<IAtomContainer>> generators = new ArrayList<>();
+        StandardGenerator genera = new StandardGenerator(new Font("Arial", Font.BOLD, 0));
 
         generators.add(new BasicGenerator());
         generators.add(new BasicSceneGenerator());
         generators.add(new BasicBondGenerator());
         generators.add(new BasicAtomGenerator());
+        generators.add(genera);
 
-        // setup the renderer
         renderer = new AtomContainerRenderer(generators, new AWTFontManager());
         model = renderer.getRenderer2DModel();
-        if(molecule.hasHydrogenImplicit())
-            model.set(BasicAtomGenerator.ShowExplicitHydrogens.class,true);
 
+        model.set(BasicAtomGenerator.ShowExplicitHydrogens.class,true);
+        model.set(BasicAtomGenerator.ShowEndCarbons.class,true);
         model.set(BasicAtomGenerator.CompactAtom.class, false);
-        model.set(BasicAtomGenerator.AtomRadius.class, 5.0);
+        model.set(BasicAtomGenerator.AtomRadius.class, 0.5);
         model.set(BasicAtomGenerator.CompactShape.class, BasicAtomGenerator.Shape.OVAL);
-        model.set(BasicAtomGenerator.KekuleStructure.class, false);
-        model.set(BasicBondGenerator.BondWidth.class, 2.0);
+        model.set(BasicAtomGenerator.KekuleStructure.class, true);
+
         model.set(BasicBondGenerator.BondWidth.class, 2.0);
         model.set(BasicSceneGenerator.FitToScreen.class, true);
-        model.set(BasicSceneGenerator.Scale.class,10.0 );
         model.set(BasicSceneGenerator.ShowMoleculeTitle.class, true);
+        model.set(BasicSceneGenerator.BackgroundColor.class, Color.white);
         renderer.paint(iAtomContainer, new AWTDrawVisitor((Graphics2D) graphicsJpanel),
         new Rectangle2D.Double(0, 0, width, height), false);
         paintHerder(graphicsJpanel);

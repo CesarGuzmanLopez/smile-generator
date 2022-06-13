@@ -6,6 +6,8 @@ import java.util.List;
 import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
+import org.openscience.cdk.smiles.SmiFlavor;
+import org.openscience.cdk.smiles.SmilesGenerator;
 import org.openscience.cdk.smiles.SmilesParser;
 
 import com.smiles.v2.main.domain.models.Molecule;
@@ -74,6 +76,20 @@ public class MoleculeData implements MoleculeDataInterface {
     public List<AtomInterface> getListAtomsSelected() {
         return selectedList;
 
+    }
+
+    @Override
+    public int compareTo(Molecule molecule) {
+        MoleculeData moleculeData = ((MoleculeData) molecule.getMoleculeData());
+        IAtomContainer iAtomContainerToCompare = moleculeData.moleculeContainer;
+        SmilesGenerator generator = new SmilesGenerator(SmiFlavor.Isomeric);
+        try{
+            String smiles1 = generator.create(moleculeContainer);
+            String smiles2 = generator.create(iAtomContainerToCompare);
+            return smiles1.compareTo(smiles2);
+        }catch(Exception e){
+            throw new UnsupportedOperationException("Error in compareTo");
+        }
     }
 
 }

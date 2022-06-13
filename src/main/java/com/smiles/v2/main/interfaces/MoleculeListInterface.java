@@ -9,4 +9,5 @@ public interface MoleculeListInterface  {
     public List<Molecule>getMoleculeList();
     public int addSmiles(String name, String smi, String message, boolean hydrogen);
     public int addSmiles(SmilesHInterface smile);
+    public Molecule getMolecule(String name);
 }

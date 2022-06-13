@@ -9,12 +9,13 @@ import java.awt.Color;
 
 import javax.swing.JLabel;
 import java.awt.FlowLayout;
-import com.smiles.v2.main.domain.models.MoleculeGraphics;
+
+import com.smiles.v2.main.domain.models.Molecule;
 import com.smiles.v2.main.interfaces.MoleculeGraphPainterInterface;
 
 @SuppressWarnings("java:S1948")
 public class MoleculePanel extends javax.swing.JPanel {
-    protected MoleculeGraphics molecule;
+    protected Molecule molecule;
     protected MoleculeGraphPainterInterface painter;
     JLabel nameMoleculeLabel;
     public MoleculePanel(MoleculeGraphPainterInterface painter) {
@@ -26,7 +27,7 @@ public class MoleculePanel extends javax.swing.JPanel {
         nameMoleculeLabel = new JLabel();
     }
 
-    public void setMolecule(MoleculeGraphics molecule) {
+    public void setMolecule(Molecule molecule) {
         this.molecule = molecule;
         if (molecule == null) {
             setBackground(Color.white);
@@ -41,5 +42,7 @@ public class MoleculePanel extends javax.swing.JPanel {
         revalidate();
         repaint();
     }
-
+    public Molecule getMolecule() {
+        return molecule;
+    }
 }

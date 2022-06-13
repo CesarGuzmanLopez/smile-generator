@@ -1,5 +1,7 @@
 package com.smiles.v2.main.interfaces;
 
-public interface MoleculeComparableInterface extends Comparable<SmilesHInterface> {
-    public int compareTo(SmilesHInterface arg0);
+import com.smiles.v2.main.domain.models.Molecule;
+
+public interface MoleculeComparableInterface extends Comparable<Molecule> {
+    public int compareTo(Molecule molecule);
 }

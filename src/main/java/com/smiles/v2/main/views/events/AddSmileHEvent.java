@@ -9,12 +9,12 @@ public class AddSmileHEvent extends EventObject {
     private static final long serialVersionUID = 1L;
     private SmilesHInterface smileH;
 
-    public AddSmileHEvent(Object source, SmilesHInterface SmileH) {
+    public AddSmileHEvent(Object source, SmilesHInterface smileH) {
         super(source);
-        if (SmileH == null) {
+        if (smileH == null) {
             throw new NullPointerException("SmilesH is null");
         } else {
-            this.smileH = SmileH;
+            this.smileH = smileH;
         }
     }
 
