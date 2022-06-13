@@ -1,15 +1,11 @@
 package com.smiles.v2.main.views.panels;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
-import javax.swing.JTextField;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
 
 import com.smiles.v2.main.domain.generator.Generator;
 import com.smiles.v2.main.domain.models.Molecule;
@@ -35,7 +31,6 @@ public class WindowsGenerate extends JFrame {
         initialize();
         this.principal = principal;
         this.moleculeList = moleculeList;
-
         setVisible(true);
     }
     void generate(){
@@ -46,9 +41,10 @@ public class WindowsGenerate extends JFrame {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        Generator generator =new Generator(moleculeList,principal,(int)rSubstitutes.getValue(),saveFileListSmile,saveFileListDescriptive);
+        generator.generate();
         dispose();
         JOptionPane.showMessageDialog(this, "Generate", "Generate", JOptionPane.INFORMATION_MESSAGE);
-
     }
     private void initialize() {
 

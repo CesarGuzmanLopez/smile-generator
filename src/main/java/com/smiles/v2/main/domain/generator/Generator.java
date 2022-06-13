@@ -64,8 +64,12 @@ public class Generator {
 
         return !moleculeData.getListAtoms().isEmpty();
     }
+    public void generate() {
 
-
+    }
+    private void monoSubstitutedGenerate(){
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 
 
 }
