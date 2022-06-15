@@ -80,14 +80,14 @@ public final class PrincipalView extends javax.swing.JFrame {
     }
     private void generate(){
         MoleculesList selected = MoleculesList.createMoleculesList(verifySmile, moleculeFactory, optionPanel.getMoleculeListMolecule());
-        new WindowsGenerate(moleculePanelPrincipal.getMolecule(), selected);
+        new WindowsGenerate(moleculePanelPrincipal.getMolecule(), selected,moleculeFactory,verifySmile);
     }
 
     public void initialize() {
         setJMenuBar(new Menu());
         setLayout(new GridBagLayout());
         //the order is important in the initialization of the components
-        initializeEntrySmile(0, 0, 1, 0);
+        initializeEntrySmile(0, 0, 1, 1);
         initializeMoleculePanelPrincipal(0, 1, 1, 1);
         initializeMoleculePreviewPanel(2, 1, 1, 1);
         initializeOptionPanel(1, 1, 0, 1);
@@ -186,6 +186,7 @@ public final class PrincipalView extends javax.swing.JFrame {
         gbc.anchor = GridBagConstraints.CENTER;
         add(optionPanel, gbc);
     }
+
 
     private void initializeMoleculePreviewPanel(int gridx, int gridy, double weightx, double weighty) {
         moleculePreviewPanel = new MoleculePanel(moleculeGraphPainter);

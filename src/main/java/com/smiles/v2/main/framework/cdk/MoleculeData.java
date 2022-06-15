@@ -92,4 +92,14 @@ public class MoleculeData implements MoleculeDataInterface {
         }
     }
 
+    @Override
+    public String isomericSmile() {
+        SmilesGenerator generator = new SmilesGenerator(SmiFlavor.Isomeric);
+        try{
+            return generator.create(moleculeContainer);
+        }catch(Exception e){
+            throw new UnsupportedOperationException("Error in isomericSmile");
+        }
+    }
+
 }

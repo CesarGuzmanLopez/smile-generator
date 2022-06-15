@@ -7,4 +7,5 @@ public interface MoleculeDataInterface extends MoleculeComparableInterface {
     public void selectOrderAtom(AtomInterface atom);
     public List<AtomInterface> getListAtoms();
     public List<AtomInterface> getListAtomsSelected();
+    public String isomericSmile();
 }

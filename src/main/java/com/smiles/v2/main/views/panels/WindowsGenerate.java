@@ -10,6 +10,8 @@ import javax.swing.JSpinner;
 import com.smiles.v2.main.domain.generator.Generator;
 import com.smiles.v2.main.domain.models.Molecule;
 import com.smiles.v2.main.domain.models.MoleculesList;
+import com.smiles.v2.main.interfaces.MoleculeDataFactoryInterface;
+import com.smiles.v2.main.interfaces.SmileVerificationInterface;
 
 import java.awt.GridBagLayout;
 import java.io.File;
@@ -22,7 +24,12 @@ public class WindowsGenerate extends JFrame {
     private MoleculesList moleculeList;
     private File saveFileListSmile;
     private File saveFileListDescriptive;
-    public WindowsGenerate(Molecule principal,MoleculesList moleculeList  ) {
+    private MoleculeDataFactoryInterface factory;
+    private SmileVerificationInterface smileVerifier;
+    public WindowsGenerate(Molecule principal,MoleculesList moleculeList,
+    MoleculeDataFactoryInterface factory,
+    SmileVerificationInterface smileVerifier
+      ) {
         setTitle("Generate");
         setSize(500, 200);
         setLocationRelativeTo(null);
@@ -32,6 +39,8 @@ public class WindowsGenerate extends JFrame {
         this.principal = principal;
         this.moleculeList = moleculeList;
         setVisible(true);
+        this.factory = factory;
+        this.smileVerifier = smileVerifier;
     }
     void generate(){
         try{
@@ -41,7 +50,7 @@ public class WindowsGenerate extends JFrame {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        Generator generator =new Generator(moleculeList,principal,(int)rSubstitutes.getValue(),saveFileListSmile,saveFileListDescriptive);
+        Generator generator =new Generator(moleculeList,principal,(int)rSubstitutes.getValue(),saveFileListSmile,saveFileListDescriptive,factory, smileVerifier);
         generator.generate();
         dispose();
         JOptionPane.showMessageDialog(this, "Generate", "Generate", JOptionPane.INFORMATION_MESSAGE);

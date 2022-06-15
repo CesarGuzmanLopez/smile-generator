@@ -4,7 +4,10 @@ import java.util.List;
 
 import com.smiles.v2.main.domain.models.Molecule;
 import com.smiles.v2.main.domain.models.MoleculesList;
+import com.smiles.v2.main.domain.models.MoleculesListNotRepeat;
+import com.smiles.v2.main.interfaces.MoleculeDataFactoryInterface;
 import com.smiles.v2.main.interfaces.MoleculeDataInterface;
+import com.smiles.v2.main.interfaces.SmileVerificationInterface;
 
 public class Generator {
     MoleculesList substitutes;
@@ -12,10 +15,15 @@ public class Generator {
     int rSubstitutes;
     File nameFileOutput;
     File nameFileDescription;
+    MoleculeDataFactoryInterface factory;
+    SmileVerificationInterface smileVerifier;
+    MoleculesListNotRepeat moleculesListNotRepeat;
     public Generator(MoleculesList substitutes, Molecule principal,
             int rSubstitutes,
             File nameFileOutput,
-            File nameFileDescription) {
+            File nameFileDescription,
+            MoleculeDataFactoryInterface factory,
+            SmileVerificationInterface smileVerifier) {
         verifyEntry(substitutes, principal, rSubstitutes, nameFileOutput, nameFileDescription);
 
         this.substitutes = substitutes;
@@ -23,6 +31,9 @@ public class Generator {
         this.rSubstitutes = rSubstitutes;
         this.nameFileOutput = nameFileOutput;
         this.nameFileDescription = nameFileDescription;
+        this.factory = factory;
+        this.smileVerifier = smileVerifier;
+        moleculesListNotRepeat = new MoleculesListNotRepeat(smileVerifier,factory);
 
     }
     public static final boolean verifyEntry(
@@ -30,7 +41,9 @@ public class Generator {
             Molecule principal,
             int rSubstitutes,
             File nameFileOutput,
-            File nameFileDescription) {
+            File nameFileDescription
+
+            ) {
         if (substitutes == null || principal == null)
             throw new IllegalArgumentException("Null argument");
         if (rSubstitutes <= 0)
@@ -67,9 +80,9 @@ public class Generator {
     public void generate() {
 
     }
-    private void monoSubstitutedGenerate(){
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
 
+    private String printMolecule(Molecule molecule){
+        return molecule.getMoleculeData().isomericSmile();
+    }
 
 }
