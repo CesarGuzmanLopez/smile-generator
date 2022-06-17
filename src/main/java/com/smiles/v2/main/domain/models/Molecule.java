@@ -7,10 +7,8 @@ import com.smiles.v2.main.interfaces.SmileVerificationInterface;
 import com.smiles.v2.main.interfaces.SmilesHInterface;
 
 public class Molecule extends Smiles implements MoleculeComparableInterface {
-
     private MoleculeDataFactoryInterface moleculeDataFactory;
     private MoleculeDataInterface moleculeDataOfSmile;
-
     public Molecule(SmilesHInterface smile, SmileVerificationInterface smileVerification,
             MoleculeDataFactoryInterface moleculeFactory) {
         super(smile, smileVerification);
@@ -47,6 +45,10 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
     @Override
     public int compareTo(Molecule molecule) {
            return getMoleculeData().compareTo(molecule);
+    }
+    @Override
+    public String toString() {
+        return getMoleculeData().isomericSmile();
     }
 
 }

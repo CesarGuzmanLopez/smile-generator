@@ -35,6 +35,10 @@ public class AtomCDK implements AtomInterface {
     public String getSymbol() {
         return iAtom.getSymbol();
     }
+    @Override
+    public String toString() {
+        return iAtom.toString();
+    }
 
 
 }

@@ -5,4 +5,5 @@ public interface AtomInterface {
 
     int getId();
     String getSymbol();
+    String toString();
 }

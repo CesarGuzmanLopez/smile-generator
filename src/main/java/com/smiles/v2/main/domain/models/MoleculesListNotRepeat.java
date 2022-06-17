@@ -19,11 +19,16 @@ public class MoleculesListNotRepeat extends MoleculesList {
     }
 
     void initialize(List<Molecule> moleculeListMolecule){
-        
+
         for (Molecule molecule : moleculeListMolecule) {
             if(!moleculeList.contains(molecule)){
                 moleculeList.add(molecule);
             }
+        }
+    }
+    void addMolecule(Molecule molecule){
+        if(!moleculeList.contains(molecule)){
+            moleculeList.add(molecule);
         }
     }
 }

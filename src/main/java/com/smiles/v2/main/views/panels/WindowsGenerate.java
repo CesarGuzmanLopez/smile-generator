@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 
-import com.smiles.v2.main.domain.generator.Generator;
+import com.smiles.v2.main.domain.generator.WriteAndGenerate;
 import com.smiles.v2.main.domain.models.Molecule;
 import com.smiles.v2.main.domain.models.MoleculesList;
 import com.smiles.v2.main.interfaces.MoleculeDataFactoryInterface;
@@ -44,14 +44,15 @@ public class WindowsGenerate extends JFrame {
     }
     void generate(){
         try{
-            Generator.verifyEntry(moleculeList,principal,(int)rSubstitutes.getValue(),saveFileListSmile,saveFileListDescriptive);
+            WriteAndGenerate.verifyEntry(moleculeList,principal,(int)rSubstitutes.getValue(),saveFileListDescriptive,saveFileListSmile);
+            WriteAndGenerate generator =new WriteAndGenerate(moleculeList,principal,(int)rSubstitutes.getValue(),saveFileListDescriptive,saveFileListSmile,factory, smileVerifier);
+            generator.generate();
         }
         catch(Exception e){
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        Generator generator =new Generator(moleculeList,principal,(int)rSubstitutes.getValue(),saveFileListSmile,saveFileListDescriptive,factory, smileVerifier);
-        generator.generate();
+
         dispose();
         JOptionPane.showMessageDialog(this, "Generate", "Generate", JOptionPane.INFORMATION_MESSAGE);
     }
