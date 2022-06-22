@@ -9,11 +9,11 @@ import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.smiles.SmiFlavor;
 import org.openscience.cdk.smiles.SmilesGenerator;
 import org.openscience.cdk.smiles.SmilesParser;
+import org.openscience.cdk.interfaces.IBond;
 
 import com.smiles.v2.main.domain.models.Molecule;
 import com.smiles.v2.main.interfaces.AtomInterface;
 import com.smiles.v2.main.interfaces.MoleculeDataInterface;
-
 public class MoleculeData implements MoleculeDataInterface {
     Molecule molecule;
     IAtomContainer moleculeContainer;
@@ -28,12 +28,32 @@ public class MoleculeData implements MoleculeDataInterface {
         } catch (Exception e) {
             throw new IllegalArgumentException("Molecule error");
         }
+        selectedList = new ArrayList<>();
         listAtoms = new ArrayList<>();
         for (int i = 0; i < moleculeContainer.getAtomCount(); i++) {
             listAtoms.add(new AtomSelectable(moleculeContainer.getAtom(i), i));
         }
+    }
 
+    public MoleculeData(Molecule molecule, final MoleculeDataInterface moleculeData) {
+        this.molecule = molecule;
+        try {
+            moleculeContainer = ((MoleculeData) moleculeData).getMoleculeContainer().clone();
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Molecule clone error");
+        }
+        listAtoms = new ArrayList<>();
         selectedList = new ArrayList<>();
+        for (int i = 0; i < moleculeContainer.getAtomCount(); i++) {
+            AtomSelectable temporal = new AtomSelectable(moleculeContainer.getAtom(i), i);
+            listAtoms.add(temporal);
+            for(AtomInterface atom : moleculeData.getListAtomsSelected()) {
+                if(atom.getId() == i) {
+                    selectOrderAtom(temporal);
+                    break;
+                }
+            }
+        }
     }
 
     class AtomSelectable extends AtomCDK {
@@ -91,15 +111,27 @@ public class MoleculeData implements MoleculeDataInterface {
             throw new UnsupportedOperationException("Error in compareTo");
         }
     }
-
     @Override
-    public String isomericSmile() {
+    public final  String isomericSmile() {
         SmilesGenerator generator = new SmilesGenerator(SmiFlavor.Isomeric);
         try{
             return generator.create(moleculeContainer);
         }catch(Exception e){
-            throw new UnsupportedOperationException("Error in isomericSmile");
+            throw new UnsupportedOperationException("Error in Isomeric Smile");
         }
+    }
+
+    @Override
+    public boolean addMoleculeDataInterface(Molecule moleculeSubstituent,
+        AtomInterface selectedPrincipal,
+        AtomInterface selectedSubstituent) {
+        int numAtomInit = moleculeContainer.getAtomCount();
+        MoleculeData moleculeDataSubstituent = (MoleculeData) moleculeSubstituent.getMoleculeData();
+        moleculeContainer.add(moleculeDataSubstituent.moleculeContainer);
+        moleculeContainer.addBond(selectedPrincipal.getId(), numAtomInit+selectedSubstituent.getId(),IBond.Order.SINGLE);
+
+        return false;
+
     }
 
 }

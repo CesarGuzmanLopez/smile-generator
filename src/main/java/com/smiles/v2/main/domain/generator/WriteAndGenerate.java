@@ -137,7 +137,6 @@ public class WriteAndGenerate {
      *
     */
 
-
     protected void closeFiles() throws IOException {
     if (writeDescription != null)
         writeDescription.close();

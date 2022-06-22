@@ -27,16 +27,16 @@ public class AtomCDK implements AtomInterface {
     }
 
     @Override
-    public int getId() {
+     public final int getId() {
         return id;
     }
 
     @Override
-    public String getSymbol() {
+    public  final  String getSymbol() {
         return iAtom.getSymbol();
     }
     @Override
-    public String toString() {
+    public final  String toString() {
         return iAtom.toString();
     }
 

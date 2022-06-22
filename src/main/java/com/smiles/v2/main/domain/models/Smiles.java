@@ -5,11 +5,11 @@ import com.smiles.v2.main.interfaces.SmilesHInterface;
 
 public class Smiles implements SmilesHInterface {
 
-    private final String strSmiles;
-    private final String message;
-    private final boolean hydrogenImplicit;
+    private String strSmiles;
+    private String message;
+    private boolean hydrogenImplicit;
     private String name = "";
-
+    protected  SmileVerificationInterface smileVerification;
     public Smiles(String name, String smiles, String message, boolean hydrogenImplicit,
             SmileVerificationInterface smileVerification) {
         if (smiles == null || message == null || name == null) {
@@ -21,6 +21,7 @@ public class Smiles implements SmilesHInterface {
         if (!smileVerification.isValid(smiles)) {
             throw new IllegalArgumentException("Smiles: " + smiles + " is not valid");
         }
+        this.smileVerification = smileVerification;
         this.name = name;
         this.strSmiles = smiles;
         this.message = message;
@@ -41,6 +42,7 @@ public class Smiles implements SmilesHInterface {
         this.strSmiles = smile.getSmile();
         this.message = smile.getMessage();
         this.hydrogenImplicit = smile.hasHydrogenImplicit();
+        this.smileVerification = smileVerification;
     }
 
     @Override
@@ -61,6 +63,12 @@ public class Smiles implements SmilesHInterface {
     @Override
     public boolean hasHydrogenImplicit() {
         return hydrogenImplicit;
+    }
+    protected void renameStrSmiles(String strSmiles) {
+        this.strSmiles = strSmiles;
+    }
+    protected void setSmiles(String strSmiles) {
+        this.strSmiles = strSmiles;
     }
 
 }
