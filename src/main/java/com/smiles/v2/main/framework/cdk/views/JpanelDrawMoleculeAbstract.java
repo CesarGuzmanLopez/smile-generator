@@ -1,5 +1,22 @@
-package com.smiles.v2.main.framework.cdk;
+package com.smiles.v2.main.framework.cdk.views;
 
+import com.smiles.v2.main.domain.models.Molecule;
+import com.smiles.v2.main.framework.cdk.MoleculeData;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JPanel;
+import javax.swing.plaf.FontUIResource;
+import javax.vecmath.Point2d;
+import org.openscience.cdk.exception.CDKException;
+import org.openscience.cdk.interfaces.IAtom;
+import org.openscience.cdk.interfaces.IAtomContainer;
+import org.openscience.cdk.layout.StructureDiagramGenerator;
 import org.openscience.cdk.renderer.AtomContainerRenderer;
 import org.openscience.cdk.renderer.RendererModel;
 import org.openscience.cdk.renderer.font.AWTFontManager;
@@ -11,57 +28,53 @@ import org.openscience.cdk.renderer.generators.IGenerator;
 import org.openscience.cdk.renderer.generators.standard.StandardGenerator;
 import org.openscience.cdk.renderer.visitor.AWTDrawVisitor;
 
-import com.smiles.v2.main.domain.models.Molecule;
-import javax.swing.JPanel;
-import javax.swing.plaf.FontUIResource;
-import javax.vecmath.Point2d;
-
-import java.awt.Graphics2D;
-import java.awt.Color;
-import java.util.ArrayList;
-import java.awt.geom.Rectangle2D;
-import java.util.List;
-import java.awt.Font;
-import java.awt.Graphics;
-import org.openscience.cdk.exception.CDKException;
-import org.openscience.cdk.interfaces.IAtom;
-import org.openscience.cdk.interfaces.IAtomContainer;
-import org.openscience.cdk.layout.StructureDiagramGenerator;
 @SuppressWarnings("java:S1948")
 abstract class JpanelDrawMoleculeAbstract extends JPanel {
-    protected IAtomContainer iAtomContainer;
+    private IAtomContainer iAtomContainer;
+    private Molecule molecule;
+    private RendererModel model;
+    private AtomContainerRenderer renderer;
 
-    protected Molecule molecule;
-    protected RendererModel model;
-    protected AtomContainerRenderer renderer;
-
-    protected  JpanelDrawMoleculeAbstract(Molecule molecule) {
+    protected JpanelDrawMoleculeAbstract(final Molecule molecule) {
         setBackground(Color.white);
         this.molecule = molecule;
-        MoleculeData moleculeData = (MoleculeData) molecule.getMoleculeData();
+        final MoleculeData moleculeData = (MoleculeData) molecule.getMoleculeData();
         this.iAtomContainer = moleculeData.getMoleculeContainer();
     }
-    protected Point2d pointToScreen(IAtom atom){
+    /**
+     * @return the molecule painted.
+    */
+    protected Molecule getMolecule() {
+        return molecule;
+    }
+    /**
+     * @param  atom to find.
+     * @return point of a atom.
+    */
+    protected Point2d pointToScreen(final IAtom atom) {
         return renderer.toScreenCoordinates(atom.getPoint2d().x, atom.getPoint2d().y);
     }
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    protected void paintComponent(Graphics graphicsJpanel) {
+    protected void paintComponent(final Graphics graphicsJpanel) {
         super.paintComponent(graphicsJpanel);
-        float width = getWidth();
-        float height = getHeight();
+        final float width = getWidth();
+        final float height = getHeight();
         graphicsJpanel.setFont(new FontUIResource("Arial", Font.PLAIN, 12));
-        StructureDiagramGenerator sdg ;
+        final StructureDiagramGenerator sdg;
         // layout the molecule
         sdg = new StructureDiagramGenerator();
-        sdg.setMolecule(iAtomContainer,false);
+        sdg.setMolecule(iAtomContainer, false);
         try {
             sdg.generateCoordinates();
         } catch (CDKException e) {
             e.printStackTrace();
         }
         // make generators
-        List<IGenerator<IAtomContainer>> generators = new ArrayList<>();
-        StandardGenerator genera = new StandardGenerator(new Font("Arial", Font.BOLD, 0));
+        final List<IGenerator<IAtomContainer>> generators = new ArrayList<>();
+        final StandardGenerator genera = new StandardGenerator(new Font("Arial", Font.BOLD, 0));
 
         generators.add(new BasicGenerator());
         generators.add(new BasicSceneGenerator());
@@ -72,8 +85,8 @@ abstract class JpanelDrawMoleculeAbstract extends JPanel {
         renderer = new AtomContainerRenderer(generators, new AWTFontManager());
         model = renderer.getRenderer2DModel();
 
-        model.set(BasicAtomGenerator.ShowExplicitHydrogens.class,true);
-        model.set(BasicAtomGenerator.ShowEndCarbons.class,true);
+        model.set(BasicAtomGenerator.ShowExplicitHydrogens.class, true);
+        model.set(BasicAtomGenerator.ShowEndCarbons.class, true);
         model.set(BasicAtomGenerator.CompactAtom.class, false);
         model.set(BasicAtomGenerator.AtomRadius.class, 0.5);
         model.set(BasicAtomGenerator.CompactShape.class, BasicAtomGenerator.Shape.OVAL);
@@ -84,20 +97,31 @@ abstract class JpanelDrawMoleculeAbstract extends JPanel {
         model.set(BasicSceneGenerator.ShowMoleculeTitle.class, true);
         model.set(BasicSceneGenerator.BackgroundColor.class, Color.white);
         renderer.paint(iAtomContainer, new AWTDrawVisitor((Graphics2D) graphicsJpanel),
-        new Rectangle2D.Double(0, 0, width, height), false);
+                new Rectangle2D.Double(0, 0, width, height), false);
         paintHerder(graphicsJpanel);
 
     }
-    abstract void paintHerder( Graphics graphicsJpanel);
-    double tolerance() {
-        if (molecule.getNumberAtoms() < 6)
+    /**
+     * Paint the header of the molecule.
+     * @param graphicsJpanel
+     */
+    abstract void paintHerder(Graphics graphicsJpanel);
+    /** if the tolerance is lower if the number of atoms is greater.
+     * @return the tolerance of the molecule selected.
+    */
+    protected double tolerance() {
+        if (molecule.getNumberAtoms() < 6) {
             return 20;
-        if (molecule.getNumberAtoms() < 9)
+        }
+        if (molecule.getNumberAtoms() < 9) {
             return 18;
-        if ( molecule.getNumberAtoms() < 13)
+        }
+        if (molecule.getNumberAtoms() < 13) {
             return 15;
-        if (molecule.getNumberAtoms() < 18)
+        }
+        if (molecule.getNumberAtoms() < 18) {
             return 10;
+        }
         return 5;
     }
 }

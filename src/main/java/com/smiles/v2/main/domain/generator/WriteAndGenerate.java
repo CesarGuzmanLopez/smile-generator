@@ -1,5 +1,9 @@
 package com.smiles.v2.main.domain.generator;
 
+import com.smiles.v2.main.domain.models.Molecule;
+import com.smiles.v2.main.domain.models.MoleculesList;
+import com.smiles.v2.main.interfaces.AtomInterface;
+import com.smiles.v2.main.interfaces.MoleculeDataInterface;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
@@ -8,32 +12,28 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
-
-import com.smiles.v2.main.domain.models.Molecule;
-import com.smiles.v2.main.domain.models.MoleculesList;
-import com.smiles.v2.main.interfaces.AtomInterface;
-import com.smiles.v2.main.interfaces.MoleculeDataFactoryInterface;
-import com.smiles.v2.main.interfaces.MoleculeDataInterface;
-import com.smiles.v2.main.interfaces.SmileVerificationInterface;
-
+/**Class WriteAndGenerate.
+ * @author Cesar G G L
+ * @version 1.0
+ * @since 1.0
+ * @Charset: UTF-8
+ * @Date: 01/05/20201
+ * CHARSET
+*/
 public class WriteAndGenerate {
     static final Charset CHARSET = StandardCharsets.UTF_8;
-    MoleculesList substitutes;
-    Molecule principal;
-    int rSubstitutes;
-    File fileDescription;
-    MoleculeDataFactoryInterface factory;
-    SmileVerificationInterface smileVerifier;
-
+    private MoleculesList substitutes;
+    private Molecule principal;
+    private int rSubstitutes;
+    private File fileDescription;
     private BufferedWriter writeDescription;
     private BufferedWriter writeOutput;
     private File fileOutput;
 
-    public WriteAndGenerate(MoleculesList substitutes, Molecule principal,
-            int rSubstitutes,
-            File fileDescription, File fileOutput,
-            MoleculeDataFactoryInterface factory,
-            SmileVerificationInterface smileVerifier) {
+    public WriteAndGenerate(final MoleculesList substitutes,
+            final Molecule principal,
+            final int rSubstitutes,
+            final File fileDescription, final File fileOutput) {
         verifyEntry(substitutes, principal, rSubstitutes, fileDescription,
                 fileOutput);
         this.substitutes = substitutes;
@@ -41,106 +41,130 @@ public class WriteAndGenerate {
         this.rSubstitutes = rSubstitutes;
         this.fileDescription = fileDescription;
         this.fileOutput = fileOutput;
-        this.factory = factory;
-        this.smileVerifier = smileVerifier;
         verificationAndCreateFiles();
 
-
     }
+    /** Verify a entry for generator.
+     * @param substitutes To Substituent Principal
+     * @param principal The molecule Principal
+     * @param rSubstitutes Number profundity Substituent
+     * @param fileDescription File save Description
+     * @param fileOutput    File save Output
+     * @return true if the entry is correct
+    */
     public static final boolean verifyEntry(
-            MoleculesList substitutes,
-            Molecule principal,
-            int rSubstitutes,
-            File fileDescription,
-            File fileOutput
-
+            final MoleculesList substitutes,
+            final Molecule principal,
+            final int rSubstitutes,
+            final File fileDescription,
+            final File fileOutput
     ) {
-        if (substitutes == null || principal == null)
+        if (substitutes == null || principal == null) {
             throw new IllegalArgumentException("Null argument");
-        if (rSubstitutes <= 0)
+        }
+        if (rSubstitutes <= 0) {
             throw new IllegalArgumentException("rSubstitutes <= 0");
+        }
         if (principal.getMoleculeData().getListAtomsSelected().size() > 1
-                && rSubstitutes > principal.getMoleculeData().getListAtomsSelected().size())
+                && rSubstitutes > principal.getMoleculeData().getListAtomsSelected().size()) {
             throw new IllegalArgumentException("rSubstitutes cannot be greater than the selected atoms");
-        if (!aAtomOrSelected(principal))
+        }
+        if (!aAtomOrSelected(principal)) {
             throw new IllegalArgumentException(principal.getName() + "Principal molecule has no atom or selected");
-        List<Molecule> list = substitutes.getMoleculeListMolecule();
-        if (list.isEmpty())
+        }
+        final List<Molecule> list = substitutes.getListMolecule();
+        if (list.isEmpty()) {
             throw new IllegalArgumentException("List of substitutes is empty");
+        }
         for (Molecule molecule : list) {
-            if (!aAtomOrSelected(molecule))
+            if (!aAtomOrSelected(molecule)) {
                 throw new IllegalArgumentException(
                         molecule.getName() + ": is notSubstitute molecule has no atom or selected");
+            }
         }
-        if (fileOutput == null)
+        if (fileOutput == null) {
             throw new IllegalArgumentException("File output is null");
-        if (fileDescription != null)
+        }
+        if (fileDescription != null) {
             fileDescription.getParentFile().mkdirs();
+        }
         return true;
     }
-
-    static final boolean aAtomOrSelected(Molecule molecule) {
-        MoleculeDataInterface moleculeData = molecule.getMoleculeData();
+    /** Verify if Atom is selected o only is a Atom.
+     *  @param molecule Molecule to verify
+     * @return true if is a Atom or selected
+    */
+    static final boolean aAtomOrSelected(final Molecule molecule) {
+        final MoleculeDataInterface moleculeData = molecule.getMoleculeData();
         if (moleculeData == null) {
             throw new IllegalArgumentException("moleculeData is null");
         }
-        if (moleculeData.getNumberAtoms() == 1)
+        if (moleculeData.getNumberAtoms() == 1) {
             return true;
-        if (moleculeData.getListAtomsSelected().isEmpty())
+        }
+        if (moleculeData.getListAtomsSelected().isEmpty()) {
             return false;
+        }
 
         return !moleculeData.getListAtoms().isEmpty();
     }
-    public void verificationAndCreateFiles(){
+    /** Verify and create files.
+    */
+    public final void verificationAndCreateFiles() {
         boolean createFile = true;
         try {
             if (this.fileDescription != null) {
                 this.writeDescription = Files.newBufferedWriter(fileDescription.toPath(), CHARSET,
-                StandardOpenOption.CREATE,
-                StandardOpenOption.TRUNCATE_EXISTING);
-                if (!fileDescription.exists())
+                        StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+                if (!fileDescription.exists()) {
                     createFile = fileDescription.createNewFile();
+                }
             }
-            if (!fileOutput.exists())
+            if (!fileOutput.exists()) {
                 createFile = fileOutput.createNewFile();
-            this.writeOutput = Files.newBufferedWriter(fileOutput.toPath(), CHARSET,
-            StandardOpenOption.CREATE,
-            StandardOpenOption.TRUNCATE_EXISTING);
+            }
+            this.writeOutput = Files.newBufferedWriter(fileOutput.toPath(), CHARSET, StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
             throw new IllegalArgumentException("\nError opening file -  Description or output \n" + e.getMessage()
-            + (!createFile?"\nFile not created":""));//NOSONAR
+                    + (!createFile ? "\nFile not created" : "")); // NOSONAR
 
         }
     }
-    public void generate() throws IOException {
+    /** Write and generate.
+    */
+    public final void generate() throws IOException {
         writeHeadDescription();
-
 
         closeFiles();
     }
+
+    /** Write Head Description.
+    */
     private void writeHeadDescription() throws IOException {
         if (writeDescription != null) {
             writeDescription.write(principal.getName() + "\n");
-            writeDescription.write(substitutes.getMoleculeListMolecule().size() + "\n");
+            writeDescription.write(substitutes.getListMolecule().size() + "\n");
             writeDescription.write(rSubstitutes + "\n");
-            writeDescription.write(substitutes.getMoleculeListMolecule().size() + "\n");
-            for (Molecule molecule : substitutes.getMoleculeListMolecule()) {
+            writeDescription.write(substitutes.getListMolecule().size() + "\n");
+            for (Molecule molecule : substitutes.getListMolecule()) {
                 writeDescription.write(molecule.getName() + "\n");
                 writeDescription.write(molecule.getMoleculeData().getListAtomsSelected().size() + "\n");
                 for (AtomInterface atom : molecule.getMoleculeData().getListAtomsSelected()) {
                     writeDescription.write(atom + "\n");
-               }
+                }
             }
         }
     }
-    /**
-     *
-    */
 
+    /** Close Files.
+    */
     protected void closeFiles() throws IOException {
-    if (writeDescription != null)
-        writeDescription.close();
-    if (writeOutput != null)
-        writeOutput.close();
+        if (writeDescription != null) {
+            writeDescription.close();
+        }
+        if (writeOutput != null) {
+            writeOutput.close();
+        }
     }
 }

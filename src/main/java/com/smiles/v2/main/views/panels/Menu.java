@@ -7,9 +7,9 @@ public class Menu extends JMenuBar {
 
     public Menu() {
         super();
-        JMenu menuFile = new JMenu("File");
+        final JMenu menuFile = new JMenu("File");
         add(menuFile);
-        JMenu menuHelp = new JMenu("Help");
+        final JMenu menuHelp = new JMenu("Help");
         add(menuHelp);
     }
 

@@ -1,0 +1,4 @@
+{
+    "java.checkstyle.configuration": "/run/media/cesarguzmanlopez/compartido/Documentos/Proyectos/smile-generator/my_config_checks.xml",
+    "java.checkstyle.version": "10.3"
+}

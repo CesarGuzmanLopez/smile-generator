@@ -1,7 +1,9 @@
 package com.smiles.v2.main.views;
 
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -10,23 +12,26 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentListener;
 
-import java.awt.GridBagConstraints;
-import com.smiles.v2.main.views.panels.Menu;
-import com.smiles.v2.main.views.panels.MoleculePanel;
-import com.smiles.v2.main.views.panels.OptionPanel;
-import com.smiles.v2.main.views.panels.WindowsGenerate;
 import com.smiles.v2.main.domain.models.Molecule;
 import com.smiles.v2.main.domain.models.MoleculesList;
 import com.smiles.v2.main.domain.models.Smiles;
 import com.smiles.v2.main.interfaces.MoleculeDataFactoryInterface;
 import com.smiles.v2.main.interfaces.MoleculeGraphPainterInterface;
-import com.smiles.v2.main.interfaces.SmileVerificationInterface;
 import com.smiles.v2.main.interfaces.MoleculeListInterface;
+import com.smiles.v2.main.interfaces.SmileVerificationInterface;
+import com.smiles.v2.main.views.panels.Menu;
+import com.smiles.v2.main.views.panels.MoleculePanel;
+import com.smiles.v2.main.views.panels.OptionPanel;
+import com.smiles.v2.main.views.panels.WindowsGenerate;
+/**
+ * @author Cesar G. Guzman Lopez
+ * @version 1.0
+ * @since 1.0
+*/
 
 @SuppressWarnings("java:S1948")
 public final class PrincipalView extends javax.swing.JFrame {
     private static final long serialVersionUID = 2L;
-
     private MoleculePanel moleculePanelPrincipal;
     private OptionPanel optionPanel;
     private MoleculePanel moleculePreviewPanel;
@@ -44,11 +49,19 @@ public final class PrincipalView extends javax.swing.JFrame {
     private MoleculeGraphPainterInterface moleculeGraphPainter;
 
     private MoleculeDataFactoryInterface moleculeFactory;
+  //Check:OFF: MagicNumber
+    /*
+    * Constructor of the class
+    * @author Cesar G. Guzman Lopez
+    * @version 1.0
+    * @since 1.0
+   */
 
-    public PrincipalView(MoleculeListInterface smilesList,
-            SmileVerificationInterface verifySmile,
-            MoleculeGraphPainterInterface moleculeGraphPainter,
-            MoleculeDataFactoryInterface moleculeFactory) {
+    public PrincipalView(final MoleculeListInterface smilesList,
+
+        final SmileVerificationInterface verifySmile,
+            final MoleculeGraphPainterInterface moleculeGraphPainter,
+            final MoleculeDataFactoryInterface moleculeFactory) {
         super("Smile generator");
         setSize(850, 550);
         setMinimumSize(new Dimension(750, 500));
@@ -61,32 +74,34 @@ public final class PrincipalView extends javax.swing.JFrame {
     }
 
     private void createAndDrawSmile() {
-        String smile = textFieldSmile.getText();
+        final String smile = textFieldSmile.getText();
         if (!verifySmile.isValid(smile)) {
             moleculePanelPrincipal.setMolecule(null);
             generateButton.setEnabled(false);
         }
-        String name = textFieldName.getText();
-        boolean implicitHydrogen = checkBoxHydrogenImplicit.isSelected();
+        final String name = textFieldName.getText();
+        final boolean implicitHydrogen = checkBoxHydrogenImplicit.isSelected();
         try {
-            Smiles smileH = new Smiles(name, smile, "Select hydrogens to replace", implicitHydrogen, verifySmile);
+            final Smiles smileH = new Smiles(name, smile, "Select hydrogens to replace", implicitHydrogen, verifySmile);
             moleculePanelPrincipal
-                    .setMolecule(new Molecule(smileH, verifySmile,  moleculeFactory));
+                    .setMolecule(new Molecule(smileH, verifySmile, moleculeFactory));
         } catch (Exception e) {
             generateButton.setEnabled(false);
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         generateButton.setEnabled(true);
     }
-    private void generate(){
-        MoleculesList selected = MoleculesList.createMoleculesList(verifySmile, moleculeFactory, optionPanel.getMoleculeListMolecule());
-        new WindowsGenerate(moleculePanelPrincipal.getMolecule(), selected,moleculeFactory,verifySmile);
-    }
 
+    private void generate() {
+        final MoleculesList selected = MoleculesList.createMoleculesList(verifySmile, moleculeFactory,
+                optionPanel.getListMolecule());
+        new WindowsGenerate(moleculePanelPrincipal.getMolecule(), selected);
+    }
+    /** initialize all JPanels.*/
     public void initialize() {
         setJMenuBar(new Menu());
         setLayout(new GridBagLayout());
-        //the order is important in the initialization of the components
+        // the order is important in the initialization of the components
         initializeEntrySmile(0, 0, 1, 1);
         initializeMoleculePanelPrincipal(0, 1, 1, 1);
         initializeMoleculePreviewPanel(2, 1, 1, 1);
@@ -100,14 +115,15 @@ public final class PrincipalView extends javax.swing.JFrame {
         checkBoxHydrogenImplicit.setSelected(true);
         setVisible(true);
     }
-    private void initializeEntrySmile(int gridx, int gridy, double weightx, double weighty) {
-        JPanel panelSmile = new JPanel();
+
+    private void initializeEntrySmile(final int gridx, final int gridy, final double weightx, final double weighty) {
+        final JPanel panelSmile = new JPanel();
         panelSmile.setLayout(new GridBagLayout());
         panelSmile.setBorder(javax.swing.BorderFactory.createTitledBorder("Entry"));
 
-        GridBagConstraints gbcPanel = new GridBagConstraints();
+        final GridBagConstraints gbcPanel = new GridBagConstraints();
         gbcPanel.ipadx = 10;
-        JLabel labelSmile = new JLabel("Smile: ");
+        final JLabel labelSmile = new JLabel("Smile: ");
         gbcPanel.gridx = 0;
         gbcPanel.gridy = 0;
         panelSmile.add(labelSmile, gbcPanel);
@@ -120,7 +136,7 @@ public final class PrincipalView extends javax.swing.JFrame {
         panelSmile.add(textFieldSmile, gbcPanel);
         checkBoxHydrogenImplicit = new JCheckBox("Implicit hydrogen");
 
-        JLabel labelSmileName = new JLabel("Name: ");
+        final JLabel labelSmileName = new JLabel("Name: ");
         gbcPanel.gridx = 2;
         gbcPanel.gridy = 0;
         panelSmile.add(labelSmileName, gbcPanel);
@@ -144,7 +160,7 @@ public final class PrincipalView extends javax.swing.JFrame {
         drawSmileButton = new JButton("Draw");
         panelSmile.add(drawSmileButton, gbcPanel);
 
-        GridBagConstraints gbc = new GridBagConstraints();
+        final GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = gridx;
         gbc.gridy = gridy;
         gbc.weightx = weightx;
@@ -157,12 +173,13 @@ public final class PrincipalView extends javax.swing.JFrame {
         add(panelSmile, gbc);
     }
 
-    private void initializeMoleculePanelPrincipal(int gridx, int gridy, double weightx, double weighty) {
+    private void initializeMoleculePanelPrincipal(final int gridx, final int gridy, final double weightx,
+            final double weighty) {
         moleculePanelPrincipal = new MoleculePanel(moleculeGraphPainter);
         moleculePanelPrincipal.setPreferredSize(new Dimension(300, 300));
         moleculePanelPrincipal.setMaximumSize(new Dimension(400, 400));
         moleculePanelPrincipal.setMinimumSize(new Dimension(200, 200));
-        GridBagConstraints gbc = new GridBagConstraints();
+        final GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = gridx;
         gbc.gridy = gridy;
         gbc.weightx = weightx;
@@ -171,14 +188,14 @@ public final class PrincipalView extends javax.swing.JFrame {
         add(moleculePanelPrincipal, gbc);
     }
 
-    private void initializeOptionPanel(int gridx, int gridy, double weightx, double weighty) {
+    private void initializeOptionPanel(final int gridx, final int gridy, final double weightx, final double weighty) {
 
-        optionPanel = new OptionPanel(smilesList, verifySmile,moleculePreviewPanel);
+        optionPanel = new OptionPanel(smilesList, verifySmile, moleculePreviewPanel);
 
         optionPanel.setPreferredSize(new Dimension(200, 300));
         optionPanel.setMaximumSize(new Dimension(250, 400));
         optionPanel.setMinimumSize(new Dimension(190, 200));
-        GridBagConstraints gbc = new GridBagConstraints();
+        final GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = gridx;
         gbc.gridy = gridy;
         gbc.weightx = weightx;
@@ -187,13 +204,13 @@ public final class PrincipalView extends javax.swing.JFrame {
         add(optionPanel, gbc);
     }
 
-
-    private void initializeMoleculePreviewPanel(int gridx, int gridy, double weightx, double weighty) {
+    private void initializeMoleculePreviewPanel(final int gridx, final int gridy, final double weightx,
+            final double weighty) {
         moleculePreviewPanel = new MoleculePanel(moleculeGraphPainter);
         moleculePreviewPanel.setPreferredSize(new Dimension(200, 200));
         moleculePreviewPanel.setMaximumSize(new Dimension(300, 300));
         moleculePreviewPanel.setMinimumSize(new Dimension(180, 180));
-        GridBagConstraints gbc = new GridBagConstraints();
+        final GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = gridx;
         gbc.gridy = gridy;
         gbc.weightx = weightx;
@@ -202,16 +219,16 @@ public final class PrincipalView extends javax.swing.JFrame {
         add(moleculePreviewPanel, gbc);
     }
 
-    private void initializeActionGeneratorPanel(int gridx, int gridy, double weightx, double weighty) {
-        JPanel panelAction = new JPanel();
+    private void initializeActionGeneratorPanel(final int gridx, final int gridy, final double weightx,
+            final double weighty) {
+        final JPanel panelAction = new JPanel();
         panelAction.setLayout(new GridBagLayout());
         panelAction.setBorder(javax.swing.BorderFactory.createTitledBorder("Action"));
-        GridBagConstraints gbcPanel = new GridBagConstraints();
-
+        final GridBagConstraints gbcPanel = new GridBagConstraints();
 
         generateButton = new JButton("Generate");
         panelAction.add(generateButton, gbcPanel);
-        GridBagConstraints gbc = new GridBagConstraints();
+        final GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = gridx;
         gbc.gridy = gridy;
         gbc.weightx = weightx;
@@ -222,27 +239,27 @@ public final class PrincipalView extends javax.swing.JFrame {
     }
 
     class ChangeTextFieldSmile implements DocumentListener {
-        public void changedUpdate(javax.swing.event.DocumentEvent e) {
+        public void changedUpdate(final javax.swing.event.DocumentEvent e) {
             change();
         }
 
-        public void insertUpdate(javax.swing.event.DocumentEvent e) {
+        public void insertUpdate(final javax.swing.event.DocumentEvent e) {
             change();
         }
 
-        public void removeUpdate(javax.swing.event.DocumentEvent e) {
+        public void removeUpdate(final javax.swing.event.DocumentEvent e) {
             change();
         }
 
         public void change() {
-            String textSmile = textFieldSmile.getText();
+            final String textSmile = textFieldSmile.getText();
             drawSmileButton.setEnabled(textSmile.length() > 0);
 
             if (textSmile.length() == 0) {
                 textFieldName.setText(textSmile);
                 return;
             }
-            String textName = textFieldName.getText();
+            final String textName = textFieldName.getText();
             if (textName.length() == 0) {
                 textFieldName.setText(textSmile);
                 return;
@@ -251,8 +268,8 @@ public final class PrincipalView extends javax.swing.JFrame {
                 textFieldName.setText(textSmile);
                 return;
             }
-            if (textName.length() > textSmile.length() &&
-                    textSmile.equals(textName.substring(0, textName.length() - 1))) {
+            if (textName.length() > textSmile.length()
+                && textSmile.equals(textName.substring(0, textName.length() - 1))) {
                 textFieldName.setText(textSmile);
             }
 

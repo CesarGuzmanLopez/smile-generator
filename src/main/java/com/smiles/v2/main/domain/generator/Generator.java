@@ -1,29 +1,17 @@
 package com.smiles.v2.main.domain.generator;
 
-import com.smiles.v2.main.domain.models.Molecule;
-import com.smiles.v2.main.domain.models.MoleculesList;
-import com.smiles.v2.main.interfaces.MoleculeDataFactoryInterface;
-import com.smiles.v2.main.interfaces.SmileVerificationInterface;
-
+/** generator of smiles.
+ *
+ * @author Cesar G G L
+ * @version 1.01
+ * @since 1.0
+*/
 public class Generator {
-    private MoleculesList substitutes;
-    private Molecule principal;
-    private int rSubstitutes;
-    private MoleculeDataFactoryInterface factory;
-    private SmileVerificationInterface smileVerifier;
-
-    public  Generator(
-            MoleculesList substitutes,
-            Molecule principal,
-            int rSubstitutes,
-            MoleculeDataFactoryInterface factory,
-            SmileVerificationInterface smileVerifier ){
-        this.substitutes = substitutes;
-        this.principal = principal;
-        this.rSubstitutes = rSubstitutes;
-        this.factory = factory;
-        this.smileVerifier = smileVerifier;
+    /** This Class is used to generate smiles permutes.
+     *
+     * @TODO generate smiles.
+    */
+    public Generator() {
+      // TODO document why this constructor is empty
     }
-
-
 }

@@ -10,7 +10,7 @@
     <junit.version>5.6.0</junit.version>
     <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
     <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
-    <checkstyle.version>8.45.1</checkstyle.version>
+    <checkstyle.version>10.3</checkstyle.version>
     <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
     <jacoco-maven-plugin.version>0.8.4</jacoco-maven-plugin.version>
     <maven-javadoc-plugin.version>3.0.0</maven-javadoc-plugin.version>
@@ -34,15 +34,12 @@
       <version>2.7.1</version>
     </dependency>
 
-
     <dependency>
       <groupId>org.openscience.cdk</groupId>
       <artifactId>cdk</artifactId>
       <version>2.7.1</version>
       <type>pom</type>
     </dependency>
-
-
 
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -56,8 +53,6 @@
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
-
-
 
     <dependency>
       <groupId>org.openscience.cdk</groupId>
@@ -122,6 +117,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>${maven-checkstyle-plugin.version}</version>
+
         <dependencies>
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
@@ -135,15 +131,20 @@
           </dependency>
         </dependencies>
         <configuration>
-          <configLocation>com/github/ngeor/checkstyle.xml</configLocation>
+          <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>
+          <configLocation>my_config_checks.xml</configLocation>
           <includeTestSourceDirectory>true</includeTestSourceDirectory>
           <skip>${skipTests}</skip>
+          <module name="Indentation">
+            <property name="basicOffset" value="4" />
+            <property name="caseIndent" value="4" />
+          </module>
         </configuration>
         <executions>
           <execution>
             <id>checkstyle-validation</id>
             <phase>none</phase>
-        </execution>
+          </execution>
           <execution>
             <?m2e ignore?>
             <id>checkstyle</id>
@@ -158,6 +159,10 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${maven-surefire-plugin.version}</version>
+        <configuration>
+          <failsOnError>true</failsOnError>
+          <failOnViolation>true</failOnViolation>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>

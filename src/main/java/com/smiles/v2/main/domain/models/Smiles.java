@@ -1,17 +1,14 @@
 package com.smiles.v2.main.domain.models;
-
 import com.smiles.v2.main.interfaces.SmileVerificationInterface;
 import com.smiles.v2.main.interfaces.SmilesHInterface;
-
 public class Smiles implements SmilesHInterface {
-
     private String strSmiles;
     private String message;
     private boolean hydrogenImplicit;
     private String name = "";
-    protected  SmileVerificationInterface smileVerification;
-    public Smiles(String name, String smiles, String message, boolean hydrogenImplicit,
-            SmileVerificationInterface smileVerification) {
+    private SmileVerificationInterface smileVerification;
+    public Smiles(final String name, final String smiles, final String message, final boolean hydrogenImplicit,
+            final SmileVerificationInterface smileVerification) {
         if (smiles == null || message == null || name == null) {
             throw new IllegalArgumentException("Smiles, message or name must be not null");
         }
@@ -28,13 +25,14 @@ public class Smiles implements SmilesHInterface {
         this.hydrogenImplicit = hydrogenImplicit;
     }
 
-    public Smiles(SmilesHInterface smile, SmileVerificationInterface smileVerification) {
+    public Smiles(final SmilesHInterface smile) {
         if (smile == null) {
             throw new IllegalArgumentException("Smiles must be not null");
         }
         if (smile.getName().equals("")) {
             throw new IllegalArgumentException("Name must be not empty");
         }
+        this.smileVerification = ((Smiles) smile).smileVerification;
         if (!smileVerification.isValid(smile.getSmile())) {
             throw new IllegalArgumentException("Smiles is not valid");
         }
@@ -42,33 +40,43 @@ public class Smiles implements SmilesHInterface {
         this.strSmiles = smile.getSmile();
         this.message = smile.getMessage();
         this.hydrogenImplicit = smile.hasHydrogenImplicit();
-        this.smileVerification = smileVerification;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getName() {
         return name;
     }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getSmile() {
         return strSmiles;
     }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getMessage() {
         return message;
     }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean hasHydrogenImplicit() {
         return hydrogenImplicit;
     }
-    protected void renameStrSmiles(String strSmiles) {
-        this.strSmiles = strSmiles;
-    }
-    protected void setSmiles(String strSmiles) {
-        this.strSmiles = strSmiles;
+    /** Verify the smiles.
+     * @param strSmiles the strSmiles to set
+     */
+    protected void setStrSmiles(final String strSmiles) {
+        if (smileVerification.isValid(strSmiles)) this.strSmiles = strSmiles;
+        else throw new IllegalArgumentException("Smiles is not valid");
+
     }
 
 }

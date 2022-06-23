@@ -1,16 +1,16 @@
-package com.smiles.v2.main.framework.cdk;
+package com.smiles.v2.main.framework.cdk.views;
 
 import java.awt.Graphics;
 import com.smiles.v2.main.domain.models.Molecule;
 
 public class JpanelDrawMolecule extends JpanelDrawMoleculeAbstract {
 
-    public JpanelDrawMolecule(Molecule molecule) {
+    public JpanelDrawMolecule(final Molecule molecule) {
         super(molecule);
     }
 
     @Override
-    void paintHerder(Graphics a) {
+    void paintHerder(final Graphics a) {
       // document why this method is empty
       //only DrawMolecule
     }

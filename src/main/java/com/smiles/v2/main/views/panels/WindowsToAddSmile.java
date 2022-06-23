@@ -22,7 +22,7 @@ public class WindowsToAddSmile extends JFrame implements EventListener {
     private SmileVerificationInterface smileVerify;
     private AddSmileHListener addSmileHListener;
 
-    public WindowsToAddSmile(SmileVerificationInterface smileVerify, AddSmileHListener addSmileHListener) {
+    public WindowsToAddSmile(final SmileVerificationInterface smileVerify, final AddSmileHListener addSmileHListener) {
         super();
         if (smileVerify == null) {
             throw new NullPointerException("SmileVerificationInterface is null");
@@ -40,78 +40,83 @@ public class WindowsToAddSmile extends JFrame implements EventListener {
         setVisible(true);
 
     }
-
+    /** Genera View principal generate.*/
     private void initialize() {
 
-        GridBagConstraints gbc = new GridBagConstraints();
+        final GridBagConstraints gbc = new GridBagConstraints();
 
-        JLabel labelSmile = new JLabel("Smile: ");
+        final JLabel labelSmile = new JLabel("Smile: ");
 
         gbc.gridx = 0;
         gbc.gridy = 0;
         add(labelSmile, gbc);
 
-        JTextField textFieldSmile = new JTextField();
+        final JTextField textFieldSmile = new JTextField();
         textFieldSmile.setPreferredSize(new java.awt.Dimension(200, 30));
         gbc.gridx = 1;
         gbc.gridy = 0;
         add(textFieldSmile, gbc);
 
-        JLabel labelSmileName = new JLabel("Name: ");
+        final JLabel labelSmileName = new JLabel("Name: ");
         labelSmileName.setPreferredSize(new java.awt.Dimension(210, 30));
         gbc.gridx = 0;
         gbc.gridy = 1;
         add(labelSmileName, gbc);
 
-        JTextField textFieldSmileName = new JTextField();
+        final JTextField textFieldSmileName = new JTextField();
         textFieldSmileName.setPreferredSize(new java.awt.Dimension(200, 30));
         gbc.gridx = 1;
         gbc.gridy = 1;
         add(textFieldSmileName, gbc);
 
-        JLabel labelSmileDesc = new JLabel("Description: ");
+        final JLabel labelSmileDesc = new JLabel("Description: ");
         labelSmileDesc.setPreferredSize(new java.awt.Dimension(210, 30));
         gbc.gridx = 0;
         gbc.gridy = 2;
         add(labelSmileDesc, gbc);
 
-        JTextField textFieldSmileDesc = new JTextField();
+        final JTextField textFieldSmileDesc = new JTextField();
         textFieldSmileDesc.setPreferredSize(new java.awt.Dimension(200, 30));
         gbc.gridx = 1;
         gbc.gridy = 2;
         add(textFieldSmileDesc, gbc);
 
-        JLabel hydrogensImplicit = new JLabel("Hydrogens are implicit: ");
+        final JLabel hydrogensImplicit = new JLabel("Hydrogens are implicit: ");
         hydrogensImplicit.setPreferredSize(new java.awt.Dimension(210, 30));
         gbc.gridx = 0;
         gbc.gridy = 3;
         add(hydrogensImplicit, gbc);
 
-        JCheckBox checkBoxHydrogenImplicit = new JCheckBox();
+        final JCheckBox checkBoxHydrogenImplicit = new JCheckBox();
         checkBoxHydrogenImplicit.setPreferredSize(new java.awt.Dimension(200, 30));
         gbc.gridx = 1;
         gbc.gridy = 3;
         add(checkBoxHydrogenImplicit, gbc);
 
-        JButton cancelButton = new JButton("cancel");
+        final JButton cancelButton = new JButton("cancel");
 
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         cancelButton.addActionListener(e -> dispose());
         add(cancelButton, gbc);
-        JButton addButton = new JButton("Add");
+        final JButton addButton = new JButton("Add");
         gbc.gridx = 1;
         gbc.gridy = 4;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        addButton.addActionListener(e -> add(textFieldSmile.getText(), textFieldSmileName.getText(),
+        addButton.addActionListener(e -> addToSmile(textFieldSmile.getText(), textFieldSmileName.getText(),
                 textFieldSmileDesc.getText(), checkBoxHydrogenImplicit.isSelected()));
         add(addButton, gbc);
     }
-
-    void add(String smile, String name, String description, boolean hydrogensImplicit) {
+    /** AddSmile to panel view.
+     * @param smile smile to add.
+     * @param name name of smile.
+     * @param description The description of smile.
+     * @param hydrogensImplicit The hydrogen implicit.
+     */
+    void addToSmile(final String smile, final String name, final String description, final boolean hydrogensImplicit) {
         try {
-            SmilesHInterface smilesFactory = new Smiles(name, smile, description, hydrogensImplicit, smileVerify);
+            final SmilesHInterface smilesFactory = new Smiles(name, smile, description, hydrogensImplicit, smileVerify);
             addSmileHListener.addSmileHEvent(new AddSmileHEvent(this, smilesFactory));
             dispose();
         } catch (Exception e) {
