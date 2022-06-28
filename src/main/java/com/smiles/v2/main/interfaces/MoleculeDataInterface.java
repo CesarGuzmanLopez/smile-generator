@@ -38,7 +38,8 @@ public interface MoleculeDataInterface extends MoleculeComparableInterface {
      * @param mol
      * @param selectedIn the selected atom in the molecule
      * @param selectedOut the selected atom in the substituted molecule.
+     * @param numBond the number of bonds to connect the selected.
     */
-    void  addMoleculeData(Molecule mol, Integer selectedIn, Integer selectedOut);
+    void  addMoleculeData(Molecule mol, Integer selectedIn, Integer selectedOut, Integer numBond);
 
 }

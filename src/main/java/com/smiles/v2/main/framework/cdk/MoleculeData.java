@@ -1,8 +1,6 @@
 package com.smiles.v2.main.framework.cdk;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.exception.CDKException;
@@ -13,6 +11,7 @@ import org.openscience.cdk.smiles.SmiFlavor;
 import org.openscience.cdk.smiles.SmilesGenerator;
 import org.openscience.cdk.smiles.SmilesParser;
 import org.openscience.cdk.interfaces.IBond;
+import org.openscience.cdk.interfaces.IBond.Order;
 import com.smiles.v2.main.domain.models.Molecule;
 import com.smiles.v2.main.interfaces.AtomInterface;
 import com.smiles.v2.main.interfaces.MoleculeDataInterface;
@@ -154,14 +153,13 @@ public class MoleculeData implements MoleculeDataInterface {
      */
     @Override
     public void addMoleculeData(final Molecule moleculeSubstituent, final Integer selectedPrincipal,
-            final Integer selectedSubstituent) {
+            final Integer selectedSubstituent, final Integer numBond) {
         int initNumAtoms = moleculeContainer.getAtomCount();
-
+        Order bond = selectBond(numBond);
         int numAtomPrincipalSelected = (selectedPrincipal != null) ? selectedPrincipal : 0; // NOSONAR
         int numAtomSubstituentSelected = (selectedSubstituent != null)
-                ? moleculeContainer.getAtomCount() + selectedSubstituent //NOSONAR
+                ? moleculeContainer.getAtomCount() + selectedSubstituent // NOSONAR
                 : moleculeContainer.getAtomCount();
-
         MoleculeData moleculeDataSubstituent = (MoleculeData) moleculeSubstituent.getMoleculeData();
         moleculeContainer.add(moleculeDataSubstituent.moleculeContainer);
         int totalNumAtoms = moleculeContainer.getAtomCount();
@@ -169,39 +167,70 @@ public class MoleculeData implements MoleculeDataInterface {
             final AtomSelectable temporal = new AtomSelectable(moleculeContainer.getAtom(i), i);
             listAtoms.add(temporal);
         }
-
         if (molecule.hasHydrogenImplicit()) {
-            numAtomPrincipalSelected = realSelectedAndDecrease(numAtomPrincipalSelected);
+            numAtomPrincipalSelected = realSelectedAndDecrease(numAtomPrincipalSelected, numBond);
         }
         if (moleculeSubstituent.hasHydrogenImplicit()) {
-            numAtomSubstituentSelected = realSelectedAndDecrease(numAtomSubstituentSelected);
+            numAtomSubstituentSelected = realSelectedAndDecrease(numAtomSubstituentSelected, numBond);
         }
-
-        moleculeContainer.addBond(numAtomPrincipalSelected, numAtomSubstituentSelected, IBond.Order.SINGLE);
+        moleculeContainer.addBond(numAtomPrincipalSelected, numAtomSubstituentSelected, bond);
         /* unselected IAtom */
         if (selectedPrincipal != null) selectOrderAtom(getAtom(selectedPrincipal));
     }
 
     /**
+     *
+     * @param numBond
+     * @return The type bond selected
+     */
+    private Order selectBond(final Integer numBond) {
+        Order bond;
+        switch (numBond) {
+        case 1:// NOSONAR
+            bond = IBond.Order.SINGLE;
+            break;
+        case 2:// NOSONAR
+            bond = IBond.Order.DOUBLE;
+            break;
+        case 3:// NOSONAR
+            bond = IBond.Order.TRIPLE;
+            break;
+        case 4:// NOSONAR
+            bond = IBond.Order.QUADRUPLE;
+            break;
+        case 5:// NOSONAR
+            bond = IBond.Order.QUINTUPLE;
+            break;
+        case 6:// NOSONAR
+            bond = IBond.Order.SEXTUPLE;
+            break;
+        default:
+            bond = IBond.Order.SINGLE;
+            break;
+        }
+        return bond;
+    }
+
+    /**
      * @param selected
+     * @param numBond
      * @return the number of atom selected and decreased
      */
-    private int realSelectedAndDecrease(final Integer selected) {
+    private int realSelectedAndDecrease(final Integer selected, final Integer numBond) {
         int numReal = selected;
-        if (getAtom(selected).getImplicitHydrogens() <= 0) {
+        if (getAtom(selected).getImplicitHydrogens() < numBond) {
             AtomCDK atom = (AtomCDK) getAtom(selected);
-
             for (IBond bond : atom.bonds()) {
                 IAtom other = bond.getOther(atom.getIAtom());
                 if (other.getSymbol().equals(atom.getSymbol()) && other.getImplicitHydrogenCount() > 0) {
                     numReal = other.getIndex();
-                    if(bond.getOrder() == IBond.Order.SINGLE) break;
-
                 }
             }
         }
         AtomInterface atom = getAtom(numReal);
-        atom.decreaseImplicitHydrogens();
+        for (int i = 0; i < numBond; i++) {
+            atom.decreaseImplicitHydrogens();
+        }
         return numReal;
     }
 

@@ -106,7 +106,6 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
     public String toString() {
         return getMoleculeData().absoluteSmile();
     }
-
     /**
      * Return a fusion molecule Principal wit substituent.
      *
@@ -118,10 +117,25 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
      */
     public static Molecule fusionMolecule(final Molecule principal, final Molecule substituent,
             final Integer numAtomPrincipal, final Integer numAtomSubstitute) {
+        return fusionMolecule(principal, substituent, numAtomPrincipal, numAtomSubstitute, 1);
+    }
+
+    /**
+     * Return a fusion molecule Principal wit substituent.
+     *
+     * @param principal         The molecule to fusion
+     * @param substituent       The substituent to fusion
+     * @param numAtomPrincipal  substitution of the principal molecule
+     * @param numAtomSubstitute substitution of the substituent molecule
+     * @param numBond Number of bonds between the principal and substituent
+     * @return Molecule The fusion molecule
+     */
+    public static Molecule fusionMolecule(final Molecule principal, final Molecule substituent,
+            final Integer numAtomPrincipal, final Integer numAtomSubstitute, final Integer numBond) {
         verifyToSubstitute(principal, substituent, numAtomPrincipal, numAtomSubstitute);
-        Molecule substituentClone = new Molecule(substituent,true);
+        Molecule substituentClone = new Molecule(substituent, true);
         Molecule fusion = new Molecule(principal, principal.getName() + " - " + substituentClone.getName(), true);
-        fusion.getMoleculeData().addMoleculeData(substituentClone, numAtomPrincipal, numAtomSubstitute);
+        fusion.getMoleculeData().addMoleculeData(substituentClone, numAtomPrincipal, numAtomSubstitute, numBond);
         fusion.resetSmile();
         return fusion;
     }
@@ -172,7 +186,6 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
                 && !principal.getMoleculeData().getListAtomsSelected().contains(principal.getAtom(numAtomPrincipal))) {
             throw new NullPointerException("The atom no selected");
         }
-
         if (numAtomPrincipal != null && principal.getMoleculeData().getListAtomsSelected().isEmpty()) {
             throw new NullPointerException("molecule has no selected atoms");
         }
