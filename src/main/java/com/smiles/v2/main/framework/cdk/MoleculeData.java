@@ -1,9 +1,12 @@
 package com.smiles.v2.main.framework.cdk;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-
 import org.openscience.cdk.DefaultChemObjectBuilder;
+import org.openscience.cdk.exception.CDKException;
+import org.openscience.cdk.exception.InvalidSmilesException;
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.smiles.SmiFlavor;
@@ -25,8 +28,8 @@ public class MoleculeData implements MoleculeDataInterface {
         final SmilesParser smileParser = new SmilesParser(DefaultChemObjectBuilder.getInstance());
         try {
             moleculeContainer = smileParser.parseSmiles(molecule.getSmile());
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Molecule error");
+        } catch (InvalidSmilesException e) {
+            throw new IllegalArgumentException("Invalid Smiles: " + molecule.getSmile());
         }
         selectedList = new ArrayList<>();
         listAtoms = new ArrayList<>();
@@ -39,7 +42,7 @@ public class MoleculeData implements MoleculeDataInterface {
         this.molecule = molecule;
         try {
             moleculeContainer = ((MoleculeData) moleculeData).getMoleculeContainer().clone();
-        } catch (Exception e) {
+        } catch (Exception e) { // NOSONAR
             throw new IllegalArgumentException("Molecule clone error");
         }
         listAtoms = new ArrayList<>();
@@ -47,12 +50,10 @@ public class MoleculeData implements MoleculeDataInterface {
         for (int i = 0; i < moleculeContainer.getAtomCount(); i++) {
             final AtomSelectable temporal = new AtomSelectable(moleculeContainer.getAtom(i), i);
             listAtoms.add(temporal);
-            for (AtomInterface atom : moleculeData.getListAtomsSelected()) {
-                if (atom.getId() == i) {
-                    selectOrderAtom(temporal);
-                    break;
-                }
-            }
+        }
+        for (AtomInterface atom : moleculeData.getListAtomsSelected()) {
+            AtomInterface atomToSelected = getAtom(atom.getId());
+            selectedList.add(atomToSelected);
         }
     }
 
@@ -102,14 +103,12 @@ public class MoleculeData implements MoleculeDataInterface {
      */
     @Override
     public void selectOrderAtom(final AtomInterface atom) {
-
         if (!selectedList.contains(atom)) {
             selectedList.add(atom);
         } else {
             selectedList.remove(atom);
         }
         ((AtomSelectable) atom).selected();
-
     }
 
     /**
@@ -118,7 +117,6 @@ public class MoleculeData implements MoleculeDataInterface {
     @Override
     public List<AtomInterface> getListAtomsSelected() {
         return selectedList;
-
     }
 
     /**
@@ -128,13 +126,13 @@ public class MoleculeData implements MoleculeDataInterface {
     public int compareTo(final Molecule moleculeToCompare) {
         final MoleculeData moleculeData = ((MoleculeData) moleculeToCompare.getMoleculeData());
         final IAtomContainer iAtomContainerToCompare = moleculeData.moleculeContainer;
-        final SmilesGenerator generator = new SmilesGenerator(SmiFlavor.Isomeric);
+        final SmilesGenerator generator = new SmilesGenerator(SmiFlavor.Absolute);
         try {
             final String smiles1 = generator.create(moleculeContainer);
             final String smiles2 = generator.create(iAtomContainerToCompare);
             return smiles1.compareTo(smiles2);
-        } catch (Exception e) {
-            throw new UnsupportedOperationException("Error in compareTo");
+        } catch (CDKException e) {
+            throw new UnsupportedOperationException("Error in compareTo + SMILES could not be created");
         }
     }
 
@@ -142,12 +140,12 @@ public class MoleculeData implements MoleculeDataInterface {
      * {@inheritDoc}
      */
     @Override
-    public final String isomericSmile() {
-        final SmilesGenerator generator = new SmilesGenerator(SmiFlavor.Isomeric);
+    public final String absoluteSmile() {
+        final SmilesGenerator generator = new SmilesGenerator(SmiFlavor.Absolute);
         try {
             return generator.create(moleculeContainer);
-        } catch (Exception e) {
-            throw new UnsupportedOperationException("Error in Isomeric Smile");
+        } catch (CDKException e) {
+            throw new UnsupportedOperationException("Error in CDKException Smile");
         }
     }
 
@@ -155,16 +153,66 @@ public class MoleculeData implements MoleculeDataInterface {
      * {@inheritDoc}
      */
     @Override
-    public boolean addMoleculeDataInterface(final Molecule moleculeSubstituent, final AtomInterface selectedPrincipal,
-            final AtomInterface selectedSubstituent) {
-        final int numAtomInit = moleculeContainer.getAtomCount();
-        final MoleculeData moleculeDataSubstituent = (MoleculeData) moleculeSubstituent.getMoleculeData();
+    public void addMoleculeData(final Molecule moleculeSubstituent, final Integer selectedPrincipal,
+            final Integer selectedSubstituent) {
+        int initNumAtoms = moleculeContainer.getAtomCount();
+
+        int numAtomPrincipalSelected = (selectedPrincipal != null) ? selectedPrincipal : 0; // NOSONAR
+        int numAtomSubstituentSelected = (selectedSubstituent != null)
+                ? moleculeContainer.getAtomCount() + selectedSubstituent //NOSONAR
+                : moleculeContainer.getAtomCount();
+
+        MoleculeData moleculeDataSubstituent = (MoleculeData) moleculeSubstituent.getMoleculeData();
         moleculeContainer.add(moleculeDataSubstituent.moleculeContainer);
-        moleculeContainer.addBond(selectedPrincipal.getId(), numAtomInit + selectedSubstituent.getId(),
-                IBond.Order.SINGLE);
+        int totalNumAtoms = moleculeContainer.getAtomCount();
+        for (int i = initNumAtoms; i < totalNumAtoms; i++) {
+            final AtomSelectable temporal = new AtomSelectable(moleculeContainer.getAtom(i), i);
+            listAtoms.add(temporal);
+        }
 
-        return false;
+        if (molecule.hasHydrogenImplicit()) {
+            numAtomPrincipalSelected = realSelectedAndDecrease(numAtomPrincipalSelected);
+        }
+        if (moleculeSubstituent.hasHydrogenImplicit()) {
+            numAtomSubstituentSelected = realSelectedAndDecrease(numAtomSubstituentSelected);
+        }
 
+        moleculeContainer.addBond(numAtomPrincipalSelected, numAtomSubstituentSelected, IBond.Order.SINGLE);
+        /* unselected IAtom */
+        if (selectedPrincipal != null) selectOrderAtom(getAtom(selectedPrincipal));
     }
 
+    /**
+     * @param selected
+     * @return the number of atom selected and decreased
+     */
+    private int realSelectedAndDecrease(final Integer selected) {
+        int numReal = selected;
+        if (getAtom(selected).getImplicitHydrogens() <= 0) {
+            AtomCDK atom = (AtomCDK) getAtom(selected);
+
+            for (IBond bond : atom.bonds()) {
+                IAtom other = bond.getOther(atom.getIAtom());
+                if (other.getSymbol().equals(atom.getSymbol()) && other.getImplicitHydrogenCount() > 0) {
+                    numReal = other.getIndex();
+                    if(bond.getOrder() == IBond.Order.SINGLE) break;
+
+                }
+            }
+        }
+        AtomInterface atom = getAtom(numReal);
+        atom.decreaseImplicitHydrogens();
+        return numReal;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AtomInterface getAtom(final int number) {
+        for (AtomInterface atom : listAtoms) {
+            if (atom.getId() == number) return atom;
+        }
+        throw new IllegalStateException("Atom not found atomInterface getAtom.");
+    }
 }

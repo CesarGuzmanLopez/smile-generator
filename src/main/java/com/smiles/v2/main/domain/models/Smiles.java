@@ -41,7 +41,12 @@ public class Smiles implements SmilesHInterface {
         this.message = smile.getMessage();
         this.hydrogenImplicit = smile.hasHydrogenImplicit();
     }
-
+    /**
+     * @param newName
+    */
+    protected void setName(final String newName) {
+        this.name = newName;
+    }
     /**
      * {@inheritDoc}
      */

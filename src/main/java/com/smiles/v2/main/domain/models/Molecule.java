@@ -1,5 +1,6 @@
 package com.smiles.v2.main.domain.models;
 
+import com.smiles.v2.main.interfaces.AtomInterface;
 import com.smiles.v2.main.interfaces.MoleculeComparableInterface;
 import com.smiles.v2.main.interfaces.MoleculeDataFactoryInterface;
 import com.smiles.v2.main.interfaces.MoleculeDataInterface;
@@ -10,34 +11,58 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
     private MoleculeDataFactoryInterface moleculeDataFactory;
     private MoleculeDataInterface moleculeDataOfSmile;
 
-    public Molecule(final SmilesHInterface smile, final SmileVerificationInterface smileVerification,
-            final MoleculeDataFactoryInterface moleculeFactory) {
+    public Molecule(final SmilesHInterface smile, final MoleculeDataFactoryInterface moleculeFactory) {
         super(smile);
         this.moleculeDataFactory = moleculeFactory;
-        initialize();
+        moleculeDataOfSmile = moleculeDataFactory.getMoleculeDataOfSmile(this);
+        resetSmile();
     }
 
     public Molecule(final String name, final String smiles, final String message, final boolean hydrogenImplicit,
             final SmileVerificationInterface smileVerification,
-            final MoleculeDataFactoryInterface moleculeDataOfSmile) {
+            final MoleculeDataFactoryInterface moleculeDataOfSmileFactory) {
         super(name, smiles, message, hydrogenImplicit, smileVerification);
-        this.moleculeDataFactory = moleculeDataOfSmile;
-        initialize();
+        this.moleculeDataFactory = moleculeDataOfSmileFactory;
+        moleculeDataOfSmile = this.moleculeDataFactory.getMoleculeDataOfSmile(this);
+        resetSmile();
     }
 
     public Molecule(final Molecule molecule) {
         super(molecule);
         this.moleculeDataFactory = molecule.moleculeDataFactory;
-        initialize();
+        moleculeDataOfSmile = moleculeDataFactory.getMoleculeDataOfSmile(this);
+        resetSmile();
+    }
+
+    public Molecule(final Molecule molecule, final boolean cloneData) {
+        super(molecule);
+        this.moleculeDataFactory = molecule.moleculeDataFactory;
+        if (cloneData) {
+            moleculeDataOfSmile = moleculeDataFactory.getMoleculeDataOfSmile(molecule, molecule.getMoleculeData());
+        } else {
+            moleculeDataOfSmile = moleculeDataFactory.getMoleculeDataOfSmile(this);
+        }
+        resetSmile();
+    }
+
+    public Molecule(final Molecule molecule, final String newName, final boolean cloneData) {
+        super(molecule);
+        this.moleculeDataFactory = molecule.moleculeDataFactory;
+        if (cloneData) {
+            moleculeDataOfSmile = moleculeDataFactory.getMoleculeDataOfSmile(molecule, molecule.getMoleculeData());
+        } else {
+            moleculeDataOfSmile = moleculeDataFactory.getMoleculeDataOfSmile(this);
+        }
+        resetSmile();
+        setName(newName);
     }
 
     /**
-     * initialize the molecule data and reset smile.
-     *
+     * @param index
+     * @return Atom by index id
      */
-    private void initialize() {
-        moleculeDataOfSmile = moleculeDataFactory.getMoleculeDataOfSmile(this);
-        resetSmile();
+    public AtomInterface getAtom(final int index) {
+        return moleculeDataOfSmile.getAtom(index);
     }
 
     /**
@@ -79,59 +104,77 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
 
     @Override
     public String toString() {
-        return getMoleculeData().isomericSmile();
+        return getMoleculeData().absoluteSmile();
     }
 
     /**
      * Return a fusion molecule Principal wit substituent.
      *
-     * @param principal          The molecule to fusion
-     * @param substituent        The substituent to fusion
-     * @param numAtomPrincipal   substitution of the principal molecule
+     * @param principal         The molecule to fusion
+     * @param substituent       The substituent to fusion
+     * @param numAtomPrincipal  substitution of the principal molecule
      * @param numAtomSubstitute substitution of the substituent molecule
      * @return Molecule The fusion molecule
      */
     public static Molecule fusionMolecule(final Molecule principal, final Molecule substituent,
             final Integer numAtomPrincipal, final Integer numAtomSubstitute) {
-
         verifyToSubstitute(principal, substituent, numAtomPrincipal, numAtomSubstitute);
-        // TODO make the substitution
-        return null;
+        Molecule substituentClone = new Molecule(substituent,true);
+        Molecule fusion = new Molecule(principal, principal.getName() + " - " + substituentClone.getName(), true);
+        fusion.getMoleculeData().addMoleculeData(substituentClone, numAtomPrincipal, numAtomSubstitute);
+        fusion.resetSmile();
+        return fusion;
+    }
+
+    /**
+     * select a atom id.
+     *
+     * @param index the atom id.
+     */
+    public void selectAtom(final int index) {
+        moleculeDataOfSmile.selectOrderAtom(getAtom(index));
     }
 
     /**
      * Reset Smile input for isomericSmile.
      */
     public void resetSmile() {
-        setStrSmiles(getMoleculeData().isomericSmile());
+        setStrSmiles(getMoleculeData().absoluteSmile());
     }
 
     /**
      * Verify if the molecule can be substituted.
      *
-     * @param principal          The molecule to fusion
-     * @param substituent        The substituent to fusion
-     * @param numAtomPrincipal   substitution of the principal molecule
+     * @param principal         The molecule to fusion
+     * @param substituent       The substituent to fusion
+     * @param numAtomPrincipal  substitution of the principal molecule
      * @param numAtomSubstitute substitution of the substituent molecule
      */
     private static void verifyToSubstitute(final Molecule principal, final Molecule substituent,
             final Integer numAtomPrincipal, final Integer numAtomSubstitute) {
         if (principal == null || substituent == null) {
-            throw new NullPointerException("Molecule is null");
+            throw new NullPointerException("molecule principal or substituent is null");
         }
-        if ((numAtomPrincipal < 0 || numAtomPrincipal == null) && principal.getNumberAtoms() > 1) {
-            throw new NullPointerException("toSubstitute is null or 0 ");
+        if (principal.getNumberAtoms() > 1 && principal.getMoleculeData().getListAtomsSelected().isEmpty()
+                || substituent.getNumberAtoms() > 1 && substituent.getMoleculeData().getListAtomsSelected().isEmpty()) {
+            throw new NullPointerException("molecule has no selected atoms and are more than 1");
         }
-        if (numAtomPrincipal >= principal.getMoleculeData().getListAtomsSelected().size()
-                && principal.getMoleculeData().getListAtomsSelected().size() > 1) {
-            throw new NullPointerException("toSubstitute is greater than number of atoms selected");
+        verifyEntryAtomSelected(principal, numAtomPrincipal);
+        verifyEntryAtomSelected(substituent, numAtomSubstitute);
+
+    }
+
+    private static void verifyEntryAtomSelected(final Molecule principal, final Integer numAtomPrincipal) {
+        if (numAtomPrincipal == null && principal.getNumberAtoms() > 1) {
+            throw new NullPointerException("toSubstitute is null or 0 and principal has more than 1 atom");
         }
-        if ((numAtomSubstitute < 0 || numAtomSubstitute == null) && substituent.getNumberAtoms() > 1) {
-            throw new NullPointerException("numAtomSubstitute is null or 0 ");
+        if (numAtomPrincipal != null && principal.getNumberAtoms() > 1
+                && !principal.getMoleculeData().getListAtomsSelected().contains(principal.getAtom(numAtomPrincipal))) {
+            throw new NullPointerException("The atom no selected");
         }
-        if (numAtomSubstitute >= substituent.getMoleculeData().getListAtomsSelected().size()
-                && substituent.getMoleculeData().getListAtomsSelected().size() > 1) {
-            throw new NullPointerException("toSubstitute is greater than number of atoms selected");
+
+        if (numAtomPrincipal != null && principal.getMoleculeData().getListAtomsSelected().isEmpty()) {
+            throw new NullPointerException("molecule has no selected atoms");
         }
     }
 

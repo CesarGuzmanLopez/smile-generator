@@ -44,7 +44,7 @@ public class MoleculesList implements MoleculeListInterface {
         if (!isUniqueName(name)) throw new IllegalArgumentException("Name already exists");
 
         final SmilesHInterface smileH = new Smiles(name, smile, message, hydrogen, smileVerifier);
-        moleculeList.add(new Molecule(smileH, smileVerifier, factoryMol));
+        moleculeList.add(new Molecule(smileH, factoryMol));
         return moleculeList.size() - 1;
     }
     /** Returns if name is unique in the molecule list.
@@ -64,7 +64,7 @@ public class MoleculesList implements MoleculeListInterface {
     public int addSmiles(final SmilesHInterface smile) {
         if (!isUniqueName(smile.getName())) throw new IllegalArgumentException("Name already exists");
 
-        moleculeList.add(new Molecule(smile, smileVerifier, factoryMol));
+        moleculeList.add(new Molecule(smile, factoryMol));
         return moleculeList.size() - 1;
     }
     /**
@@ -74,7 +74,6 @@ public class MoleculesList implements MoleculeListInterface {
     public Molecule getMolecule(final String name) {
         for (Molecule molecule : moleculeList) {
             if (molecule.getName().equals(name)) return molecule;
-
         }
         return null;
     }

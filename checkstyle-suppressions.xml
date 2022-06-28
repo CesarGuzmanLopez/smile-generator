@@ -5,4 +5,6 @@
   <suppress files="[\\/]com\/smiles\/v2\/main\/views[\\/]" checks="MagicNumber"/>
   <suppress files="[\\/]com\/smiles\/v2\/main\/framework\/cdk\/views[\\/]" checks="MagicNumber"/>
   <suppress files="[\\/]com[\\/]" checks="JavadocVariable"/>
+  <suppress files="test" checks="JavadocPackage" />
+  <suppress files="test" checks="MagicNumber"/>
 </suppressions>

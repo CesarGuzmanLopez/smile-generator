@@ -84,7 +84,7 @@ public final class PrincipalView extends javax.swing.JFrame {
         try {
             final Smiles smileH = new Smiles(name, smile, "Select hydrogens to replace", implicitHydrogen, verifySmile);
             moleculePanelPrincipal
-                    .setMolecule(new Molecule(smileH, verifySmile, moleculeFactory));
+                    .setMolecule(new Molecule(smileH, moleculeFactory));
         } catch (Exception e) {
             generateButton.setEnabled(false);
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

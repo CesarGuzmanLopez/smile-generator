@@ -22,4 +22,22 @@ public interface AtomInterface {
      * @return String smile
      */
     String toString();
+
+    /**
+     * get the number of implicit hydrogens of the atom.
+     * @return int
+     */
+    int getImplicitHydrogens();
+
+    /**
+     * set the number of implicit hydrogens of the atom.
+     * @param implicitHydrogens to redifine the number of implicit hydrogens.
+    */
+    void setImplicitHydrogens(int implicitHydrogens);
+
+    /**
+     * decrease Hydrogen from implicit atoms.
+     */
+    void decreaseImplicitHydrogens();
+
 }

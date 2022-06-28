@@ -19,20 +19,26 @@ public interface MoleculeDataInterface extends MoleculeComparableInterface {
     /**
      * @return the list of the all atoms.
      */
-    List<AtomInterface> getListAtoms();
-        /**
+     List<AtomInterface> getListAtoms();
+    /**
      * @return the list of the selected atoms.
      */
     List<AtomInterface> getListAtomsSelected();
     /**
      * @return the Isomeric Smile
      */
-    String isomericSmile();
+    String absoluteSmile();
+    /**
+     * @param id to search the atom.
+     * @return the atom with ID specified.
+    */
+    AtomInterface getAtom(int id);
+
     /** fusion two molecules.
      * @param mol
      * @param selectedIn the selected atom in the molecule
      * @param selectedOut the selected atom in the substituted molecule.
-     * @return true if the molecules are fusioned.
     */
-    boolean  addMoleculeDataInterface(Molecule mol, AtomInterface selectedIn, AtomInterface selectedOut);
+    void  addMoleculeData(Molecule mol, Integer selectedIn, Integer selectedOut);
+
 }
