@@ -15,4 +15,10 @@ public interface SmileVerificationInterface {
      * @return true if the smile is valid.
      */
     boolean isValid(SmilesHInterface smile);
+    /**
+     * @param smile to AbsoluteSmiles.
+     * @return AbsoluteSmiles.
+    */
+    String toAbsoluteSmiles(String smile);
+
 }

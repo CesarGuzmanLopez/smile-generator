@@ -12,14 +12,16 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
-/**Class WriteAndGenerate.
+
+/**
+ * Class WriteAndGenerate.
+ *
  * @author Cesar G G L
  * @version 1.0
  * @since 1.0
  * @Charset: UTF-8
- * @Date: 01/05/20201
- * CHARSET
-*/
+ * @Date: 01/05/20201 CHARSET
+ */
 public class WriteAndGenerate {
     static final Charset CHARSET = StandardCharsets.UTF_8;
     private MoleculesList substitutes;
@@ -29,36 +31,33 @@ public class WriteAndGenerate {
     private BufferedWriter writeDescription;
     private BufferedWriter writeOutput;
     private File fileOutput;
+    private int numBounds;
 
-    public WriteAndGenerate(final MoleculesList substitutes,
-            final Molecule principal,
-            final int rSubstitutes,
-            final File fileDescription, final File fileOutput) {
-        verifyEntry(substitutes, principal, rSubstitutes, fileDescription,
-                fileOutput);
+    public WriteAndGenerate(final MoleculesList substitutes, final Molecule principal, final int rSubstitutes,
+            final int numBounds, final File fileDescription, final File fileOutput) {
+        verifyEntry(principal, substitutes, rSubstitutes, fileDescription, fileOutput);
         this.substitutes = substitutes;
         this.principal = principal;
         this.rSubstitutes = rSubstitutes;
         this.fileDescription = fileDescription;
         this.fileOutput = fileOutput;
+        this.numBounds = numBounds;
         verificationAndCreateFiles();
 
     }
-    /** Verify a entry for generator.
-     * @param substitutes To Substituent Principal
-     * @param principal The molecule Principal
-     * @param rSubstitutes Number profundity Substituent
+
+    /**
+     * Verify a entry for generator.
+     *
+     * @param substitutes     To Substituent Principal
+     * @param principal       The molecule Principal
+     * @param rSubstitutes    Number profundity Substituent
      * @param fileDescription File save Description
-     * @param fileOutput    File save Output
+     * @param fileOutput      File save Output
      * @return true if the entry is correct
-    */
-    public static final boolean verifyEntry(
-            final MoleculesList substitutes,
-            final Molecule principal,
-            final int rSubstitutes,
-            final File fileDescription,
-            final File fileOutput
-    ) {
+     */
+    public static final boolean verifyEntry(final Molecule principal, final MoleculesList substitutes,
+            final int rSubstitutes, final File fileDescription, final File fileOutput) {
         if (substitutes == null || principal == null) {
             throw new IllegalArgumentException("Null argument");
         }
@@ -90,10 +89,13 @@ public class WriteAndGenerate {
         }
         return true;
     }
-    /** Verify if Atom is selected o only is a Atom.
-     *  @param molecule Molecule to verify
+
+    /**
+     * Verify if Atom is selected o only is a Atom.
+     *
+     * @param molecule Molecule to verify
      * @return true if is a Atom or selected
-    */
+     */
     static final boolean aAtomOrSelected(final Molecule molecule) {
         final MoleculeDataInterface moleculeData = molecule.getMoleculeData();
         if (moleculeData == null) {
@@ -108,8 +110,10 @@ public class WriteAndGenerate {
 
         return !moleculeData.getListAtoms().isEmpty();
     }
-    /** Verify and create files.
-    */
+
+    /**
+     * Verify and create files.
+     */
     public final void verificationAndCreateFiles() {
         boolean createFile = true;
         try {
@@ -131,16 +135,19 @@ public class WriteAndGenerate {
 
         }
     }
-    /** Write and generate.
-    */
+
+    /**
+     * Write and generate.
+     */
     public final void generate() throws IOException {
         writeHeadDescription();
-
+        Generator generator = new Generator(principal, substitutes, rSubstitutes, numBounds);
         closeFiles();
     }
 
-    /** Write Head Description.
-    */
+    /**
+     * Write Head Description.
+     */
     private void writeHeadDescription() throws IOException {
         if (writeDescription != null) {
             writeDescription.write(principal.getName() + "\n");
@@ -157,8 +164,9 @@ public class WriteAndGenerate {
         }
     }
 
-    /** Close Files.
-    */
+    /**
+     * Close Files.
+     */
     protected void closeFiles() throws IOException {
         if (writeDescription != null) {
             writeDescription.close();

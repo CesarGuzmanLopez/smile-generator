@@ -22,7 +22,7 @@ public class MoleculeData implements MoleculeDataInterface {
     private List<AtomInterface> listAtoms;
     private List<AtomInterface> selectedList;
 
-    MoleculeData(final Molecule molecule) {
+    MoleculeData( Molecule molecule) {//NOSONAR no necessary clone molecule
         this.molecule = molecule;
         final SmilesParser smileParser = new SmilesParser(DefaultChemObjectBuilder.getInstance());
         try {
@@ -37,7 +37,7 @@ public class MoleculeData implements MoleculeDataInterface {
         }
     }
 
-    public MoleculeData(final Molecule molecule, final MoleculeDataInterface moleculeData) {
+    public MoleculeData( Molecule molecule, final MoleculeDataInterface moleculeData) { //NOSONAR No clone
         this.molecule = molecule;
         try {
             moleculeContainer = ((MoleculeData) moleculeData).getMoleculeContainer().clone();

@@ -29,4 +29,9 @@ public interface MoleculeListInterface  {
      * @return Molecule with name name.
     */
     Molecule getMolecule(String name);
+    /**
+     * @param molecule molecule to be added.
+     * @return number in the insert
+     */
+    int addMolecule(Molecule molecule);
 }

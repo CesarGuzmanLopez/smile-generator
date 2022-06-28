@@ -31,6 +31,7 @@ public final class OptionPanel extends javax.swing.JPanel
     private JPanel panelWithCheckBox;
     private SmileVerificationInterface smileVerify;
     private MoleculePanel moleculePreview;
+
     public OptionPanel(final MoleculeListInterface smilesList, final SmileVerificationInterface smileVerify,
             final MoleculePanel moleculePreview) {
         super();
@@ -138,8 +139,7 @@ public final class OptionPanel extends javax.swing.JPanel
     @Override
     public int addSmiles(final SmilesHInterface smile) {
         final int numberSmile = moleculeList.addSmiles(smile);
-        addToPanelCheckBox(numberSmile,
-                moleculeList.getListMolecule().get(numberSmile));
+        addToPanelCheckBox(numberSmile, moleculeList.getListMolecule().get(numberSmile));
 
         revalidate();
         repaint();
@@ -147,15 +147,28 @@ public final class OptionPanel extends javax.swing.JPanel
         return numberSmile;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Molecule getMolecule(final String name) {
         return moleculeList.getMolecule(name);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addSmileHEvent(final AddSmileHEvent evt) {
         addSmiles(evt.getSmileH());
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int addMolecule(final Molecule molecule) {
+        return moleculeList.addMolecule(molecule);
+    }
 
 }

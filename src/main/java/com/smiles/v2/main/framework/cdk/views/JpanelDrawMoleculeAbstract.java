@@ -32,7 +32,6 @@ import org.openscience.cdk.renderer.visitor.AWTDrawVisitor;
 abstract class JpanelDrawMoleculeAbstract extends JPanel {
     private IAtomContainer iAtomContainer;
     private Molecule molecule;
-    private RendererModel model;
     private AtomContainerRenderer renderer;
 
     protected JpanelDrawMoleculeAbstract(final Molecule molecule) {
@@ -83,6 +82,7 @@ abstract class JpanelDrawMoleculeAbstract extends JPanel {
         generators.add(genera);
 
         renderer = new AtomContainerRenderer(generators, new AWTFontManager());
+        RendererModel model;
         model = renderer.getRenderer2DModel();
 
         model.set(BasicAtomGenerator.ShowExplicitHydrogens.class, true);

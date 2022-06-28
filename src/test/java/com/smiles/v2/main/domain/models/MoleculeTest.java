@@ -86,23 +86,7 @@ public class MoleculeTest {
         assertEquals("C=CC(=CN)CO", fusionA2To1.getSmile(), "Error generate smile fusion");
         assertEquals(7, fusionA2To1.getNumberAtoms(), "Error generate number of atoms");
     }
-        /**
-     * Test fusion Molecule.
-     */
-    @Test
-    public void testSimpleFusionMolecule() {
-        Molecule molecule1 = new Molecule("Primero", "cc", "Is a prove", true, new VerifiedSmile(),
-                new MoleculeDataFactory());
-        Molecule molecule2 = new Molecule("Segundo", "cc", "Is a prove", true, new VerifiedSmile(),
-                new MoleculeDataFactory());
-        molecule1.selectAtom(0);
-        molecule2.selectAtom(0);
-        Molecule fusionA2To1 = Molecule.fusionMolecule(molecule1, molecule2, 0, 0);
-        assertEquals("Primero - Segundo", fusionA2To1.getName(), "the name no generated correctly");
-        //ORIGINAL_OUT.println(fusionA2To1.getSmile());
-        //assertEquals("NC=C(CO)C=C", fusionA2To1.getSmile(), "Error generate smile fusion");
-        //assertEquals(7, fusionA2To1.getNumberAtoms(), "Error generate number of atoms");
-    }
+
     /** Test for simple Atoms fusion.
      *
     */
@@ -163,9 +147,20 @@ public class MoleculeTest {
         //ORIGINAL_OUT.println(fusion2A2to1.getSmile());
         assertEquals("C=C=C", fusion2A2to1.getSmile(), "Error generate smile fusion");
         assertEquals(3, fusion2A2to1.getNumberAtoms(), "Error generate number of atoms");
-
     }
-
+    /**
+     * Test compareTo.
+     */
+    @Test
+    public void testCompareTo() {
+        Molecule molecule1 = new Molecule("Primero", "C=C", "Is a prove", true, new VerifiedSmile(),
+                new MoleculeDataFactory());
+        Molecule molecule2 = new Molecule("Segundo", "cc", "Is a prove", true, new VerifiedSmile(),
+                new MoleculeDataFactory());
+        molecule2.selectAtom(0);
+        molecule1.selectAtom(1);
+        assertEquals(0, molecule1.compareTo(molecule2), "Error toCompare");
+    }
 
 
 }

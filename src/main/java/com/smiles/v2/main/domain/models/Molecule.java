@@ -106,6 +106,7 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
     public String toString() {
         return getMoleculeData().absoluteSmile();
     }
+
     /**
      * Return a fusion molecule Principal wit substituent.
      *
@@ -127,7 +128,8 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
      * @param substituent       The substituent to fusion
      * @param numAtomPrincipal  substitution of the principal molecule
      * @param numAtomSubstitute substitution of the substituent molecule
-     * @param numBond Number of bonds between the principal and substituent
+     * @param numBond           Number of bonds between the principal and
+     *                          substituent
      * @return Molecule The fusion molecule
      */
     public static Molecule fusionMolecule(final Molecule principal, final Molecule substituent,
@@ -189,6 +191,26 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
         if (numAtomPrincipal != null && principal.getMoleculeData().getListAtomsSelected().isEmpty()) {
             throw new NullPointerException("molecule has no selected atoms");
         }
+    }
+   /**
+     * @return if the molecule is equals to the molecule.
+    */
+    @Override
+    public int hashCode() {
+        return getMoleculeData().hashCode() + getName().hashCode();
+    }
+
+    /**
+     * @param mol
+     * @return if the molecule is equals to the molecule.
+    */
+    @Override
+    public boolean equals(final Object mol) {
+        if (mol == null) {
+            return false;
+        }
+        Molecule molecule = (Molecule) mol;
+        return molecule.getSmile().equals(getSmile()) && molecule.getName().equals(getName());
     }
 
 }

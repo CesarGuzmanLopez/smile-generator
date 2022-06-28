@@ -5,36 +5,18 @@ import java.util.List;
 
 import com.smiles.v2.main.interfaces.SmileVerificationInterface;
 import com.smiles.v2.main.interfaces.SmilesHInterface;
-import com.smiles.v2.main.interfaces.MoleculeListInterface;
 import com.smiles.v2.main.interfaces.MoleculeDataFactoryInterface;
 
-public class MoleculesList implements MoleculeListInterface {
+public class MoleculesList extends MoleculesListAbstract {
     private SmileVerificationInterface smileVerifier;
     private List<Molecule> moleculeList = new ArrayList<>();
     private MoleculeDataFactoryInterface factoryMol;
 
     public MoleculesList(final SmileVerificationInterface verificationSmile,
             final MoleculeDataFactoryInterface factory) {
-        this.smileVerifier = verificationSmile;
-        this.factoryMol = factory;
+        super(verificationSmile, factory);
     }
 
-    protected final  SmileVerificationInterface getSmileVerifier() {
-        if (smileVerifier == null) throw new NullPointerException("SmileVerificationInterface is null");
-        return this.smileVerifier;
-    }
-
-    protected final MoleculeDataFactoryInterface getFactoryMol() {
-        if (factoryMol == null) throw new NullPointerException("MoleculeDataFactoryInterface is null");
-        return this.factoryMol;
-    }
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Molecule> getListMolecule() {
-        return moleculeList;
-    }
 
     /**
      * {@inheritDoc}
@@ -47,16 +29,7 @@ public class MoleculesList implements MoleculeListInterface {
         moleculeList.add(new Molecule(smileH, factoryMol));
         return moleculeList.size() - 1;
     }
-    /** Returns if name is unique in the molecule list.
-     * @param name name to be checked.
-     * @return true if name is unique, false otherwise.
-    */
-    public boolean isUniqueName(final String name) {
-        for (Molecule molecule : moleculeList) {
-            if (molecule.getName().equals(name)) return false;
-        }
-        return true;
-    }
+
     /**
      * {@inheritDoc}
      */
@@ -67,16 +40,7 @@ public class MoleculesList implements MoleculeListInterface {
         moleculeList.add(new Molecule(smile, factoryMol));
         return moleculeList.size() - 1;
     }
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Molecule getMolecule(final String name) {
-        for (Molecule molecule : moleculeList) {
-            if (molecule.getName().equals(name)) return molecule;
-        }
-        return null;
-    }
+
     /** Returns of Molecule List.
      * @param smileVerifier smile verifier.
      * @param factoryMol factory mol.
@@ -88,6 +52,17 @@ public class MoleculesList implements MoleculeListInterface {
         MoleculesList moleculesList = new MoleculesList(smileVerifier, factoryMol);
         moleculesList.moleculeList.addAll(moleculeList);
         return moleculesList;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int addMolecule(final Molecule molecule) {
+        if (!isUniqueName(molecule.getName())) throw new IllegalArgumentException("Name already exists");
+        Molecule cloneMolecule = new Molecule(molecule, true);
+        moleculeList.add(cloneMolecule);
+        return moleculeList.size() - 1;
     }
 
 

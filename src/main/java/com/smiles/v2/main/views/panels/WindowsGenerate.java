@@ -22,6 +22,7 @@ public class WindowsGenerate extends JFrame {
     private MoleculesList moleculeList;
     private File saveFileListSmile;
     private File saveFileListDescriptive;
+    private JSpinner numBounds;
 
     public WindowsGenerate(final Molecule principal, final MoleculesList moleculeList) {
         setTitle("Generate");
@@ -33,16 +34,19 @@ public class WindowsGenerate extends JFrame {
         this.principal = principal;
         this.moleculeList = moleculeList;
         setVisible(true);
+        if (principal.hasHydrogenImplicit()) numBounds.setEnabled(true);
     }
-    /** Genera View Principal generate.*/
+
+    /** Genera View Principal generate. */
     void generate() {
         try {
-            WriteAndGenerate.verifyEntry(moleculeList, principal, (int) rSubstitutes.getValue(),
+            WriteAndGenerate.verifyEntry(principal, moleculeList, (int) rSubstitutes.getValue(),
                     saveFileListDescriptive, saveFileListSmile);
             final WriteAndGenerate generator = new WriteAndGenerate(moleculeList, principal,
-                    (int) rSubstitutes.getValue(), saveFileListDescriptive, saveFileListSmile);
+                    (int) rSubstitutes.getValue(), (int) numBounds.getValue(), saveFileListDescriptive,
+                    saveFileListSmile);
             generator.generate();
-        } catch (Exception e) {
+        } catch (Exception e) {//NOSONAR
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -93,6 +97,19 @@ public class WindowsGenerate extends JFrame {
         gbc.gridy = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         add(rSubstitutes, gbc);
+
+        final JLabel num = new JLabel("bounds: ");
+        num.setPreferredSize(new java.awt.Dimension(210, 30));
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        add(num, gbc);
+        numBounds = new JSpinner();
+        numBounds.setValue(1);
+        numBounds.setEnabled(false);
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        add(numBounds, gbc);
 
         final JButton cancelButton = new JButton("cancel");
 
