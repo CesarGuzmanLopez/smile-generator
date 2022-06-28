@@ -1,15 +1,23 @@
 {
-    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.configuration.updateBuildConfiguration": "automatic",
     "cSpell.words": [
         "Carboxylic",
+        "CHECKSTYLE",
         "Chloromethane",
         "Difluoromethane",
         "Diichloromethane",
         "Fluoromethane",
+        "fusioned",
         "Kekule",
         "mensajebox",
         "proporcion"
     ],
-    "DockerRun.DisableAutoGenerateConfig": true
+    "DockerRun.DisableAutoGenerateConfig": true,
+    "java.checkstyle.configuration": "${workspaceFolder}/my_config_checks.xml",
+    "java.format.settings.url": ".vscode/java-formatter.xml",
+    "[java]": {
+        "editor.detectIndentation": true
+    },
+    "java.checkstyle.version": "5.3"
 
 }
