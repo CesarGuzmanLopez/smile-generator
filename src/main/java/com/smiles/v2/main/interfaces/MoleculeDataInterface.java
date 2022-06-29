@@ -42,4 +42,19 @@ public interface MoleculeDataInterface extends MoleculeComparableInterface {
     */
     void  addMoleculeData(Molecule mol, Integer selectedIn, Integer selectedOut, Integer numBond);
 
+    /**
+     * unselect all the atoms.
+    */
+    void unselectedAllAtoms();
+    /**
+     * @param id to select the atom.
+     */
+    void selectOrderAtom(int id);
+
+    /**
+     * @return numOfMolecules added
+     */
+    int getNumOfMolecules();
+
+
 }

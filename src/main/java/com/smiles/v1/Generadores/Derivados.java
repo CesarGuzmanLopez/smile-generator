@@ -39,7 +39,7 @@ public class Derivados {
 
     private int error = 0;
 
-    @SuppressWarnings("unchecked")
+
     private void Todos(int NumRSubst, IAtomContainer MolPrin, ArrayList<Integer> Selec) {
         if (NumRSubst < 1)
             return;

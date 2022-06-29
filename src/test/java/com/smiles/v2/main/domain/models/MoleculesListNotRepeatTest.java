@@ -38,4 +38,20 @@ public class MoleculesListNotRepeatTest {
         assertEquals(1, moleculesListNotRepeat.getListMolecule().size(), "the size is 1");
 
     }
+
+    @Test
+    void testAddMoleculeRepeat() {
+        MoleculesListNotRepeat moleculesListNotRepeat = new MoleculesListNotRepeat(new VerifiedSmile(),
+                new MoleculeDataFactory());
+        Molecule mol1 = new Molecule("name", "cccc", "Is asdf a prove", true, new VerifiedSmile(),
+                new MoleculeDataFactory());
+        Molecule mol2 = new Molecule("name 2", "C=CC=C", "Is a prove", true, new VerifiedSmile(),
+                new MoleculeDataFactory());
+        ORIGINAL_OUT.println("The molecule 1" + mol1.getSmile());
+        ORIGINAL_OUT.println("The molecule 2" + mol2.getSmile());
+        moleculesListNotRepeat.addMolecule(mol1);
+        assertEquals(-1, moleculesListNotRepeat.addMolecule(mol2), "add element repeat");
+        assertEquals(1, moleculesListNotRepeat.getListMolecule().size(), "the size not is 1");
+
+    }
 }

@@ -38,7 +38,7 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
         super(molecule);
         this.moleculeDataFactory = molecule.moleculeDataFactory;
         if (cloneData) {
-            moleculeDataOfSmile = moleculeDataFactory.getMoleculeDataOfSmile(molecule, molecule.getMoleculeData());
+            moleculeDataOfSmile = moleculeDataFactory.getMoleculeDataOfSmile(this, molecule.getMoleculeData());
         } else {
             moleculeDataOfSmile = moleculeDataFactory.getMoleculeDataOfSmile(this);
         }
@@ -49,7 +49,7 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
         super(molecule);
         this.moleculeDataFactory = molecule.moleculeDataFactory;
         if (cloneData) {
-            moleculeDataOfSmile = moleculeDataFactory.getMoleculeDataOfSmile(molecule, molecule.getMoleculeData());
+            moleculeDataOfSmile = moleculeDataFactory.getMoleculeDataOfSmile(this, molecule.getMoleculeData());
         } else {
             moleculeDataOfSmile = moleculeDataFactory.getMoleculeDataOfSmile(this);
         }
@@ -136,9 +136,11 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
             final Integer numAtomPrincipal, final Integer numAtomSubstitute, final Integer numBond) {
         verifyToSubstitute(principal, substituent, numAtomPrincipal, numAtomSubstitute);
         Molecule substituentClone = new Molecule(substituent, true);
-        Molecule fusion = new Molecule(principal, principal.getName() + " - " + substituentClone.getName(), true);
+        Molecule fusion = new Molecule(principal,
+                principal.getName() + "<" + numAtomPrincipal + "> |" + numBond + "| " + substituentClone.getName(),
+                true);
         fusion.getMoleculeData().addMoleculeData(substituentClone, numAtomPrincipal, numAtomSubstitute, numBond);
-        fusion.resetSmile();
+
         return fusion;
     }
 
@@ -192,20 +194,21 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
             throw new NullPointerException("molecule has no selected atoms");
         }
     }
-   /**
+
+    /**
      * @return if the molecule is equals to the molecule.
-    */
+     */
     @Override
     public int hashCode() {
         return getMoleculeData().hashCode() + getName().hashCode();
     }
 
     /**
-     * @param mol
+     * @param molecule the molecule to compare.
      * @return if the molecule is equals to the molecule.
-    */
+     */
     @Override
-    public boolean equals(final Object mol) {
+    public boolean equals(final Object mol) { // NOSONAR
         if (mol == null) {
             return false;
         }
@@ -213,4 +216,10 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
         return molecule.getSmile().equals(getSmile()) && molecule.getName().equals(getName());
     }
 
+    /**
+     * @return MoleculeDataFactoryInterface
+     */
+    protected MoleculeDataFactoryInterface getMoleculeDataFactory() {
+        return moleculeDataFactory;
+    }
 }

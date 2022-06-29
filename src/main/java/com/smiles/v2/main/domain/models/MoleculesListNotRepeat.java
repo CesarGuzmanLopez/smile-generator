@@ -18,6 +18,11 @@ public class MoleculesListNotRepeat extends MoleculesListAbstract {
         initialize(moleculesList.getListMolecule());
     }
 
+    public MoleculesListNotRepeat(final MoleculesListAbstract moleculesList) {
+        super(moleculesList.getSmileVerifier(), moleculesList.getFactoryMol());
+        initialize(moleculesList.getListMolecule());
+    }
+
     /**
      * initialize list.
      *
@@ -38,7 +43,7 @@ public class MoleculesListNotRepeat extends MoleculesListAbstract {
     @Override
     public int addSmiles(final String name, final String smile, final String message,
             final boolean hasHydrogenImplicit) {
-        if (!isUniqueName(name))  throw new IllegalArgumentException("Name already exists");
+        if (!isUniqueName(name))  return -1;
         final SmilesHInterface smileH = new Smiles(name, smile, message, hasHydrogenImplicit, getSmileVerifier());
         final Molecule molecule = new Molecule(smileH, getFactoryMol());
         if (!getListMolecule().contains(molecule)) {
@@ -53,12 +58,12 @@ public class MoleculesListNotRepeat extends MoleculesListAbstract {
 
     @Override
     public int addSmiles(final SmilesHInterface smile) {
-        if (!isUniqueName(smile.getName())) throw new IllegalArgumentException("Name already exists");
+        if (!isUniqueName(smile.getName())) return -1;
         final Molecule molecule = new Molecule(smile, getFactoryMol());
         if (!getListMolecule().contains(molecule)) {
             getListMolecule().add(molecule);
         }
-        return getListMolecule().indexOf(molecule);
+        return getListMolecule().size() - 1;
     }
 
     /**
@@ -66,10 +71,28 @@ public class MoleculesListNotRepeat extends MoleculesListAbstract {
      */
     @Override
     public int addMolecule(final Molecule molecule) {
+        if (!isUniqueName(molecule.getName()))  return -1;
+        String smile = getSmileVerifier().toAbsoluteSmiles(molecule.getSmile());
+        if (!isUniqueSmile(smile))  return -1;
         if (!getListMolecule().contains(molecule)) {
             getListMolecule().add(molecule);
+            return getListMolecule().size() - 1;
         }
-        return getListMolecule().indexOf(molecule);
+        return -1;
+
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int addMolecule(final Molecule molecule, final String name) {
+        if (!isUniqueName(name)) return -1;
+        String smile = getSmileVerifier().toAbsoluteSmiles(molecule.getSmile());
+        if (!isUniqueSmile(smile)) return -1;
+        Molecule cloneMolecule = new Molecule(molecule, false);
+        cloneMolecule.setName(name);
+        getListMolecule().add(cloneMolecule);
+        return 0;
     }
 
 }

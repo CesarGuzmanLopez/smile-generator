@@ -36,7 +36,7 @@ public class AtomCDK implements AtomInterface {
     /**select the atom.
      * change the state of the atom.
      */
-    protected void selected() {
+    protected void select() {
         this.selected = !selected;
     }
     /**

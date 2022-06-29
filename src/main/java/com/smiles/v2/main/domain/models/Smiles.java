@@ -83,5 +83,11 @@ public class Smiles implements SmilesHInterface {
         else throw new IllegalArgumentException("Smiles is not valid");
 
     }
+    /**
+     *  @return SmileVerificationInterface
+     */
+    protected SmileVerificationInterface getSmileVerification() {
+        return smileVerification;
+    }
 
 }

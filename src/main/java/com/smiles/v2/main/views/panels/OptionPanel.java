@@ -171,4 +171,9 @@ public final class OptionPanel extends javax.swing.JPanel
         return moleculeList.addMolecule(molecule);
     }
 
+    @Override
+    public int addMolecule(final Molecule molecule, final String name) {
+        return moleculeList.addMolecule(molecule, name);
+    }
+
 }

@@ -17,13 +17,15 @@ public abstract class MoleculesListAbstract implements MoleculeListInterface {
         this.smileVerifier = verificationSmile;
         this.factoryMol = factory;
     }
+
     /**
-     * @return  the smileVerifier.
-     * */
-    public final  SmileVerificationInterface getSmileVerifier() {
+     * @return the smileVerifier.
+     */
+    public final SmileVerificationInterface getSmileVerifier() {
         if (smileVerifier == null) throw new NullPointerException("SmileVerificationInterface is null");
         return this.smileVerifier;
     }
+
     /**
      * @return the factoryMolecule.
      */
@@ -31,6 +33,7 @@ public abstract class MoleculesListAbstract implements MoleculeListInterface {
         if (factoryMol == null) throw new NullPointerException("MoleculeDataFactoryInterface is null");
         return this.factoryMol;
     }
+
     /**
      * {@inheritDoc}
      */
@@ -39,13 +42,28 @@ public abstract class MoleculesListAbstract implements MoleculeListInterface {
         return moleculeList;
     }
 
-    /** Returns if name is unique in the molecule list.
+    /**
+     * Returns if name is unique in the molecule list.
+     *
      * @param name name to be checked.
      * @return true if name is unique, false otherwise.
-    */
+     */
     public boolean isUniqueName(final String name) {
         for (Molecule molecule : moleculeList) {
             if (molecule.getName().equals(name)) return false;
+        }
+        return true;
+    }
+
+    /**
+     * Returns if name is unique in the molecule list.
+     *
+     * @param smile name to be checked.
+     * @return true if name is unique, false otherwise.
+     */
+    public boolean isUniqueSmile(final String smile) {
+        for (Molecule molecule : moleculeList) {
+            if (molecule.getSmile().equals(smile)) return false;
         }
         return true;
     }

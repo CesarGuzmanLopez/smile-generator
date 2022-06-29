@@ -189,7 +189,7 @@
       <property name="optional" value="true" />
     </module>
     <module name="SuppressWithNearbyCommentFilter">
-      <property name="commentFormat" value="NOSONAR" />
+      <property name="commentFormat" value="UNCHECK" />
       <property name="checkFormat" value=".*" />
       <property name="influenceFormat" value="0" />
     </module>

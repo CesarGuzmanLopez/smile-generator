@@ -21,8 +21,9 @@ public class MoleculeData implements MoleculeDataInterface {
     private IAtomContainer moleculeContainer;
     private List<AtomInterface> listAtoms;
     private List<AtomInterface> selectedList;
+    private List<Integer> moleculesAdded;
 
-    MoleculeData( Molecule molecule) {//NOSONAR no necessary clone molecule
+    MoleculeData(Molecule molecule) { // UNCHECK NOSONAR
         this.molecule = molecule;
         final SmilesParser smileParser = new SmilesParser(DefaultChemObjectBuilder.getInstance());
         try {
@@ -35,9 +36,10 @@ public class MoleculeData implements MoleculeDataInterface {
         for (int i = 0; i < moleculeContainer.getAtomCount(); i++) {
             listAtoms.add(new AtomSelectable(moleculeContainer.getAtom(i), i));
         }
+        moleculesAdded = new ArrayList<>();
     }
 
-    public MoleculeData( Molecule molecule, final MoleculeDataInterface moleculeData) { //NOSONAR No clone
+    public MoleculeData(Molecule molecule, final MoleculeDataInterface moleculeData) { // UNCHECK NOSONAR
         this.molecule = molecule;
         try {
             moleculeContainer = ((MoleculeData) moleculeData).getMoleculeContainer().clone();
@@ -54,6 +56,7 @@ public class MoleculeData implements MoleculeDataInterface {
             AtomInterface atomToSelected = getAtom(atom.getId());
             selectedList.add(atomToSelected);
         }
+        moleculesAdded = new ArrayList<>();
     }
 
     /**
@@ -69,8 +72,8 @@ public class MoleculeData implements MoleculeDataInterface {
         }
 
         @Override
-        public void selected() {
-            super.selected();
+        public void select() {
+            super.select();
         }
     }
 
@@ -107,7 +110,7 @@ public class MoleculeData implements MoleculeDataInterface {
         } else {
             selectedList.remove(atom);
         }
-        ((AtomSelectable) atom).selected();
+        ((AtomSelectable) atom).select();
     }
 
     /**
@@ -145,7 +148,16 @@ public class MoleculeData implements MoleculeDataInterface {
             return generator.create(moleculeContainer);
         } catch (CDKException e) {
             throw new UnsupportedOperationException("Error in CDKException Smile");
+        } catch (Exception e) {
+            StringBuilder bld = new StringBuilder();
+            for (AtomInterface a : listAtoms) {
+                IAtom x = ((AtomCDK) a).getIAtom();
+                bld.append(a.getSymbol() + " Implicit: " + a.getImplicitHydrogens() + " Bounds:" + x.getBondCount()
+                        + "\n");
+            }
+            throw new UnsupportedOperationException("Atoms: \n" + bld.toString() + "\nError: " + e.getMessage());
         }
+
     }
 
     /**
@@ -160,6 +172,7 @@ public class MoleculeData implements MoleculeDataInterface {
         int numAtomSubstituentSelected = (selectedSubstituent != null)
                 ? moleculeContainer.getAtomCount() + selectedSubstituent // NOSONAR
                 : moleculeContainer.getAtomCount();
+
         MoleculeData moleculeDataSubstituent = (MoleculeData) moleculeSubstituent.getMoleculeData();
         moleculeContainer.add(moleculeDataSubstituent.moleculeContainer);
         int totalNumAtoms = moleculeContainer.getAtomCount();
@@ -175,7 +188,15 @@ public class MoleculeData implements MoleculeDataInterface {
         }
         moleculeContainer.addBond(numAtomPrincipalSelected, numAtomSubstituentSelected, bond);
         /* unselected IAtom */
-        if (selectedPrincipal != null) selectOrderAtom(getAtom(selectedPrincipal));
+        if (selectedPrincipal != null)
+            selectOrderAtom(getAtom(selectedPrincipal));
+        // Location of add molecule in the molecule
+        moleculesAdded.add(initNumAtoms);
+        try {
+            molecule.resetSmile();
+        } catch (UnsupportedOperationException e) {
+            throw new UnsupportedOperationException(e.getMessage());
+        }
     }
 
     /**
@@ -186,22 +207,22 @@ public class MoleculeData implements MoleculeDataInterface {
     private Order selectBond(final Integer numBond) {
         Order bond;
         switch (numBond) {
-        case 1:// NOSONAR
+        case 1:// UNCHECK
             bond = IBond.Order.SINGLE;
             break;
-        case 2:// NOSONAR
+        case 2:// UNCHECK
             bond = IBond.Order.DOUBLE;
             break;
-        case 3:// NOSONAR
+        case 3:// UNCHECK
             bond = IBond.Order.TRIPLE;
             break;
-        case 4:// NOSONAR
+        case 4:// UNCHECK
             bond = IBond.Order.QUADRUPLE;
             break;
-        case 5:// NOSONAR
+        case 5:// UNCHECK
             bond = IBond.Order.QUINTUPLE;
             break;
-        case 6:// NOSONAR
+        case 6:// UNCHECK
             bond = IBond.Order.SEXTUPLE;
             break;
         default:
@@ -209,22 +230,65 @@ public class MoleculeData implements MoleculeDataInterface {
             break;
         }
         return bond;
+    };
+
+    /**
+     * @param Atom1
+     * @param Atom2
+     * @return if Atoms connected atoms equals.
+     */
+    private boolean isEquivalent(final IAtom Atom1, final IAtom Atom2) {
+        if (Atom1.getBondCount() != Atom2.getBondCount()) {
+            return false;
+        }
+        List<IAtom> atom1List = new ArrayList<>();
+        List<IAtom> atom2List = new ArrayList<>();
+        for (IBond bond : Atom1.bonds()) {
+            atom1List.add(bond.getOther(Atom1));
+        }
+        for (IBond bond : Atom2.bonds()) {
+            atom2List.add(bond.getOther(Atom2));
+        }
+        for (IAtom atom : atom1List) {
+            boolean contains = false;
+            for (IAtom atom2 : atom2List) {
+                if (atom.getSymbol().equals(atom2.getSymbol())) {
+                    contains = true;
+                    break;
+                }
+            }
+            if (!contains)
+                return false;
+        }
+
+        return true;
     }
 
     /**
+     * Reselect.
+     * I look for the closest atom that contains the same number of connections and
+     * the same number of atoms and that are of the same type but that contains
+     * implicit hydrogens from which I can remove an element.
+     *
      * @param selected
      * @param numBond
      * @return the number of atom selected and decreased
      */
     private int realSelectedAndDecrease(final Integer selected, final Integer numBond) {
         int numReal = selected;
+
         if (getAtom(selected).getImplicitHydrogens() < numBond) {
             AtomCDK atom = (AtomCDK) getAtom(selected);
             for (IBond bond : atom.bonds()) {
                 IAtom other = bond.getOther(atom.getIAtom());
-                if (other.getSymbol().equals(atom.getSymbol()) && other.getImplicitHydrogenCount() > 0) {
+
+                if (other.getSymbol().equals(atom.getSymbol()) && other.getImplicitHydrogenCount() >= numBond
+                        && isEquivalent(atom.getIAtom(), other)) {
                     numReal = other.getIndex();
                 }
+            }
+            if (numReal == selected) {
+                return numReal;
             }
         }
         AtomInterface atom = getAtom(numReal);
@@ -240,8 +304,37 @@ public class MoleculeData implements MoleculeDataInterface {
     @Override
     public AtomInterface getAtom(final int number) {
         for (AtomInterface atom : listAtoms) {
-            if (atom.getId() == number) return atom;
+            if (atom.getId() == number)
+                return atom;
         }
         throw new IllegalStateException("Atom not found atomInterface getAtom.");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void unselectedAllAtoms() {
+        for (AtomInterface atom : selectedList) {
+            ((AtomSelectable) atom).select();
+        }
+        selectedList.clear();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void selectOrderAtom(final int id) {
+        AtomInterface atom = getAtom(id);
+        selectOrderAtom(atom);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getNumOfMolecules() {
+        return moleculesAdded.size() + 1;
     }
 }

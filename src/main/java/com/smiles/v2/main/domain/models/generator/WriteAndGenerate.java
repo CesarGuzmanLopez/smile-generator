@@ -1,4 +1,4 @@
-package com.smiles.v2.main.domain.generator;
+package com.smiles.v2.main.domain.models.generator;
 
 import com.smiles.v2.main.domain.models.Molecule;
 import com.smiles.v2.main.domain.models.MoleculesList;
