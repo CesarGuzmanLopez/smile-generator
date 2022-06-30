@@ -13,6 +13,7 @@ import org.openscience.cdk.smiles.SmilesParser;
 import org.openscience.cdk.interfaces.IBond;
 import org.openscience.cdk.interfaces.IBond.Order;
 import com.smiles.v2.main.domain.models.Molecule;
+import com.smiles.v2.main.domain.models.MoleculesAdded;
 import com.smiles.v2.main.interfaces.AtomInterface;
 import com.smiles.v2.main.interfaces.MoleculeDataInterface;
 
@@ -21,7 +22,7 @@ public class MoleculeData implements MoleculeDataInterface {
     private IAtomContainer moleculeContainer;
     private List<AtomInterface> listAtoms;
     private List<AtomInterface> selectedList;
-    private List<Integer> moleculesAdded;
+    private List<MoleculesAdded> moleculesAdded;
 
     MoleculeData(Molecule molecule) { // UNCHECK NOSONAR
         this.molecule = molecule;
@@ -58,7 +59,6 @@ public class MoleculeData implements MoleculeDataInterface {
         }
         moleculesAdded = new ArrayList<>();
     }
-
     /**
      * @return the molecule associated with this molecule data.
      */
@@ -214,7 +214,7 @@ public class MoleculeData implements MoleculeDataInterface {
             selectOrderAtom(getAtom(selectedPrincipal));
         }
         // Location of add molecule in the molecule
-        moleculesAdded.add(initNumAtoms);
+        moleculesAdded.add(new MoleculesAdded(selectedPrincipal,moleculeSubstituent));
         try {
             molecule.resetSmile();
         } catch (UnsupportedOperationException e) {
@@ -359,5 +359,12 @@ public class MoleculeData implements MoleculeDataInterface {
     @Override
     public int getNumOfMolecules() {
         return moleculesAdded.size() + 1;
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<MoleculesAdded> getListMolecules() {
+        return moleculesAdded;
     }
 }

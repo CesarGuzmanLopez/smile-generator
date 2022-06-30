@@ -3,6 +3,7 @@ package com.smiles.v2.main.interfaces;
 import java.util.List;
 
 import com.smiles.v2.main.domain.models.Molecule;
+import com.smiles.v2.main.domain.models.MoleculesAdded;
 /**Interface for the MoleculeComparablee.
  * @author Cesar Gerardo Guzman Lopez
  */
@@ -55,6 +56,9 @@ public interface MoleculeDataInterface extends MoleculeComparableInterface {
      * @return numOfMolecules added
      */
     int getNumOfMolecules();
-
+    /**
+     * @return the list of the molecules added.
+     */
+    List<MoleculesAdded> getListMolecules();
 
 }
