@@ -43,7 +43,6 @@ public class GeneratorTest {
         verifiedSmile = new VerifiedSmile();
         moleculeDataFactory = new MoleculeDataFactory();
     }
-
     /**
      * TestGenerateSubstitutes.
      *
@@ -68,7 +67,7 @@ public class GeneratorTest {
         moleculesList.addMolecule(molecule2);
         moleculesList.addMolecule(molecule3);
         moleculesList.addMolecule(molecule4);
-        Generator generator = new Generator(molecule3, moleculesList, 2, 2);
+        Generator generator = new Generator(molecule3, moleculesList, 1, 2);
         MoleculesList moleculesListSubstitutes = generator.getListOfSubstitutes();
         /*
          * for (Molecule molecule : moleculesListSubstitutes.getListMolecule()) {
@@ -85,7 +84,6 @@ public class GeneratorTest {
 
     /**
      * TestGenerateSubstitutes.
-     *
      */
     @Test
     public void testGenerate() {
@@ -99,20 +97,40 @@ public class GeneratorTest {
         Molecule molecule3 = new Molecule("Oxygens", "O", "Is a prove", true, verifiedSmile, moleculeDataFactory);
         Molecule molecule4 = new Molecule("Dimetoxianfetamine", "CC1=CC(=C(C=C1OC)CC(C)N)OC", "Is a prove", true,
                 verifiedSmile, moleculeDataFactory);
-        molecule4.selectAtom(2);
         molecule4.selectAtom(13);
+        molecule4.selectAtom(2);
+
+
+        Molecule molecule5 = new Molecule("ccOcc2", "ccOcc", "Is a prove", true, verifiedSmile, moleculeDataFactory);
+        molecule5.selectAtom(1);
+        molecule5.selectAtom(3);
 
         MoleculesList moleculesList = new MoleculesList(verifiedSmile, moleculeDataFactory);
+        moleculesList.addMolecule(molecule5);
         moleculesList.addMolecule(molecule1);
         moleculesList.addMolecule(molecule2);
         moleculesList.addMolecule(molecule3);
         moleculesList.addMolecule(molecule4);
+
+
         Generator generator = new Generator(molecule4, moleculesList, 1, 1);
+
         MoleculesListAbstract all = generator.getAllMolecules();
+
         for (Molecule molecule : all.getListMolecule()) {
-            ORIGINAL_OUT.println(molecule.getName() + " S:" + molecule.getSmile());
+            ORIGINAL_OUT.println(molecule);
         }
 
+        assertEquals(12, all.getListMolecule().size(), "The number of permutes not correct");
+
+        molecule4.selectAtom(4);
+        molecule4.selectAtom(0);
+        Generator generator2 = new Generator(molecule4, moleculesList, 3, 1);
+
+        all = generator2.getAllMolecules();
+        assertEquals(1104, all.getListMolecule().size(), "The number of permutes not correct");
     }
+
+    
 
 };

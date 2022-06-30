@@ -82,7 +82,7 @@ public class MoleculeTest {
         molecule1.selectAtom(2);
         molecule2.selectAtom(1);
         Molecule fusionA2To1 = Molecule.fusionMolecule(molecule1, molecule2, 2, 1);
-        assertEquals("Primero |1| Segundo", fusionA2To1.getName(), "the name no generated correctly");
+        assertEquals("Primero<2> |1| Segundo<1>", fusionA2To1.getName(), "the name no generated correctly");
         assertEquals("C=CC(=CN)CO", fusionA2To1.getSmile(), "Error generate smile fusion");
         assertEquals(7, fusionA2To1.getNumberAtoms(), "Error generate number of atoms");
     }
@@ -98,7 +98,7 @@ public class MoleculeTest {
                 new MoleculeDataFactory());
 
         Molecule fusionA2To1 = Molecule.fusionMolecule(molecule1, molecule2, null, null);
-        assertEquals("Primero |1| Segundo", fusionA2To1.getName(), "the name no generated correctly");
+        assertEquals("Primero<null> |1| Segundo<null>", fusionA2To1.getName(), "the name no generated correctly");
         //ORIGINAL_OUT.println(fusionA2To1.getSmile());
         assertEquals("CC", fusionA2To1.getSmile(), "Error generate smile fusion");
         assertEquals(2, fusionA2To1.getNumberAtoms(), "Error generate number of atoms");
@@ -122,7 +122,7 @@ public class MoleculeTest {
         molecule1.selectAtom(4);
 
         Molecule fusionA2To1 = Molecule.fusionMolecule(molecule1, molecule2, 4, 0);
-        assertEquals("Primero |1| Segundo", fusionA2To1.getName(), "the name no generated correctly");
+        assertEquals("Primero<4> |1| Segundo<0>", fusionA2To1.getName(), "the name no generated correctly");
         Molecule fusion2A2to1 = Molecule.fusionMolecule(fusionA2To1, molecule2, 0, 0);
         assertEquals("C1=CC=C(C=C1)C2=CC=CC=C2", fusionA2To1.getSmile(), "Error generate smile fusion");
         assertEquals("C1=CC=C(C=C1)C2=CC(=CC=C2)C3=CC=CC=C3", fusion2A2to1.getSmile(), "Error generate smile fusion");
@@ -138,7 +138,7 @@ public class MoleculeTest {
                 new MoleculeDataFactory());
 
         Molecule fusionA2To1 = Molecule.fusionMolecule(molecule1, molecule2, null, null, 2);
-        assertEquals("Primero |2| Segundo", fusionA2To1.getName(), "the name no generated correctly");
+        assertEquals("Primero<null> |2| Segundo<null>", fusionA2To1.getName(), "the name no generated correctly");
         //ORIGINAL_OUT.println(fusionA2To1.getSmile());
         assertEquals("C=C", fusionA2To1.getSmile(), "Error generate smile fusion");
         assertEquals(2, fusionA2To1.getNumberAtoms(), "Error generate number of atoms");

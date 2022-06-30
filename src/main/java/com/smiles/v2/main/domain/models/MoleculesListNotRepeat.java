@@ -46,10 +46,7 @@ public class MoleculesListNotRepeat extends MoleculesListAbstract {
         if (!isUniqueName(name))  return -1;
         final SmilesHInterface smileH = new Smiles(name, smile, message, hasHydrogenImplicit, getSmileVerifier());
         final Molecule molecule = new Molecule(smileH, getFactoryMol());
-        if (!getListMolecule().contains(molecule)) {
-            getListMolecule().add(molecule);
-        }
-        return getListMolecule().indexOf(molecule);
+        return addMolecule(molecule);
     }
 
     /**
@@ -60,10 +57,7 @@ public class MoleculesListNotRepeat extends MoleculesListAbstract {
     public int addSmiles(final SmilesHInterface smile) {
         if (!isUniqueName(smile.getName())) return -1;
         final Molecule molecule = new Molecule(smile, getFactoryMol());
-        if (!getListMolecule().contains(molecule)) {
-            getListMolecule().add(molecule);
-        }
-        return getListMolecule().size() - 1;
+        return addMolecule(molecule);
     }
 
     /**
@@ -74,11 +68,10 @@ public class MoleculesListNotRepeat extends MoleculesListAbstract {
         if (!isUniqueName(molecule.getName()))  return -1;
         String smile = getSmileVerifier().toAbsoluteSmiles(molecule.getSmile());
         if (!isUniqueSmile(smile))  return -1;
-        if (!getListMolecule().contains(molecule)) {
-            getListMolecule().add(molecule);
-            return getListMolecule().size() - 1;
-        }
-        return -1;
+        getListMolecule().add(molecule);
+        return getListMolecule().size() - 1;
+
+
 
     }
     /**
@@ -90,9 +83,7 @@ public class MoleculesListNotRepeat extends MoleculesListAbstract {
         String smile = getSmileVerifier().toAbsoluteSmiles(molecule.getSmile());
         if (!isUniqueSmile(smile)) return -1;
         Molecule cloneMolecule = new Molecule(molecule, false);
-        cloneMolecule.setName(name);
-        getListMolecule().add(cloneMolecule);
-        return 0;
+        return addMolecule(cloneMolecule);
     }
 
 }

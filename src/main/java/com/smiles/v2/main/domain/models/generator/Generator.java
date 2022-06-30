@@ -24,6 +24,7 @@ public class Generator {
      * Contain all generated Molecule.
      */
     private MoleculesListNotRepeat generate;
+
     private MoleculesList listOfSubstitutes;
 
     /**

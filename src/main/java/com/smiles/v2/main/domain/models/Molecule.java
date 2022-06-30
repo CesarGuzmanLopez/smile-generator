@@ -104,7 +104,7 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
 
     @Override
     public String toString() {
-        return getMoleculeData().absoluteSmile();
+        return getName() + " Smile:" + getSmile();
     }
 
     /**
@@ -136,9 +136,9 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
             final Integer numAtomPrincipal, final Integer numAtomSubstitute, final Integer numBond) {
         verifyToSubstitute(principal, substituent, numAtomPrincipal, numAtomSubstitute);
         Molecule substituentClone = new Molecule(substituent, true);
-        Molecule fusion = new Molecule(principal,
-                principal.getName() + "<" + numAtomPrincipal + "> |" + numBond + "| " + substituentClone.getName(),
-                true);
+        Molecule fusion = new Molecule(principal, principal.getName() + "<" + numAtomPrincipal + "> |" + numBond + "| "
+                + substituentClone.getName() + "<" + numAtomSubstitute + ">", true);
+
         fusion.getMoleculeData().addMoleculeData(substituentClone, numAtomPrincipal, numAtomSubstitute, numBond);
 
         return fusion;
