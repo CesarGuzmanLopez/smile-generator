@@ -14,6 +14,8 @@ import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
 
+import javax.swing.JFileChooser;
+
 /**
  * Class WriteAndGenerate.
  *
@@ -24,6 +26,7 @@ import java.util.List;
  * @Date: 01/05/20201 CHARSET
  */
 public class WriteAndGenerate {
+
     static final Charset CHARSET = StandardCharsets.UTF_8;
     private MoleculesList substitutes;
     private Molecule principal;
@@ -35,8 +38,10 @@ public class WriteAndGenerate {
     private int numBounds;
     private boolean repeated;
 
+    private JFileChooser saveImages;
+
     public WriteAndGenerate(final MoleculesList substitutes, final Molecule principal, final int rSubstitutes,
-            final int numBounds, final File fileDescription, final File fileOutput, final boolean repeated) {
+            final int numBounds, final File fileDescription, final File fileOutput) {
         verifyEntry(principal, substitutes, rSubstitutes, fileDescription, fileOutput);
         this.substitutes = substitutes;
         this.principal = principal;
@@ -44,7 +49,8 @@ public class WriteAndGenerate {
         this.fileDescription = fileDescription;
         this.fileOutput = fileOutput;
         this.numBounds = numBounds;
-        this.repeated = repeated;
+        this.repeated = false;
+        this.saveImages = null;
         verificationAndCreateFiles();
 
     }
@@ -91,6 +97,23 @@ public class WriteAndGenerate {
             fileDescription.getParentFile().mkdirs();
         }
         return true;
+    }
+
+    /**
+     * setRepeated.
+     *
+     * @param repeated
+     */
+    public void setRepeated(final boolean repeated) {
+        this.repeated = repeated;
+    }
+
+    /**
+     * @param directory to save images.
+     */
+
+    public void setSaveImages(final JFileChooser directory) {
+        this.saveImages = directory;
     }
 
     /**
@@ -147,7 +170,7 @@ public class WriteAndGenerate {
         Generator generator = new Generator(principal, substitutes, rSubstitutes, numBounds, repeated);
         MoleculesListAbstract generateList = generator.getAllMolecules();
         if (writeDescription != null) {
-            writeDescription.write("Total: " + generateList.getListMolecule().size() + "\n");
+            writeDescription.write("\t===Total: " + generateList.getListMolecule().size() + "\t===\n");
         }
         for (Molecule molecule : generateList.getListMolecule()) {
             writeOutput.write(molecule.smile() + "\n");
@@ -155,12 +178,30 @@ public class WriteAndGenerate {
                 writeDescription.write(molecule + "\n");
             }
         }
+        printStructureSubstitute(generateList);
+        closeFiles();
+
+    }
+
+    /**
+     * Write head description.
+     */
+    private void printStructureSubstitute(MoleculesListAbstract generateList) throws IOException { // UNCHECK
         if (writeDescription != null) {
             writeDescription.write("==========================================================\n");
-
+            for (Molecule molecule : generateList.getListMolecule()) {
+                // String symbol = molecule.isOnlySubstitutedHydrogens() ? "H" : "*"; // NOSONAR
+                // for (AtomInterface toSubstitute :
+                // principal.getMoleculeData().getListAtomsSelected()) {
+                // if (molecule.isSelected(toSubstitute.getId())) {
+                // Molecule substitute = molecule.getSubstitute(toSubstitute.getId());
+                // symbol = substitute.getName();
+                // }
+                // writeDescription.write("\t\t" + symbol);
+                // }
+                writeDescription.write("\n");
+            }
         }
-
-        closeFiles();
     }
 
     /**
@@ -173,8 +214,10 @@ public class WriteAndGenerate {
             writeDescription.write("R Substitutes" + rSubstitutes + "\n");
             writeDescription.write("substitutes: " + "\n");
             for (Molecule molecule : substitutes.getListMolecule()) {
-                writeDescription.write("\t " + molecule.getName() + "selected :\t ");
-                for (AtomInterface atom : molecule.getMoleculeData().getListAtomsSelected()) {
+                MoleculeDataInterface moleculeData = molecule.getMoleculeData();
+                writeDescription.write("\t " + molecule.getName()
+                        + (moleculeData.getListAtomsSelected().isEmpty() ? " selected :\t " : "")); // NOSONAR
+                for (AtomInterface atom : moleculeData.getListAtomsSelected()) {
                     writeDescription.write("\t\t" + atom.getSymbol() + "\n");
                 }
             }

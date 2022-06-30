@@ -59,9 +59,14 @@ public interface MoleculeDataInterface extends MoleculeComparableInterface {
     /**
      * @return the list of the molecules added.
      */
-    List<MoleculesAdded> getListMolecules();
+    List<MoleculesAdded> getListMoleculesAdded();
     /**
      * @return if the list only substituted Hydrogens.
     */
     boolean isOnlySubstitutedHydrogens();
+    /**
+     * @param index
+     * @return if this Atom is selected.
+    */
+    boolean isSelected(int index);
 }

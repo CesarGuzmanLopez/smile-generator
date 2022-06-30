@@ -68,11 +68,13 @@ abstract class JpanelDrawMoleculeAbstract extends JPanel {
         final StructureDiagramGenerator sdg;
         // layout the molecule
         sdg = new StructureDiagramGenerator();
+        sdg.setAlignMappedReaction(true);
+
         sdg.setMolecule(iAtomContainer, false);
         try {
             sdg.generateCoordinates();
         } catch (CDKException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
         }
         // make generators
         final List<IGenerator<IAtomContainer>> generators = new ArrayList<>();
@@ -85,10 +87,10 @@ abstract class JpanelDrawMoleculeAbstract extends JPanel {
         if (getMolecule().atomCount() == 1) {
             generators.add(genera);
         }
-        renderer = new AtomContainerRenderer(generators, new AWTFontManager());
+        renderer = new  AtomContainerRenderer(generators, new AWTFontManager());
         RendererModel model;
         model = renderer.getRenderer2DModel();
-        model.set(BasicAtomGenerator.ShowExplicitHydrogens.class, true);
+        model.getParameter(BasicAtomGenerator.ShowExplicitHydrogens.class).setValue(true);
         model.set(BasicAtomGenerator.ShowEndCarbons.class, true);
         model.set(BasicAtomGenerator.CompactAtom.class, false);
         model.set(BasicAtomGenerator.AtomRadius.class, 0.5);

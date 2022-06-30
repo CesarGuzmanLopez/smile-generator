@@ -27,7 +27,11 @@
       <artifactId>cdk-inchi</artifactId>
       <version>2.7.1</version>
     </dependency>
-
+    <dependency>
+      <groupId>org.wcdevs.blog</groupId>
+      <artifactId>cdk</artifactId>
+      <version>3.0.0</version>
+    </dependency>
     <dependency>
       <groupId>org.openscience.cdk</groupId>
       <artifactId>cdk</artifactId>
@@ -83,7 +87,12 @@
       <artifactId>commons-logging</artifactId>
       <version>1.2</version>
     </dependency>
-
+    <dependency>
+      <groupId>org.openscience.cdk</groupId>
+      <artifactId>cdk-tool</artifactId>
+      <version>2.7.1</version>
+      <type>pom</type>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

@@ -23,10 +23,15 @@ public class WindowsGenerate extends JFrame {
     private File saveFileListSmile;
     private File saveFileListDescriptive;
     private JSpinner numBounds;
+    private JFileChooser saveImages;
+    private String path;
+    private JLabel selectedFileSmileList;
+    private JLabel selectedFileDescriptiveList;
+    private JLabel selectedImageFolder;
 
     public WindowsGenerate(final Molecule principal, final MoleculesList moleculeList) {
         setTitle("Generate");
-        setSize(500, 200);
+        setSize(550, 300);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new GridBagLayout());
@@ -34,7 +39,10 @@ public class WindowsGenerate extends JFrame {
         this.principal = principal;
         this.moleculeList = moleculeList;
         setVisible(true);
-        if (principal.hasHydrogenImplicit()) numBounds.setEnabled(true);
+        if (principal.hasHydrogenImplicit()) {
+            numBounds.setEnabled(true);
+        }
+        path = System.getProperty("user.dir");
     }
 
     /** Genera View Principal generate. */
@@ -44,9 +52,10 @@ public class WindowsGenerate extends JFrame {
                     saveFileListDescriptive, saveFileListSmile);
             final WriteAndGenerate generator = new WriteAndGenerate(moleculeList, principal,
                     (int) rSubstitutes.getValue(), (int) numBounds.getValue(), saveFileListDescriptive,
-                    saveFileListSmile, false);
+                    saveFileListSmile);
+            generator.setSaveImages(saveImages);
             generator.generate();
-        } catch (Exception e) { //NOSONAR
+        } catch (Exception e) { // NOSONAR
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -72,6 +81,11 @@ public class WindowsGenerate extends JFrame {
         selectFileSmileList.addActionListener(e -> selectOutputSmilesList());
         add(selectFileSmileList, gbc);
 
+        selectedFileSmileList = new JLabel("");
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        add(selectedFileSmileList, gbc);
+
         final JLabel labelSmileName = new JLabel("descriptive list Output file: ");
         labelSmileName.setPreferredSize(new java.awt.Dimension(210, 30));
         gbc.gridx = 0;
@@ -85,60 +99,111 @@ public class WindowsGenerate extends JFrame {
         selectFileDescriptiveList.addActionListener(e -> selectOutputSmilesDescriptive());
         add(selectFileDescriptiveList, gbc);
 
+        selectedFileDescriptiveList = new JLabel("");
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        add(selectedFileDescriptiveList, gbc);
+
+        final JLabel labelSaveImageFolder = new JLabel("Image Folder: ");
+        labelSaveImageFolder.setPreferredSize(new java.awt.Dimension(210, 30));
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        add(labelSaveImageFolder, gbc);
+
+        final JButton selectSaveImageFolder = new JButton("Select File");
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        selectSaveImageFolder.addActionListener(e -> selectSaveImageFolder());
+        add(selectSaveImageFolder, gbc);
+
+        selectedImageFolder = new JLabel("");
+        gbc.gridx = 2;
+        gbc.gridy = 2;
+        add(selectedImageFolder, gbc);
+
         final JLabel labelSmileDesc = new JLabel("r-substitutions: ");
         labelSmileDesc.setPreferredSize(new java.awt.Dimension(210, 30));
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         add(labelSmileDesc, gbc);
         rSubstitutes = new JSpinner();
         rSubstitutes.setValue(1);
 
         gbc.gridx = 1;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         add(rSubstitutes, gbc);
 
         final JLabel num = new JLabel("bounds: ");
         num.setPreferredSize(new java.awt.Dimension(210, 30));
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         add(num, gbc);
         numBounds = new JSpinner();
         numBounds.setValue(1);
         numBounds.setEnabled(false);
         gbc.gridx = 1;
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         add(numBounds, gbc);
 
         final JButton cancelButton = new JButton("cancel");
 
         gbc.gridx = 0;
-        gbc.gridy = 4;
+        gbc.gridy = 5;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         cancelButton.addActionListener(e -> dispose());
         add(cancelButton, gbc);
         final JButton generateButton = new JButton("Generate");
         gbc.gridx = 1;
-        gbc.gridy = 4;
+        gbc.gridy = 5;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         generateButton.addActionListener(e -> generate());
         add(generateButton, gbc);
 
     }
 
+    private void selectSaveImageFolder() {
+        saveImages = new JFileChooser();
+        saveImages.setCurrentDirectory(new File(path));
+        saveImages.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int outPut = saveImages.showSaveDialog(this);
+        saveImages.setAcceptAllFileFilterUsed(false);
+        path = saveImages.getCurrentDirectory().getPath();
+        if (outPut == JFileChooser.APPROVE_OPTION) {
+            selectedImageFolder.setText("Selected");
+        }
+
+    }
+
     private void selectOutputSmilesList() {
         final JFileChooser saveFileListSmile1 = new JFileChooser();
-        saveFileListSmile1.showSaveDialog(null);
+        saveFileListSmile1.setCurrentDirectory(new File(path));
+        int outPut = saveFileListSmile1.showSaveDialog(null);
         saveFileListSmile1.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         this.saveFileListSmile = saveFileListSmile1.getSelectedFile();
+        if (saveFileListSmile != null) {
+            path = saveFileListSmile1.getCurrentDirectory().getPath();
+        }
+        if (outPut == JFileChooser.APPROVE_OPTION) {
+            selectedFileSmileList.setText("Selected");
+        }
     }
 
     private void selectOutputSmilesDescriptive() {
         final JFileChooser saveFileListDescriptive1 = new JFileChooser();
-        saveFileListDescriptive1.showSaveDialog(null);
+        saveFileListDescriptive1.setCurrentDirectory(new File(path));
+
+        int outPut = saveFileListDescriptive1.showSaveDialog(null);
         saveFileListDescriptive1.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         this.saveFileListDescriptive = saveFileListDescriptive1.getSelectedFile();
+        if (saveFileListSmile != null) {
+            path = saveFileListDescriptive1.getCurrentDirectory().getPath();
+        }
+        if (outPut == JFileChooser.APPROVE_OPTION) {
+            selectedFileDescriptiveList.setText("Selected");
+        }
     }
 
 }

@@ -152,7 +152,7 @@ public class MoleculeData implements MoleculeDataInterface {
             return generator.create(moleculeContainer);
         } catch (CDKException e) {
             throw new UnsupportedOperationException("Error in CDKException Smile");
-        } catch (Exception e) {//NOSONAR
+        } catch (Exception e) { // NOSONAR
             StringBuilder bld = new StringBuilder();
             for (AtomInterface a : listAtoms) {
                 IAtom x = ((AtomCDK) a).getIAtom();
@@ -230,7 +230,7 @@ public class MoleculeData implements MoleculeDataInterface {
     }
 
     private void moleculesAggregate(final Molecule moleculeSubstituent, final Integer selectedPrincipal,
-            final Integer numBond, int numAtomPrincipalSelected, boolean implicitHydrogensPrincipal) {
+            final Integer numBond, final int numAtomPrincipalSelected, final  boolean implicitHydrogensPrincipal) {
         // Location of add molecule in the molecule
         MoleculesAdded newAdd = new MoleculesAdded(selectedPrincipal, moleculeSubstituent);
         if ((numAtomPrincipalSelected == 0 || numAtomPrincipalSelected == selectedPrincipal)
@@ -238,8 +238,8 @@ public class MoleculeData implements MoleculeDataInterface {
             for (int i = 0; i < numBond; i++) {
                 newAdd.addHydrogensDelete();
             }
-            if(numBond >1){
-                isOnlySubstitutedHydrogens  = false;
+            if (numBond > 1) {
+                isOnlySubstitutedHydrogens = false;
             }
         }
         moleculesAdded.add(newAdd);
@@ -388,12 +388,27 @@ public class MoleculeData implements MoleculeDataInterface {
      * {@inheritDoc}
      */
     @Override
-    public List<MoleculesAdded> getListMolecules() {
+    public List<MoleculesAdded> getListMoleculesAdded() {
         return moleculesAdded;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isOnlySubstitutedHydrogens() {
         return isOnlySubstitutedHydrogens;
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isSelected(final int index) {
+        for (AtomInterface atom : selectedList) {
+            if (atom.getId() == index) {
+                return true;
+            }
+        }
+        return false;
     }
 }

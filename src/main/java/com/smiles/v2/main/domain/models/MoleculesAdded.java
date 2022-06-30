@@ -27,21 +27,21 @@ public class MoleculesAdded {
     }
 
     /**
-     * @return index atom aggregate
+     * @return index atom aggregate.
      */
     public Integer getLocate() {
         return locate;
     }
 
     /**
-     * @return molecule added
+     * @return molecule added.
      */
     public Molecule getMolecule() {
         return molecule;
     }
 
     /**
-     * Num of hydrogen deleted
+     * Num of hydrogen deleted.
      */
     public void addHydrogensDelete() {
         hydrogensDeleted++;

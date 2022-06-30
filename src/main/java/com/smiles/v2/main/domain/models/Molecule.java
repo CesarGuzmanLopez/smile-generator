@@ -1,5 +1,7 @@
 package com.smiles.v2.main.domain.models;
 
+import java.util.List;
+
 import com.smiles.v2.main.interfaces.AtomInterface;
 import com.smiles.v2.main.interfaces.MoleculeComparableInterface;
 import com.smiles.v2.main.interfaces.MoleculeDataFactoryInterface;
@@ -217,9 +219,39 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
     }
 
     /**
+     * @return if isOnlySubstitutedHydrogens.
+     */
+    public boolean isOnlySubstitutedHydrogens() {
+        return moleculeDataOfSmile.isOnlySubstitutedHydrogens();
+    }
+
+    /**
      * @return MoleculeDataFactoryInterface
      */
     protected MoleculeDataFactoryInterface getMoleculeDataFactory() {
         return moleculeDataFactory;
     }
+
+    /**
+     * @param index the atom id.
+     * @return is selected
+     */
+    public boolean isSelected(final int index) {
+        return moleculeDataOfSmile.isSelected(index);
+    }
+
+    /**
+     * @param id of substitute
+     * @return MoleculeSubsitute
+     */
+    public Molecule getSubstitute(final int id) {
+        List<MoleculesAdded> adds = moleculeDataOfSmile.getListMoleculesAdded();
+        for (MoleculesAdded moleculesAdded : adds) {
+            if (moleculesAdded.getLocate() == id) {
+                return moleculesAdded.getMolecule();
+            }
+        }
+        throw new NullPointerException("The id is not found");
+    }
+
 }
