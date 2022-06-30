@@ -41,14 +41,16 @@ public class Generator {
         this.moleculeListSubstitutes = moleculeListSubstitutes;
         this.numBounds = numBounds;
 
-        if(principal.getNumberAtoms() >1 && rSubstitutes > principal.getMoleculeData().getListAtomsSelected().size() ){
-            throw new IllegalArgumentException("The number of substitutes must be less than the number of atoms of the principal molecule.");
+        if (principal.getNumberAtoms() > 1
+                && rSubstitutes > principal.getMoleculeData().getListAtomsSelected().size()) {
+            throw new IllegalArgumentException(
+                    "The number of substitutes must be less than the number of atoms of the principal molecule.");
         }
         generate = new MoleculesListNotRepeat(moleculeListSubstitutes.getSmileVerifier(),
                 moleculeListSubstitutes.getFactoryMol());
         generateSubstitutes();
 
-        //insert the molecule principal int the list of return.
+        // insert the molecule principal int the list of return.
         generate.addMolecule(this.principal);
 
         /*
@@ -187,7 +189,7 @@ public class Generator {
      * @return if substitution is correct.
      *
      */
-    private boolean generatePermutes1Molecule1Substitute(Molecule principalM, Molecule substitute, int bound) { // UNCHECK
+    private boolean generatePermutes1Molecule1Substitute(Molecule principalM, Molecule substitute, int bound) {//UNCHECK
         if (principalM.getNumberAtoms() == 1 && substitute.getNumberAtoms() == 1) {
             generatePermuteAtom1Atom(principalM, substitute, bound);
             return true;
@@ -210,7 +212,7 @@ public class Generator {
     /**
      * Generate permutations of the list of molecules with substitutes.
      *
-     * @param seed the List of molecules to permuted with substitutes.
+     * @param moleculesToPermute the List of molecules to permuted with substitutes.
      */
     private void generatePermutes(MoleculesListAbstract moleculesToPermute) { // UNCHECK
         MoleculesListNotRepeat toPermute = new MoleculesListNotRepeat(moleculesToPermute);

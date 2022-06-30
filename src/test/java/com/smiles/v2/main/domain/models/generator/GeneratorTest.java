@@ -43,6 +43,7 @@ public class GeneratorTest {
         verifiedSmile = new VerifiedSmile();
         moleculeDataFactory = new MoleculeDataFactory();
     }
+
     /**
      * TestGenerateSubstitutes.
      *
@@ -100,7 +101,6 @@ public class GeneratorTest {
         molecule4.selectAtom(13);
         molecule4.selectAtom(2);
 
-
         Molecule molecule5 = new Molecule("ccOcc2", "ccOcc", "Is a prove", true, verifiedSmile, moleculeDataFactory);
         molecule5.selectAtom(1);
         molecule5.selectAtom(3);
@@ -111,7 +111,6 @@ public class GeneratorTest {
         moleculesList.addMolecule(molecule2);
         moleculesList.addMolecule(molecule3);
         moleculesList.addMolecule(molecule4);
-
 
         Generator generator = new Generator(molecule4, moleculesList, 1, 1);
 
@@ -130,7 +129,4 @@ public class GeneratorTest {
         all = generator2.getAllMolecules();
         assertEquals(1104, all.getListMolecule().size(), "The number of permutes not correct");
     }
-
-    
-
 };

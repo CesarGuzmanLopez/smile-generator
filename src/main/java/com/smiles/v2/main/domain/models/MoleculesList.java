@@ -18,8 +18,9 @@ public class MoleculesList extends MoleculesListAbstract {
      */
     @Override
     public int addSmiles(final String name, final String smile, final String message, final boolean hydrogen) {
-        if (!isUniqueName(name)) throw new IllegalArgumentException("Name already exists");
-
+        if (!isUniqueName(name)) {
+            throw new IllegalArgumentException("Name already exists");
+        }
         final SmilesHInterface smileH = new Smiles(name, smile, message, hydrogen, getSmileVerifier());
         getListMolecule().add(new Molecule(smileH, getFactoryMol()));
         return getListMolecule().size() - 1;
@@ -30,7 +31,9 @@ public class MoleculesList extends MoleculesListAbstract {
      */
     @Override
     public int addSmiles(final SmilesHInterface smile) {
-        if (!isUniqueName(smile.getName())) throw new IllegalArgumentException("Name already exists");
+        if (!isUniqueName(smile.getName())) {
+            throw new IllegalArgumentException("Name already exists");
+        }
         getListMolecule().add(new Molecule(smile, getFactoryMol()));
         return getListMolecule().size() - 1;
     }
@@ -55,11 +58,15 @@ public class MoleculesList extends MoleculesListAbstract {
      */
     @Override
     public int addMolecule(final Molecule molecule) {
-        if (!isUniqueName(molecule.getName())) throw new IllegalArgumentException("Name already exists: " + molecule.getName());
+        if (!isUniqueName(molecule.getName())) {
+            throw new IllegalArgumentException("Name already exists: " + molecule.getName());
+        }
         int num = getListMolecule().size();
         Molecule cloneMolecule = new Molecule(molecule, true);
         getListMolecule().add(cloneMolecule);
-        if(num>= getListMolecule().size()) throw new IllegalArgumentException("Error adding molecule");
+        if (num >= getListMolecule().size()) {
+            throw new IllegalArgumentException("Error adding molecule");
+        }
         return getListMolecule().size() - 1;
     }
 
@@ -68,7 +75,9 @@ public class MoleculesList extends MoleculesListAbstract {
      */
     @Override
     public int addMolecule(final Molecule molecule, final String name) {
-        if (!isUniqueName(name)) throw new IllegalArgumentException("Name already exists");
+        if (!isUniqueName(name)) {
+            throw new IllegalArgumentException("Name already exists");
+        }
         Molecule cloneMolecule = new Molecule(molecule, false);
         cloneMolecule.setName(name);
         getListMolecule().add(cloneMolecule);

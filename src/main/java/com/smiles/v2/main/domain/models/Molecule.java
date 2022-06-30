@@ -204,7 +204,7 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
     }
 
     /**
-     * @param molecule the molecule to compare.
+     * @param mol the molecule to compare.
      * @return if the molecule is equals to the molecule.
      */
     @Override

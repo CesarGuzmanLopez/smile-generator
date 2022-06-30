@@ -188,8 +188,9 @@ public class MoleculeData implements MoleculeDataInterface {
         }
         moleculeContainer.addBond(numAtomPrincipalSelected, numAtomSubstituentSelected, bond);
         /* unselected IAtom */
-        if (selectedPrincipal != null)
+        if (selectedPrincipal != null) {
             selectOrderAtom(getAtom(selectedPrincipal));
+        }
         // Location of add molecule in the molecule
         moleculesAdded.add(initNumAtoms);
         try {
@@ -233,21 +234,21 @@ public class MoleculeData implements MoleculeDataInterface {
     };
 
     /**
-     * @param Atom1
-     * @param Atom2
+     * @param atom1P
+     * @param atom2P
      * @return if Atoms connected atoms equals.
      */
-    private boolean isEquivalent(final IAtom Atom1, final IAtom Atom2) {
-        if (Atom1.getBondCount() != Atom2.getBondCount()) {
+    private boolean isEquivalent(final IAtom atom1P, final IAtom atom2P) {
+        if (atom1P.getBondCount() != atom2P.getBondCount()) {
             return false;
         }
         List<IAtom> atom1List = new ArrayList<>();
         List<IAtom> atom2List = new ArrayList<>();
-        for (IBond bond : Atom1.bonds()) {
-            atom1List.add(bond.getOther(Atom1));
+        for (IBond bond : atom1P.bonds()) {
+            atom1List.add(bond.getOther(atom1P));
         }
-        for (IBond bond : Atom2.bonds()) {
-            atom2List.add(bond.getOther(Atom2));
+        for (IBond bond : atom2P.bonds()) {
+            atom2List.add(bond.getOther(atom2P));
         }
         for (IAtom atom : atom1List) {
             boolean contains = false;
@@ -257,18 +258,18 @@ public class MoleculeData implements MoleculeDataInterface {
                     break;
                 }
             }
-            if (!contains)
+            if (!contains) {
                 return false;
+            }
         }
 
         return true;
     }
 
     /**
-     * Reselect.
-     * I look for the closest atom that contains the same number of connections and
-     * the same number of atoms and that are of the same type but that contains
-     * implicit hydrogens from which I can remove an element.
+     * Reselect. I look for the closest atom that contains the same number of
+     * connections and the same number of atoms and that are of the same type but
+     * that contains implicit hydrogens from which I can remove an element.
      *
      * @param selected
      * @param numBond
@@ -304,8 +305,9 @@ public class MoleculeData implements MoleculeDataInterface {
     @Override
     public AtomInterface getAtom(final int number) {
         for (AtomInterface atom : listAtoms) {
-            if (atom.getId() == number)
+            if (atom.getId() == number) {
                 return atom;
+            }
         }
         throw new IllegalStateException("Atom not found atomInterface getAtom.");
     }
