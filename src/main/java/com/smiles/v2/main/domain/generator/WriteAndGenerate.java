@@ -141,7 +141,7 @@ public class WriteAndGenerate {
      */
     public final void generate() throws IOException {
         writeHeadDescription();
-        Generator generator = new Generator(principal, substitutes, rSubstitutes, numBounds);
+        Generator generator = new Generator(principal, substitutes, rSubstitutes, numBounds,false);
 
         closeFiles();
     }

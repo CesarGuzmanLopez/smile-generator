@@ -23,7 +23,7 @@ public class Generator {
     /**
      * Contain all generated Molecule.
      */
-    private MoleculesListNotRepeat generate;
+    private MoleculesListAbstract generate;
 
     private MoleculesList listOfSubstitutes;
 
@@ -36,18 +36,22 @@ public class Generator {
      * @param numBounds               The number of bounds.
      */
     public Generator(final Molecule principal, final MoleculesList moleculeListSubstitutes, final int rSubstitutes,
-            final int numBounds) {
+            final int numBounds, boolean repeat) {
         this.principal = principal;
         this.moleculeListSubstitutes = moleculeListSubstitutes;
         this.numBounds = numBounds;
 
-        if (principal.atomCount() > 1
-                && rSubstitutes > principal.getMoleculeData().getListAtomsSelected().size()) {
+        if (principal.atomCount() > 1 && rSubstitutes > principal.getMoleculeData().getListAtomsSelected().size()) {
             throw new IllegalArgumentException(
                     "The number of substitutes must be less than the number of atoms of the principal molecule.");
         }
-        generate = new MoleculesListNotRepeat(moleculeListSubstitutes.getSmileVerifier(),
-                moleculeListSubstitutes.getFactoryMol());
+        if (!repeat) {
+            generate = new MoleculesListNotRepeat(moleculeListSubstitutes.getSmileVerifier(),
+                    moleculeListSubstitutes.getFactoryMol());
+        } else {
+            generate = new MoleculesList(moleculeListSubstitutes.getSmileVerifier(),
+                    moleculeListSubstitutes.getFactoryMol());
+        }
         generateSubstitutes();
 
         // insert the molecule principal int the list of return.
@@ -189,7 +193,7 @@ public class Generator {
      * @return if substitution is correct.
      *
      */
-    private boolean generatePermutes1Molecule1Substitute(Molecule principalM, Molecule substitute, int bound) {//UNCHECK
+    private boolean generatePermutes1Molecule1Substitute(Molecule principalM, Molecule substitute, int bound) {// UNCHECK
         if (principalM.atomCount() == 1 && substitute.atomCount() == 1) {
             generatePermuteAtom1Atom(principalM, substitute, bound);
             return true;
