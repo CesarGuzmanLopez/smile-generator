@@ -7,7 +7,7 @@ public class MoleculesAdded {
      * @param locate index atom aggregate
      * @param molecule molecule added
     */
-    public MoleculesAdded(Integer locate, Molecule molecule) {
+    public MoleculesAdded(final Integer locate, final Molecule molecule) {
         if (locate == null) {
             this.locate = 0;
         } else {

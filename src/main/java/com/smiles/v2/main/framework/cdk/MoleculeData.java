@@ -214,7 +214,7 @@ public class MoleculeData implements MoleculeDataInterface {
             selectOrderAtom(getAtom(selectedPrincipal));
         }
         // Location of add molecule in the molecule
-        moleculesAdded.add(new MoleculesAdded(selectedPrincipal,moleculeSubstituent));
+        moleculesAdded.add(new MoleculesAdded(selectedPrincipal, moleculeSubstituent));
         try {
             molecule.resetSmile();
         } catch (UnsupportedOperationException e) {
