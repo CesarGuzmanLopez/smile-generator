@@ -7,9 +7,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 
+import com.smiles.v2.main.domain.generator.WriteAndGenerate;
 import com.smiles.v2.main.domain.models.Molecule;
 import com.smiles.v2.main.domain.models.MoleculesList;
-import com.smiles.v2.main.domain.models.generator.WriteAndGenerate;
 
 import java.awt.GridBagLayout;
 import java.io.File;

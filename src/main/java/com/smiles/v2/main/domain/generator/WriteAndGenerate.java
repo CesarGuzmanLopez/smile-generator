@@ -1,4 +1,4 @@
-package com.smiles.v2.main.domain.models.generator;
+package com.smiles.v2.main.domain.generator;
 
 import com.smiles.v2.main.domain.models.Molecule;
 import com.smiles.v2.main.domain.models.MoleculesList;
@@ -142,6 +142,7 @@ public class WriteAndGenerate {
     public final void generate() throws IOException {
         writeHeadDescription();
         Generator generator = new Generator(principal, substitutes, rSubstitutes, numBounds);
+
         closeFiles();
     }
 

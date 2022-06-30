@@ -9,6 +9,7 @@ import java.io.PrintStream;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.smiles.v2.main.domain.generator.Generator;
 import com.smiles.v2.main.domain.models.Molecule;
 import com.smiles.v2.main.domain.models.MoleculesList;
 import com.smiles.v2.main.domain.models.MoleculesListAbstract;
@@ -50,15 +51,15 @@ public class GeneratorTest {
      */
     @Test
     public void testGenerateSubstitutes() {
-        Molecule molecule1 = new Molecule("ccOcc", "ccOcc", "Is a prove", true, verifiedSmile, moleculeDataFactory);
+        Molecule molecule1 = new Molecule("ccOcc", "ccOcc", "Is a test", true, verifiedSmile, moleculeDataFactory);
         molecule1.selectAtom(1);
         molecule1.selectAtom(3);
 
-        Molecule molecule2 = new Molecule("Ncccc", "Ncccc", "Is a prove", true, verifiedSmile, moleculeDataFactory);
+        Molecule molecule2 = new Molecule("Ncccc", "Ncccc", "Is a test", true, verifiedSmile, moleculeDataFactory);
         molecule2.selectAtom(1);
         molecule2.selectAtom(0);
-        Molecule molecule3 = new Molecule("Oxygens", "O", "Is a prove", true, verifiedSmile, moleculeDataFactory);
-        Molecule molecule4 = new Molecule("Dimetoxianfetamine", "CC1=CC(=C(C=C1OC)CC(C)N)OC", "Is a prove", true,
+        Molecule molecule3 = new Molecule("Oxygens", "O", "Is a test", true, verifiedSmile, moleculeDataFactory);
+        Molecule molecule4 = new Molecule("Dimetoxianfetamine", "CC1=CC(=C(C=C1OC)CC(C)N)OC", "Is a test", true,
                 verifiedSmile, moleculeDataFactory);
         molecule4.selectAtom(2);
         molecule4.selectAtom(6);
@@ -88,20 +89,20 @@ public class GeneratorTest {
      */
     @Test
     public void testGenerate() {
-        Molecule molecule1 = new Molecule("ccOcc", "ccOcc", "Is a prove", true, verifiedSmile, moleculeDataFactory);
+        Molecule molecule1 = new Molecule("ccOcc", "ccOcc", "Is a test", true, verifiedSmile, moleculeDataFactory);
         molecule1.selectAtom(1);
         molecule1.selectAtom(3);
 
-        Molecule molecule2 = new Molecule("Ncccc", "Ncccc", "Is a prove", true, verifiedSmile, moleculeDataFactory);
+        Molecule molecule2 = new Molecule("Ncccc", "Ncccc", "Is a test", true, verifiedSmile, moleculeDataFactory);
         molecule2.selectAtom(1);
         molecule2.selectAtom(0);
-        Molecule molecule3 = new Molecule("Oxygens", "O", "Is a prove", true, verifiedSmile, moleculeDataFactory);
-        Molecule molecule4 = new Molecule("Dimetoxianfetamine", "CC1=CC(=C(C=C1OC)CC(C)N)OC", "Is a prove", true,
+        Molecule molecule3 = new Molecule("Oxygens", "O", "Is a test", true, verifiedSmile, moleculeDataFactory);
+        Molecule molecule4 = new Molecule("Dimetoxianfetamine", "CC1=CC(=C(C=C1OC)CC(C)N)OC", "Is a test", true,
                 verifiedSmile, moleculeDataFactory);
         molecule4.selectAtom(13);
         molecule4.selectAtom(2);
 
-        Molecule molecule5 = new Molecule("ccOcc2", "ccOcc", "Is a prove", true, verifiedSmile, moleculeDataFactory);
+        Molecule molecule5 = new Molecule("ccOcc2", "ccOcc", "Is a test", true, verifiedSmile, moleculeDataFactory);
         molecule5.selectAtom(1);
         molecule5.selectAtom(3);
 
@@ -125,8 +126,76 @@ public class GeneratorTest {
         molecule4.selectAtom(4);
         molecule4.selectAtom(0);
         Generator generator2 = new Generator(molecule4, moleculesList, 3, 1);
-
         all = generator2.getAllMolecules();
         assertEquals(1104, all.getListMolecule().size(), "The number of permutes not correct");
+    }
+
+    /**
+     * TestBenzene
+     */
+    @Test
+    public void testBenzene(){
+        Molecule benzene = new Molecule("Benzene", "C1=CC=CC=C1", "Is a test", true, verifiedSmile, moleculeDataFactory);
+        benzene.selectAtom(0);
+        benzene.selectAtom(1);
+        benzene.selectAtom(2);
+        benzene.selectAtom(3);
+        benzene.selectAtom(4);
+        benzene.selectAtom(5);
+        Molecule oxygen = new Molecule("Oxigeno", "O", "Is a test", true, verifiedSmile, moleculeDataFactory);
+        Molecule nitrogen = new Molecule("Nitrogen", "N", "Is a test", true, verifiedSmile, moleculeDataFactory);
+        Molecule fluor = new Molecule("Fluor", "F", "Is a test", true, verifiedSmile, moleculeDataFactory);
+        Molecule bromo = new Molecule("Bromo", "Br", "Is a test", true, verifiedSmile, moleculeDataFactory);
+        Molecule iodine = new Molecule("iodine", "I", "Is a test", true, verifiedSmile, moleculeDataFactory);
+        Molecule boron = new Molecule("boron", "B", "Is a test", true, verifiedSmile, moleculeDataFactory);
+        MoleculesList listMolecules = new MoleculesList(verifiedSmile, moleculeDataFactory);
+        listMolecules.addMolecule(oxygen);
+
+        Generator generator = new Generator(benzene, listMolecules, 1, 1);
+        MoleculesListAbstract all = generator.getAllMolecules();
+        assertEquals(2, all.getListMolecule().size(), "The number of permutes not correct");
+
+        // for (Molecule molecule : all.getListMolecule()) {
+        //     ORIGINAL_OUT.println(molecule);
+        // }
+        listMolecules.addMolecule(nitrogen);
+        listMolecules.addMolecule(fluor);
+        listMolecules.addMolecule(bromo);
+        listMolecules.addMolecule(iodine);
+        listMolecules.addMolecule(boron);
+
+        Generator generator2 = new Generator(benzene, listMolecules, 1, 1);
+        all = generator2.getAllMolecules();
+        for (Molecule molecule : all.getListMolecule()) {
+            ORIGINAL_OUT.println(molecule);
+        }
+        assertEquals(7, all.getListMolecule().size(), "The number of permutes not correct");
+        // Generator generator3 = new Generator(benzene, listMolecules, 6, 1);
+        // all = generator2.getAllMolecules();
+        // for (Molecule molecule : all.getListMolecule()) {
+        //     ORIGINAL_OUT.println(molecule);
+        // }
+        /**
+         * Very big number of permutes.
+         */
+    }
+    /** test Asterisk
+     *
+    */
+    @Test
+    public void testAsterisk(){
+        Molecule molecule1 = new Molecule("ccOcc", "ccOcc", "Is a test", true, verifiedSmile, moleculeDataFactory);
+        molecule1.selectAtom(1);
+        molecule1.selectAtom(3);
+        Molecule molecule2 = new Molecule("[*]=C", "[*]=C", "Is a test", true, verifiedSmile, moleculeDataFactory);
+        molecule2.selectAtom(0);
+        MoleculesList listMolecules = new MoleculesList(verifiedSmile, moleculeDataFactory);
+        listMolecules.addMolecule(molecule2);
+        Generator generator1 = new Generator(molecule1, listMolecules, 1, 1);
+        MoleculesListAbstract all = generator1.getAllMolecules();
+        for (Molecule molecule : all.getListMolecule()) {
+            ORIGINAL_OUT.println(molecule);
+        }
+
     }
 };

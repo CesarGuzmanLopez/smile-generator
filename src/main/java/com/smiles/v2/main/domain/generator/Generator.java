@@ -1,4 +1,4 @@
-package com.smiles.v2.main.domain.models.generator;
+package com.smiles.v2.main.domain.generator;
 
 import java.util.List;
 

@@ -25,6 +25,7 @@ import org.openscience.cdk.renderer.generators.BasicBondGenerator;
 import org.openscience.cdk.renderer.generators.BasicGenerator;
 import org.openscience.cdk.renderer.generators.BasicSceneGenerator;
 import org.openscience.cdk.renderer.generators.IGenerator;
+import org.openscience.cdk.renderer.generators.standard.StandardGenerator;
 import org.openscience.cdk.renderer.visitor.AWTDrawVisitor;
 
 @SuppressWarnings("java:S1948")
@@ -75,11 +76,15 @@ abstract class JpanelDrawMoleculeAbstract extends JPanel {
         }
         // make generators
         final List<IGenerator<IAtomContainer>> generators = new ArrayList<>();
+        final StandardGenerator genera = new StandardGenerator(new Font("Arial", Font.BOLD, 0));
 
         generators.add(new BasicGenerator());
         generators.add(new BasicSceneGenerator());
         generators.add(new BasicBondGenerator());
         generators.add(new BasicAtomGenerator());
+        if (getMolecule().getNumberAtoms() == 1) {
+            generators.add(genera);
+        }
         renderer = new AtomContainerRenderer(generators, new AWTFontManager());
         RendererModel model;
         model = renderer.getRenderer2DModel();
