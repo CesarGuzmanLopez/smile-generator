@@ -167,19 +167,32 @@ public class WriteAndGenerate {
      */
     public final void generate() throws IOException {
         writeHeadDescription();
-        Generator generator = new Generator(principal, substitutes, rSubstitutes, numBounds, repeated);
+        GeneratorPermutesSmile generator = new GeneratorPermutesSmile(principal, substitutes, rSubstitutes, numBounds,
+                repeated);
         MoleculesListAbstract generateList = generator.getAllMolecules();
         if (writeDescription != null) {
-            writeDescription.write("\t===Total: " + generateList.getListMolecule().size() + "\t===\n");
+            writeDescription.write("\n\n\t=== ===\t\tTotal: " + generateList.getListMolecule().size() + "\t=== ===\n");
         }
+        int numAtoms = 0;
         for (Molecule molecule : generateList.getListMolecule()) {
             writeOutput.write(molecule.smile() + "\n");
             if (writeDescription != null) {
-                writeDescription.write(molecule + "\n");
+                writeDescription.write(numAtoms++ + " " + molecule + "\n");
             }
         }
         printStructureSubstitute(generateList);
+        if (saveImages != null) {
+            saveImages(generateList);
+        }
         closeFiles();
+
+    }
+
+    /**
+     *
+     * @param generateList List of molecules permutes.
+     */
+    private void saveImages(MoleculesListAbstract generateList) { // UNCHECK
 
     }
 
@@ -190,15 +203,14 @@ public class WriteAndGenerate {
         if (writeDescription != null) {
             writeDescription.write("==========================================================\n");
             for (Molecule molecule : generateList.getListMolecule()) {
-                // String symbol = molecule.isOnlySubstitutedHydrogens() ? "H" : "*"; // NOSONAR
-                // for (AtomInterface toSubstitute :
-                // principal.getMoleculeData().getListAtomsSelected()) {
-                // if (molecule.isSelected(toSubstitute.getId())) {
-                // Molecule substitute = molecule.getSubstitute(toSubstitute.getId());
-                // symbol = substitute.getName();
-                // }
-                // writeDescription.write("\t\t" + symbol);
-                // }
+                for (AtomInterface toSubstitute : principal.getMoleculeData().getListAtomsSelected()) {
+                    String symbol = molecule.isOnlySubstitutedHydrogens() ? "H" : "*"; // NOSONAR
+                    if (!molecule.isSelected(toSubstitute.getId())) {
+                        Molecule a = molecule.getSubstitute(toSubstitute.getId());
+                        symbol = a.smile();
+                    }
+                    writeDescription.write("\t\t" + symbol);
+                }
                 writeDescription.write("\n");
             }
         }
@@ -218,8 +230,9 @@ public class WriteAndGenerate {
                 writeDescription.write("\t " + molecule.getName()
                         + (moleculeData.getListAtomsSelected().isEmpty() ? " selected :\t " : "")); // NOSONAR
                 for (AtomInterface atom : moleculeData.getListAtomsSelected()) {
-                    writeDescription.write("\t\t" + atom.getSymbol() + "\n");
+                    writeDescription.write("\t\t" + atom.getSymbol() + ",");
                 }
+                writeDescription.write("\n");
             }
         }
     }

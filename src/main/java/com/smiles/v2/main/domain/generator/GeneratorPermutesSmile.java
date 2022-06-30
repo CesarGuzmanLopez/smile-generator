@@ -15,7 +15,7 @@ import com.smiles.v2.main.interfaces.AtomInterface;
  * @version 1.01
  * @since 1.0
  */
-public class Generator {
+public class GeneratorPermutesSmile {
     private final Molecule principal;
     private MoleculesList moleculeListSubstitutes;
 
@@ -36,8 +36,8 @@ public class Generator {
      * @param numBounds               The number of bounds.
      * @param repeat                  if the molecule generate is repeat.
      */
-    public Generator(final Molecule principal, final MoleculesList moleculeListSubstitutes, final int rSubstitutes,
-            final int numBounds, final boolean repeat) {
+    public GeneratorPermutesSmile(final Molecule principal, final MoleculesList moleculeListSubstitutes,
+            final int rSubstitutes, final int numBounds, final boolean repeat) {
         this.principal = principal;
         this.moleculeListSubstitutes = moleculeListSubstitutes;
         this.numBounds = numBounds;

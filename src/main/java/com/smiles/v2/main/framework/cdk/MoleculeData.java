@@ -1,5 +1,6 @@
 package com.smiles.v2.main.framework.cdk;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import org.openscience.cdk.DefaultChemObjectBuilder;
@@ -60,7 +61,7 @@ public class MoleculeData implements MoleculeDataInterface {
             selectedList.add(atomToSelected);
         }
         isOnlySubstitutedHydrogens = moleculeData.isOnlySubstitutedHydrogens();
-        moleculesAdded = new ArrayList<>();
+        moleculesAdded = new ArrayList<>(((MoleculeData) moleculeData).moleculesAdded);
     }
 
     /**
@@ -220,7 +221,7 @@ public class MoleculeData implements MoleculeDataInterface {
             selectOrderAtom(getAtom(selectedPrincipal));
         }
         moleculesAggregate(moleculeSubstituent, selectedPrincipal, numBond, numAtomPrincipalSelected,
-                implicitHydrogensPrincipal);
+                implicitHydrogensPrincipal, initNumAtoms);
 
         try {
             molecule.resetSmile();
@@ -230,9 +231,10 @@ public class MoleculeData implements MoleculeDataInterface {
     }
 
     private void moleculesAggregate(final Molecule moleculeSubstituent, final Integer selectedPrincipal,
-            final Integer numBond, final int numAtomPrincipalSelected, final  boolean implicitHydrogensPrincipal) {
+            final Integer numBond, final int numAtomPrincipalSelected, final boolean implicitHydrogensPrincipal,
+            final Integer initNumAtoms) {
         // Location of add molecule in the molecule
-        MoleculesAdded newAdd = new MoleculesAdded(selectedPrincipal, moleculeSubstituent);
+        MoleculesAdded newAdd = new MoleculesAdded(initNumAtoms, moleculeSubstituent, selectedPrincipal);
         if ((numAtomPrincipalSelected == 0 || numAtomPrincipalSelected == selectedPrincipal)
                 && implicitHydrogensPrincipal) {
             for (int i = 0; i < numBond; i++) {
@@ -399,6 +401,7 @@ public class MoleculeData implements MoleculeDataInterface {
     public boolean isOnlySubstitutedHydrogens() {
         return isOnlySubstitutedHydrogens;
     }
+
     /**
      * {@inheritDoc}
      */
@@ -410,5 +413,13 @@ public class MoleculeData implements MoleculeDataInterface {
             }
         }
         return false;
+    }
+    /**
+     * {@inheritDoc}
+    */
+    @Override
+    public BufferedImage getImage() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

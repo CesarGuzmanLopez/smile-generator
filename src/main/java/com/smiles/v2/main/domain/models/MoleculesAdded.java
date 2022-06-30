@@ -4,12 +4,16 @@ public class MoleculesAdded {
     private Integer locate;
     private Molecule molecule;
     private Integer hydrogensDeleted;
+    private Integer selectedPrincipal;
+
+
 
     /**
      * @param locate   index atom aggregate
      * @param molecule molecule added
+     * @param selectedPrincipal index atom principal
      */
-    public MoleculesAdded(final Integer locate, final Molecule molecule) {
+    public MoleculesAdded(final Integer locate, final Molecule molecule, final Integer selectedPrincipal) {
         if (locate == null) {
             this.locate = 0;
         } else {
@@ -17,6 +21,7 @@ public class MoleculesAdded {
         }
         this.molecule = molecule;
         hydrogensDeleted = 0;
+        this.selectedPrincipal = selectedPrincipal;
     }
 
     /**
@@ -27,12 +32,19 @@ public class MoleculesAdded {
     }
 
     /**
-     * @return index atom aggregate.
+     * @return index The first atom of molecule.
      */
     public Integer getLocate() {
         return locate;
     }
+    /**
+     *
+     * @return index atom aggregate.
+     */
 
+    public Integer getSelectedPrincipal() {
+        return selectedPrincipal;
+    }
     /**
      * @return molecule added.
      */

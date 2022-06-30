@@ -1,7 +1,7 @@
 package com.smiles.v2.main.interfaces;
 
 import java.util.List;
-
+import java.awt.image.BufferedImage;
 import com.smiles.v2.main.domain.models.Molecule;
 import com.smiles.v2.main.domain.models.MoleculesAdded;
 /**Interface for the MoleculeComparable.
@@ -69,4 +69,9 @@ public interface MoleculeDataInterface extends MoleculeComparableInterface {
      * @return if this Atom is selected.
     */
     boolean isSelected(int index);
+
+    /**
+     * @return image of the molecule.
+     */
+    BufferedImage getImage();
 }

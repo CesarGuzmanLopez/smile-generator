@@ -1,0 +1,12 @@
+Main molecule: CC Smile CC
+No Substitutes 2
+R Substitutes1
+substitutes: 
+	 Alcohol selected :	 	 Thiol selected :	 	===Total: 3	===
+CC Smile:CC
+CC<1> |1| Alcohol<null> Smile:CCO
+CC<1> |1| Thiol<null> Smile:CC[S]
+==========================================================
+
+
+

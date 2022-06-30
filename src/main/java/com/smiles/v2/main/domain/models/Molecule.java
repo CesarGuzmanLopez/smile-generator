@@ -1,6 +1,7 @@
 package com.smiles.v2.main.domain.models;
 
 import java.util.List;
+import java.awt.image.BufferedImage;
 
 import com.smiles.v2.main.interfaces.AtomInterface;
 import com.smiles.v2.main.interfaces.MoleculeComparableInterface;
@@ -247,11 +248,16 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
     public Molecule getSubstitute(final int id) {
         List<MoleculesAdded> adds = moleculeDataOfSmile.getListMoleculesAdded();
         for (MoleculesAdded moleculesAdded : adds) {
-            if (moleculesAdded.getLocate() == id) {
+            if (moleculesAdded.getSelectedPrincipal() == id) {
                 return moleculesAdded.getMolecule();
             }
         }
-        throw new NullPointerException("The id is not found");
+        throw new NullPointerException("this molecule no selected");
     }
-
+    /**
+     * @return image of molecule.
+    */
+    public BufferedImage getImage() {
+        return moleculeDataOfSmile.getImage();
+    }
 }

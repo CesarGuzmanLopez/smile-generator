@@ -173,6 +173,9 @@ public class WindowsGenerate extends JFrame {
         path = saveImages.getCurrentDirectory().getPath();
         if (outPut == JFileChooser.APPROVE_OPTION) {
             selectedImageFolder.setText("Selected");
+        } else {
+            saveImages = null;
+            selectedImageFolder.setText("");
         }
 
     }
@@ -188,6 +191,9 @@ public class WindowsGenerate extends JFrame {
         }
         if (outPut == JFileChooser.APPROVE_OPTION) {
             selectedFileSmileList.setText("Selected");
+        } else {
+            saveFileListSmile = null;
+            selectedFileSmileList.setText("");
         }
     }
 
@@ -203,6 +209,9 @@ public class WindowsGenerate extends JFrame {
         }
         if (outPut == JFileChooser.APPROVE_OPTION) {
             selectedFileDescriptiveList.setText("Selected");
+        } else {
+            this.saveFileListDescriptive = null;
+            selectedFileDescriptiveList.setText("");
         }
     }
 

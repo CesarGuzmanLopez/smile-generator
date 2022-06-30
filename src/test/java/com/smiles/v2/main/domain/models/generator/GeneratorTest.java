@@ -9,7 +9,7 @@ import java.io.PrintStream;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import com.smiles.v2.main.domain.generator.Generator;
+import com.smiles.v2.main.domain.generator.GeneratorPermutesSmile;
 import com.smiles.v2.main.domain.models.Molecule;
 import com.smiles.v2.main.domain.models.MoleculesList;
 import com.smiles.v2.main.domain.models.MoleculesListAbstract;
@@ -70,7 +70,7 @@ public class GeneratorTest {
         moleculesList.addMolecule(molecule2);
         moleculesList.addMolecule(molecule3);
         moleculesList.addMolecule(molecule4);
-        Generator generator = new Generator(molecule3, moleculesList, 1, 2, false);
+        GeneratorPermutesSmile generator = new GeneratorPermutesSmile(molecule3, moleculesList, 1, 2, false);
         MoleculesList moleculesListSubstitutes = generator.getListOfSubstitutes();
         /*
          * for (Molecule molecule : moleculesListSubstitutes.getListMolecule()) {
@@ -114,7 +114,7 @@ public class GeneratorTest {
         moleculesList.addMolecule(molecule3);
         moleculesList.addMolecule(molecule4);
 
-        Generator generator = new Generator(molecule4, moleculesList, 1, 1, false);
+        GeneratorPermutesSmile generator = new GeneratorPermutesSmile(molecule4, moleculesList, 1, 1, false);
 
         MoleculesListAbstract all = generator.getAllMolecules();
 
@@ -126,7 +126,7 @@ public class GeneratorTest {
 
         molecule4.selectAtom(4);
         molecule4.selectAtom(0);
-        Generator generator2 = new Generator(molecule4, moleculesList, 3, 1, false);
+        GeneratorPermutesSmile generator2 = new GeneratorPermutesSmile(molecule4, moleculesList, 3, 1, false);
         all = generator2.getAllMolecules();
         assertEquals(1104, all.getListMolecule().size(), "The number of permutes not correct");
     }
@@ -153,7 +153,7 @@ public class GeneratorTest {
         MoleculesList listMolecules = new MoleculesList(verifiedSmile, moleculeDataFactory);
         listMolecules.addMolecule(oxygen);
 
-        Generator generator = new Generator(benzene, listMolecules, 1, 1, false);
+        GeneratorPermutesSmile generator = new GeneratorPermutesSmile(benzene, listMolecules, 1, 1, false);
         MoleculesListAbstract all = generator.getAllMolecules();
         assertEquals(2, all.getListMolecule().size(), "The number of permutes not correct");
 
@@ -166,7 +166,7 @@ public class GeneratorTest {
         listMolecules.addMolecule(iodine);
         listMolecules.addMolecule(boron);
 
-        Generator generator2 = new Generator(benzene, listMolecules, 1, 1, false);
+        GeneratorPermutesSmile generator2 = new GeneratorPermutesSmile(benzene, listMolecules, 1, 1, false);
         all = generator2.getAllMolecules();
         for (Molecule molecule : all.getListMolecule()) {
             ORIGINAL_OUT.println(molecule);
@@ -196,7 +196,7 @@ public class GeneratorTest {
         MoleculesList listMolecules = new MoleculesList(verifiedSmile, moleculeDataFactory);
         listMolecules.addMolecule(molecule2);
         assertEquals("R", molecule2.getAtom(0).getSymbol(), "The symbol of the atom * should be R");
-        Generator generator1 = new Generator(molecule1, listMolecules, 1, 1, false);
+        GeneratorPermutesSmile generator1 = new GeneratorPermutesSmile(molecule1, listMolecules, 1, 1, false);
         MoleculesListAbstract all = generator1.getAllMolecules();
         assertEquals(3, all.getListMolecule().size(), "The number of permutes not correct");
 
@@ -204,7 +204,7 @@ public class GeneratorTest {
             ORIGINAL_OUT.println(molecule);
         }
         Molecule oxygen = new Molecule("Oxygen", "O", "Is a test", true, verifiedSmile, moleculeDataFactory);
-        generator1 = new Generator(oxygen, listMolecules, 1, 1, false);
+        generator1 = new GeneratorPermutesSmile(oxygen, listMolecules, 1, 1, false);
         all = generator1.getAllMolecules();
         // ORIGINAL_OUT.println("===============================");
         // for (Molecule molecule : all.getListMolecule()) {
@@ -249,14 +249,14 @@ public class GeneratorTest {
         MoleculesList listMolecules = new MoleculesList(verifiedSmile, moleculeDataFactory);
         listMolecules.addMolecule(molecule2);
         assertEquals("R", molecule2.getAtom(0).getSymbol(), "The symbol of the atom * should be R");
-        Generator generator1 = new Generator(molecule1, listMolecules, 1, 1, false);
+        GeneratorPermutesSmile generator1 = new GeneratorPermutesSmile(molecule1, listMolecules, 1, 1, false);
         MoleculesListAbstract all = generator1.getAllMolecules();
         assertEquals(4, all.getListMolecule().size(), "The number of permutes not correct");
         int i = 0;
         for (Molecule molecule : all.getListMolecule()) {
             ORIGINAL_OUT.println(" " + i++ + ":" + molecule);
         }
-        generator1 = new Generator(molecule1, listMolecules, 1, 1, true);
+        generator1 = new GeneratorPermutesSmile(molecule1, listMolecules, 1, 1, true);
         all = generator1.getAllMolecules();
         assertEquals(6, all.getListMolecule().size(), "The number of permutes not correct");
         i = 0;
