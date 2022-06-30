@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.smiles.v2.main.domain.models.Molecule;
 import com.smiles.v2.main.domain.models.MoleculesAdded;
-/**Interface for the MoleculeComparablee.
+/**Interface for the MoleculeComparable.
  * @author Cesar Gerardo Guzman Lopez
  */
 public interface MoleculeDataInterface extends MoleculeComparableInterface {
@@ -60,5 +60,8 @@ public interface MoleculeDataInterface extends MoleculeComparableInterface {
      * @return the list of the molecules added.
      */
     List<MoleculesAdded> getListMolecules();
-
+    /**
+     * @return if the list only substituted Hydrogens.
+    */
+    boolean isOnlySubstitutedHydrogens();
 }

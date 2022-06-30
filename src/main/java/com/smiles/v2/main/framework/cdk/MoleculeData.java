@@ -23,6 +23,7 @@ public class MoleculeData implements MoleculeDataInterface {
     private List<AtomInterface> listAtoms;
     private List<AtomInterface> selectedList;
     private List<MoleculesAdded> moleculesAdded;
+    private boolean isOnlySubstitutedHydrogens;
 
     MoleculeData(Molecule molecule) { // UNCHECK NOSONAR
         this.molecule = molecule;
@@ -38,6 +39,7 @@ public class MoleculeData implements MoleculeDataInterface {
             listAtoms.add(new AtomSelectable(moleculeContainer.getAtom(i), i));
         }
         moleculesAdded = new ArrayList<>();
+        isOnlySubstitutedHydrogens = true;
     }
 
     public MoleculeData(Molecule molecule, final MoleculeDataInterface moleculeData) { // UNCHECK NOSONAR
@@ -57,8 +59,10 @@ public class MoleculeData implements MoleculeDataInterface {
             AtomInterface atomToSelected = getAtom(atom.getId());
             selectedList.add(atomToSelected);
         }
+        isOnlySubstitutedHydrogens = moleculeData.isOnlySubstitutedHydrogens();
         moleculesAdded = new ArrayList<>();
     }
+
     /**
      * @return the molecule associated with this molecule data.
      */
@@ -148,7 +152,7 @@ public class MoleculeData implements MoleculeDataInterface {
             return generator.create(moleculeContainer);
         } catch (CDKException e) {
             throw new UnsupportedOperationException("Error in CDKException Smile");
-        } catch (Exception e) {
+        } catch (Exception e) {//NOSONAR
             StringBuilder bld = new StringBuilder();
             for (AtomInterface a : listAtoms) {
                 IAtom x = ((AtomCDK) a).getIAtom();
@@ -171,6 +175,7 @@ public class MoleculeData implements MoleculeDataInterface {
         Order bond = selectBond(numBond);
         IAtom atom = null;
         boolean susR = false;
+
         if (selectedSubstituentN != null) {
             atom = ((AtomCDK) moleculeSubstituent.getAtom(selectedSubstituentN)).getIAtom();
         }
@@ -200,6 +205,7 @@ public class MoleculeData implements MoleculeDataInterface {
             final AtomSelectable temporal = new AtomSelectable(moleculeContainer.getAtom(i), i);
             listAtoms.add(temporal);
         }
+        boolean implicitHydrogensPrincipal = molecule.hasHydrogenImplicit();
         if (molecule.hasHydrogenImplicit()) {
             numAtomPrincipalSelected = realSelectedAndDecrease(numAtomPrincipalSelected, bond.numeric());
         }
@@ -213,13 +219,30 @@ public class MoleculeData implements MoleculeDataInterface {
         if (selectedPrincipal != null) {
             selectOrderAtom(getAtom(selectedPrincipal));
         }
-        // Location of add molecule in the molecule
-        moleculesAdded.add(new MoleculesAdded(selectedPrincipal, moleculeSubstituent));
+        moleculesAggregate(moleculeSubstituent, selectedPrincipal, numBond, numAtomPrincipalSelected,
+                implicitHydrogensPrincipal);
+
         try {
             molecule.resetSmile();
         } catch (UnsupportedOperationException e) {
             throw new UnsupportedOperationException(e.getMessage());
         }
+    }
+
+    private void moleculesAggregate(final Molecule moleculeSubstituent, final Integer selectedPrincipal,
+            final Integer numBond, int numAtomPrincipalSelected, boolean implicitHydrogensPrincipal) {
+        // Location of add molecule in the molecule
+        MoleculesAdded newAdd = new MoleculesAdded(selectedPrincipal, moleculeSubstituent);
+        if ((numAtomPrincipalSelected == 0 || numAtomPrincipalSelected == selectedPrincipal)
+                && implicitHydrogensPrincipal) {
+            for (int i = 0; i < numBond; i++) {
+                newAdd.addHydrogensDelete();
+            }
+            if(numBond >1){
+                isOnlySubstitutedHydrogens  = false;
+            }
+        }
+        moleculesAdded.add(newAdd);
     }
 
     /**
@@ -360,11 +383,17 @@ public class MoleculeData implements MoleculeDataInterface {
     public int getNumOfMolecules() {
         return moleculesAdded.size() + 1;
     }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public List<MoleculesAdded> getListMolecules() {
         return moleculesAdded;
+    }
+
+    @Override
+    public boolean isOnlySubstitutedHydrogens() {
+        return isOnlySubstitutedHydrogens;
     }
 }
