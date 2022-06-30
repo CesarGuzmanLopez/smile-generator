@@ -104,7 +104,7 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
 
     @Override
     public String toString() {
-        return getName() + " Smile:" + getSmile();
+        return getName() + " Smile:" + smile();
     }
 
     /**
@@ -213,7 +213,7 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
             return false;
         }
         Molecule molecule = (Molecule) mol;
-        return molecule.getSmile().equals(getSmile()) && molecule.getName().equals(getName());
+        return molecule.smile().equals(smile()) && molecule.getName().equals(getName());
     }
 
     /**

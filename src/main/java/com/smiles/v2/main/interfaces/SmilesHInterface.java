@@ -10,7 +10,7 @@ public  interface SmilesHInterface {
     /**
      * @return  Smile.
     */
-    String  getSmile();
+    String  smile();
     /**
      * @return  Message.
     */

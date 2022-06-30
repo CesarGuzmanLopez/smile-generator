@@ -33,11 +33,11 @@ public class Smiles implements SmilesHInterface {
             throw new IllegalArgumentException("Name must be not empty");
         }
         this.smileVerification = ((Smiles) smile).smileVerification;
-        if (!smileVerification.isValid(smile.getSmile())) {
+        if (!smileVerification.isValid(smile.smile())) {
             throw new IllegalArgumentException("Smiles is not valid");
         }
         this.name = smile.getName();
-        this.strSmiles = smile.getSmile();
+        this.strSmiles = smile.smile();
         this.message = smile.getMessage();
         this.hydrogenImplicit = smile.hasHydrogenImplicit();
     }
@@ -58,7 +58,7 @@ public class Smiles implements SmilesHInterface {
      * {@inheritDoc}
      */
     @Override
-    public String getSmile() {
+    public String smile() {
         return strSmiles;
     }
     /**

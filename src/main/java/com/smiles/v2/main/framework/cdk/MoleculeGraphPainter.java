@@ -27,7 +27,7 @@ public class MoleculeGraphPainter implements MoleculeGraphPainterInterface {
         moleculePanel.add(moleculeLabel);
         final JpanelDrawMoleculeSelectedAtoms panelDraw = new JpanelDrawMoleculeSelectedAtoms(molecule);
         moleculePanel.add(panelDraw);
-        final JLabel smileJLabel = new JLabel("smile: " + molecule.getSmile());
+        final JLabel smileJLabel = new JLabel("smile: " + molecule.smile());
         smileJLabel.setForeground(Color.BLACK);
         moleculePanel.add(smileJLabel);
         final JLabel description = new JLabel(molecule.getMessage());

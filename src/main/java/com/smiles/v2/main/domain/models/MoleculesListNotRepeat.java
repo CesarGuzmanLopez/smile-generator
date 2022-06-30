@@ -66,7 +66,7 @@ public class MoleculesListNotRepeat extends MoleculesListAbstract {
     @Override
     public int addMolecule(final Molecule molecule) {
         if (!isUniqueName(molecule.getName()))  return -1;
-        String smile = getSmileVerifier().toAbsoluteSmiles(molecule.getSmile());
+        String smile = getSmileVerifier().toAbsoluteSmiles(molecule.smile());
         if (!isUniqueSmile(smile))  return -1;
         getListMolecule().add(molecule);
         return getListMolecule().size() - 1;
@@ -80,7 +80,7 @@ public class MoleculesListNotRepeat extends MoleculesListAbstract {
     @Override
     public int addMolecule(final Molecule molecule, final String name) {
         if (!isUniqueName(name)) return -1;
-        String smile = getSmileVerifier().toAbsoluteSmiles(molecule.getSmile());
+        String smile = getSmileVerifier().toAbsoluteSmiles(molecule.smile());
         if (!isUniqueSmile(smile)) return -1;
         Molecule cloneMolecule = new Molecule(molecule, false);
         return addMolecule(cloneMolecule);

@@ -31,7 +31,7 @@ public class VerifiedSmile implements SmileVerificationInterface {
     public boolean isValid(final SmilesHInterface smile) {
         final SmilesParser smileParser = new SmilesParser(DefaultChemObjectBuilder.getInstance());
         try {
-            smileParser.parseSmiles(smile.getSmile());
+            smileParser.parseSmiles(smile.smile());
         } catch (InvalidSmilesException e) {
             return false;
         }

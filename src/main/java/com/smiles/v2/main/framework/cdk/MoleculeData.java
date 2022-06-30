@@ -28,9 +28,9 @@ public class MoleculeData implements MoleculeDataInterface {
         this.molecule = molecule;
         final SmilesParser smileParser = new SmilesParser(DefaultChemObjectBuilder.getInstance());
         try {
-            moleculeContainer = smileParser.parseSmiles(molecule.getSmile());
+            moleculeContainer = smileParser.parseSmiles(molecule.smile());
         } catch (InvalidSmilesException e) {
-            throw new IllegalArgumentException("Invalid Smiles: " + molecule.getSmile());
+            throw new IllegalArgumentException("Invalid Smiles: " + molecule.smile());
         }
         selectedList = new ArrayList<>();
         listAtoms = new ArrayList<>();

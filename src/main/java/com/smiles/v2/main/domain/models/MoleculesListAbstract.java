@@ -63,7 +63,7 @@ public abstract class MoleculesListAbstract implements MoleculeListInterface {
      */
     public boolean isUniqueSmile(final String smile) {
         for (Molecule molecule : moleculeList) {
-            if (molecule.getSmile().equals(smile)) return false;
+            if (molecule.smile().equals(smile)) return false;
         }
         return true;
     }

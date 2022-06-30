@@ -211,7 +211,7 @@ public class GeneratorTest {
         // ORIGINAL_OUT.println(molecule);
         // }
         assertEquals(2, all.getListMolecule().size(), "The number of permutes not correct");
-        assertEquals("N=O", all.getListMolecule().get(1).getSmile(), "The smile of the molecule should be N=O");
+        assertEquals("N=O", all.getListMolecule().get(1).smile(), "The smile of the molecule should be N=O");
         Molecule testNames = new Molecule("Botha", "C1=(Ccc(F)NO(cc1))=BrNO", "Is a test", true, verifiedSmile,
                 moleculeDataFactory);
         ORIGINAL_OUT.println(testNames);

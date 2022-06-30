@@ -44,7 +44,7 @@ public class WindowsGenerate extends JFrame {
                     saveFileListDescriptive, saveFileListSmile);
             final WriteAndGenerate generator = new WriteAndGenerate(moleculeList, principal,
                     (int) rSubstitutes.getValue(), (int) numBounds.getValue(), saveFileListDescriptive,
-                    saveFileListSmile);
+                    saveFileListSmile, false);
             generator.generate();
         } catch (Exception e) { //NOSONAR
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

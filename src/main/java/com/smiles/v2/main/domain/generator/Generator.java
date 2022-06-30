@@ -34,9 +34,10 @@ public class Generator {
      * @param moleculeListSubstitutes The list of molecules.
      * @param rSubstitutes            The number of substitutes.
      * @param numBounds               The number of bounds.
+     * @param repeat                  if the molecule generate is repeat.
      */
     public Generator(final Molecule principal, final MoleculesList moleculeListSubstitutes, final int rSubstitutes,
-            final int numBounds, boolean repeat) {
+            final int numBounds, final boolean repeat) {
         this.principal = principal;
         this.moleculeListSubstitutes = moleculeListSubstitutes;
         this.numBounds = numBounds;
@@ -95,7 +96,8 @@ public class Generator {
      * @return if they have enough implicit Hydrogens for bound.
      */
     private Boolean haveEnoughImplicitHydrogens(AtomInterface atom1, AtomInterface atom2, int bound) { // UNCHECK
-        return atom1.getImplicitHydrogens() >= bound && atom2.getImplicitHydrogens() >= bound;
+        return atom1.getImplicitHydrogens() >= bound && atom2.getImplicitHydrogens() >= bound
+                || !atom1.getSymbol().equals("C") || !atom2.getSymbol().equals("C");
     }
 
     /**
@@ -187,27 +189,27 @@ public class Generator {
     /**
      * Generate and add all permutations between molecule and a substitute.
      *
-     * @param principalM The principal molecule.
+     * @param main       The principal molecule.
      * @param substitute The substitution molecule.
      * @param bound      type of bond.
      * @return if substitution is correct.
      *
      */
-    private boolean generatePermutes1Molecule1Substitute(Molecule principalM, Molecule substitute, int bound) {// UNCHECK
-        if (principalM.atomCount() == 1 && substitute.atomCount() == 1) {
-            generatePermuteAtom1Atom(principalM, substitute, bound);
+    private boolean generatePermutes1Molecule1Substitute(Molecule main, Molecule substitute, int bound) {// UNCHECK
+        if (main.atomCount() == 1 && substitute.atomCount() == 1) {
+            generatePermuteAtom1Atom(main, substitute, bound);
             return true;
         }
-        if (principalM.atomCount() == 1 && substitute.atomCount() > 1) {
-            generatePermuteAtom1Molecule(principalM, substitute, bound);
+        if (main.atomCount() == 1 && substitute.atomCount() > 1) {
+            generatePermuteAtom1Molecule(main, substitute, bound);
             return true;
         }
-        if (principalM.atomCount() > 1 && substitute.atomCount() == 1) {
-            generatePermuteMolecule1Atom(principalM, substitute, bound);
+        if (main.atomCount() > 1 && substitute.atomCount() == 1) {
+            generatePermuteMolecule1Atom(main, substitute, bound);
             return true;
         }
-        if (principalM.atomCount() > 1 && substitute.atomCount() > 1) {
-            generatePermuteMolecule1Molecule(principalM, substitute, bound);
+        if (main.atomCount() > 1 && substitute.atomCount() > 1) {
+            generatePermuteMolecule1Molecule(main, substitute, bound);
             return true;
         }
         return false;

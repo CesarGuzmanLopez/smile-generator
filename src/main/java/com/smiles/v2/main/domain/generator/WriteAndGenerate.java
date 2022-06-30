@@ -2,6 +2,7 @@ package com.smiles.v2.main.domain.generator;
 
 import com.smiles.v2.main.domain.models.Molecule;
 import com.smiles.v2.main.domain.models.MoleculesList;
+import com.smiles.v2.main.domain.models.MoleculesListAbstract;
 import com.smiles.v2.main.interfaces.AtomInterface;
 import com.smiles.v2.main.interfaces.MoleculeDataInterface;
 import java.io.BufferedWriter;
@@ -32,9 +33,10 @@ public class WriteAndGenerate {
     private BufferedWriter writeOutput;
     private File fileOutput;
     private int numBounds;
+    private boolean repeated;
 
     public WriteAndGenerate(final MoleculesList substitutes, final Molecule principal, final int rSubstitutes,
-            final int numBounds, final File fileDescription, final File fileOutput) {
+            final int numBounds, final File fileDescription, final File fileOutput, final boolean repeated) {
         verifyEntry(principal, substitutes, rSubstitutes, fileDescription, fileOutput);
         this.substitutes = substitutes;
         this.principal = principal;
@@ -42,6 +44,7 @@ public class WriteAndGenerate {
         this.fileDescription = fileDescription;
         this.fileOutput = fileOutput;
         this.numBounds = numBounds;
+        this.repeated = repeated;
         verificationAndCreateFiles();
 
     }
@@ -141,7 +144,21 @@ public class WriteAndGenerate {
      */
     public final void generate() throws IOException {
         writeHeadDescription();
-        Generator generator = new Generator(principal, substitutes, rSubstitutes, numBounds,false);
+        Generator generator = new Generator(principal, substitutes, rSubstitutes, numBounds, repeated);
+        MoleculesListAbstract generateList = generator.getAllMolecules();
+        if (writeDescription != null) {
+            writeDescription.write("Total: " + generateList.getListMolecule().size() + "\n");
+        }
+        for (Molecule molecule : generateList.getListMolecule()) {
+            writeOutput.write(molecule.smile() + "\n");
+            if (writeDescription != null) {
+                writeDescription.write(molecule + "\n");
+            }
+        }
+        if (writeDescription != null) {
+            writeDescription.write("==========================================================\n");
+
+        }
 
         closeFiles();
     }
@@ -151,15 +168,14 @@ public class WriteAndGenerate {
      */
     private void writeHeadDescription() throws IOException {
         if (writeDescription != null) {
-            writeDescription.write(principal.getName() + "\n");
-            writeDescription.write(substitutes.getListMolecule().size() + "\n");
-            writeDescription.write(rSubstitutes + "\n");
-            writeDescription.write(substitutes.getListMolecule().size() + "\n");
+            writeDescription.write("Main molecule: " + principal.getName() + " Smile " + principal.smile() + "\n");
+            writeDescription.write("No Substitutes " + substitutes.getListMolecule().size() + "\n");
+            writeDescription.write("R Substitutes" + rSubstitutes + "\n");
+            writeDescription.write("substitutes: " + "\n");
             for (Molecule molecule : substitutes.getListMolecule()) {
-                writeDescription.write(molecule.getName() + "\n");
-                writeDescription.write(molecule.getMoleculeData().getListAtomsSelected().size() + "\n");
+                writeDescription.write("\t " + molecule.getName() + "selected :\t ");
                 for (AtomInterface atom : molecule.getMoleculeData().getListAtomsSelected()) {
-                    writeDescription.write(atom + "\n");
+                    writeDescription.write("\t\t" + atom.getSymbol() + "\n");
                 }
             }
         }

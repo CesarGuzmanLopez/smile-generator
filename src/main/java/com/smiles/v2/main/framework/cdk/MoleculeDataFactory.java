@@ -18,7 +18,6 @@ public class MoleculeDataFactory implements MoleculeDataFactoryInterface {
     @Override
     public MoleculeDataInterface getMoleculeDataOfSmile(final Molecule molecule,
             final MoleculeDataInterface moleculeData) {
-
         return new MoleculeData(molecule, moleculeData);
     }
 
