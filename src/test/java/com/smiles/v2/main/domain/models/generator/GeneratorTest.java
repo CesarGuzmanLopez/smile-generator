@@ -15,6 +15,7 @@ import com.smiles.v2.main.domain.models.MoleculesList;
 import com.smiles.v2.main.domain.models.MoleculesListAbstract;
 import com.smiles.v2.main.framework.cdk.MoleculeDataFactory;
 import com.smiles.v2.main.framework.cdk.VerifiedSmile;
+import com.smiles.v2.main.interfaces.AtomInterface;
 
 /**
  * Class WriteAndGenerate.
@@ -131,11 +132,12 @@ public class GeneratorTest {
     }
 
     /**
-     * TestBenzene
+     * TestBenzene.
      */
     @Test
-    public void testBenzene(){
-        Molecule benzene = new Molecule("Benzene", "C1=CC=CC=C1", "Is a test", true, verifiedSmile, moleculeDataFactory);
+    public void testBenzene() {
+        Molecule benzene = new Molecule("Benzene", "C1=CC=CC=C1", "Is a test", true, verifiedSmile,
+                moleculeDataFactory);
         benzene.selectAtom(0);
         benzene.selectAtom(1);
         benzene.selectAtom(2);
@@ -156,7 +158,7 @@ public class GeneratorTest {
         assertEquals(2, all.getListMolecule().size(), "The number of permutes not correct");
 
         // for (Molecule molecule : all.getListMolecule()) {
-        //     ORIGINAL_OUT.println(molecule);
+        // ORIGINAL_OUT.println(molecule);
         // }
         listMolecules.addMolecule(nitrogen);
         listMolecules.addMolecule(fluor);
@@ -173,29 +175,61 @@ public class GeneratorTest {
         // Generator generator3 = new Generator(benzene, listMolecules, 6, 1);
         // all = generator2.getAllMolecules();
         // for (Molecule molecule : all.getListMolecule()) {
-        //     ORIGINAL_OUT.println(molecule);
+        // ORIGINAL_OUT.println(molecule);
         // }
-        /**
+        /*
          * Very big number of permutes.
          */
     }
-    /** test Asterisk
+
+    /**
+     * test Asterisk.
      *
-    */
+     */
     @Test
-    public void testAsterisk(){
+    public void testAsterisk() {
         Molecule molecule1 = new Molecule("ccOcc", "ccOcc", "Is a test", true, verifiedSmile, moleculeDataFactory);
-        molecule1.selectAtom(1);
         molecule1.selectAtom(3);
-        Molecule molecule2 = new Molecule("[*]=C", "[*]=C", "Is a test", true, verifiedSmile, moleculeDataFactory);
+        molecule1.selectAtom(0);
+        Molecule molecule2 = new Molecule("*=N", "*=N", "Is a test", true, verifiedSmile, moleculeDataFactory);
         molecule2.selectAtom(0);
         MoleculesList listMolecules = new MoleculesList(verifiedSmile, moleculeDataFactory);
         listMolecules.addMolecule(molecule2);
+        assertEquals("R", molecule2.getAtom(0).getSymbol(), "The symbol of the atom * should be R");
         Generator generator1 = new Generator(molecule1, listMolecules, 1, 1);
         MoleculesListAbstract all = generator1.getAllMolecules();
+        assertEquals(3, all.getListMolecule().size(), "The number of permutes not correct");
+
         for (Molecule molecule : all.getListMolecule()) {
             ORIGINAL_OUT.println(molecule);
         }
-
+        Molecule oxygen = new Molecule("Oxygen", "O", "Is a test", true, verifiedSmile, moleculeDataFactory);
+        generator1 = new Generator(oxygen, listMolecules, 1, 1);
+        all = generator1.getAllMolecules();
+        // ORIGINAL_OUT.println("===============================");
+        // for (Molecule molecule : all.getListMolecule()) {
+        // ORIGINAL_OUT.println(molecule);
+        // }
+        assertEquals(2, all.getListMolecule().size(), "The number of permutes not correct");
+        assertEquals("N=O", all.getListMolecule().get(1).getSmile(), "The smile of the molecule should be N=O");
+        Molecule testNames = new Molecule("Botha", "C1=(Ccc(F)NO(cc1))=BrNO", "Is a test", true, verifiedSmile,
+                moleculeDataFactory);
+        ORIGINAL_OUT.println(testNames);
+        AtomInterface atom = testNames.getAtom(5);
+        assertEquals("N", atom.getSymbol(), "The symbol not correct");
+        // ORIGINAL_OUT.println(atom.getSymbol());
+        atom = testNames.getAtom(11);
+        assertEquals("O", atom.getSymbol(), "The symbol not correct");
+        // ORIGINAL_OUT.println(atom.getSymbol());
+        Molecule piretrina = new Molecule("Piretrina",
+                "COC(=O)C(\\C)=C\\C1C(C)(C*)[C@H]1C(=O)O[C@@H]2C(C)=C(C(=O)C2)CC=CC=C", "Is a test", true,
+                verifiedSmile, moleculeDataFactory);
+        // for (int i = 0; i < piretrina.atomCount(); i++) {
+        //     ORIGINAL_OUT.println(" " + i + " " + piretrina.getAtom(i).getSymbol());
+        // }
+        atom = piretrina.getAtom(11);
+        assertEquals("R", atom.getSymbol(), "The symbol not correct");
+        atom = piretrina.getAtom(21);
+        assertEquals("O", atom.getSymbol(), "The symbol not correct");
     }
 };

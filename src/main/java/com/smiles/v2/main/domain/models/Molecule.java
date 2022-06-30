@@ -70,7 +70,7 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
      *
      * @return The number of atoms in the molecule
      */
-    public int getNumberAtoms() {
+    public int atomCount() {
         return moleculeDataOfSmile.getNumberAtoms();
     }
 
@@ -173,8 +173,8 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
         if (principal == null || substituent == null) {
             throw new NullPointerException("molecule principal or substituent is null");
         }
-        if (principal.getNumberAtoms() > 1 && principal.getMoleculeData().getListAtomsSelected().isEmpty()
-                || substituent.getNumberAtoms() > 1 && substituent.getMoleculeData().getListAtomsSelected().isEmpty()) {
+        if (principal.atomCount() > 1 && principal.getMoleculeData().getListAtomsSelected().isEmpty()
+                || substituent.atomCount() > 1 && substituent.getMoleculeData().getListAtomsSelected().isEmpty()) {
             throw new NullPointerException("molecule has no selected atoms and are more than 1");
         }
         verifyEntryAtomSelected(principal, numAtomPrincipal);
@@ -183,10 +183,10 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
     }
 
     private static void verifyEntryAtomSelected(final Molecule principal, final Integer numAtomPrincipal) {
-        if (numAtomPrincipal == null && principal.getNumberAtoms() > 1) {
+        if (numAtomPrincipal == null && principal.atomCount() > 1) {
             throw new NullPointerException("toSubstitute is null or 0 and principal has more than 1 atom");
         }
-        if (numAtomPrincipal != null && principal.getNumberAtoms() > 1
+        if (numAtomPrincipal != null && principal.atomCount() > 1
                 && !principal.getMoleculeData().getListAtomsSelected().contains(principal.getAtom(numAtomPrincipal))) {
             throw new NullPointerException("The atom no selected");
         }

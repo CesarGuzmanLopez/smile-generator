@@ -166,27 +166,49 @@ public class MoleculeData implements MoleculeDataInterface {
     @Override
     public void addMoleculeData(final Molecule moleculeSubstituent, final Integer selectedPrincipal,
             final Integer selectedSubstituent, final Integer numBond) {
-        int initNumAtoms = moleculeContainer.getAtomCount();
+
+        Integer selectedSubstituentN = selectedSubstituent;
         Order bond = selectBond(numBond);
+        IAtom atom = null;
+        boolean susR = false;
+        if (selectedSubstituentN != null) {
+            atom = ((AtomCDK) moleculeSubstituent.getAtom(selectedSubstituentN)).getIAtom();
+        }
+        if (atom != null && atom.getSymbol().equals("R")) {
+            if (atom.getBondCount() != 1) {
+                throw new IllegalArgumentException("Atom with * must have only one bond");
+            }
+            IBond boundAsterisk = atom.bonds().iterator().next();
+            bond = boundAsterisk.getOrder();
+            IAtom other = boundAsterisk.getOther(atom);
+            ((MoleculeData) moleculeSubstituent.getMoleculeData()).moleculeContainer.removeAtom(atom);
+            selectedSubstituentN = other.getIndex();
+            susR = true;
+        }
+
+        int initNumAtoms = moleculeContainer.getAtomCount();
         int numAtomPrincipalSelected = (selectedPrincipal != null) ? selectedPrincipal : 0; // NOSONAR
-        int numAtomSubstituentSelected = (selectedSubstituent != null)
-                ? moleculeContainer.getAtomCount() + selectedSubstituent // NOSONAR
+        int numAtomSubstituentSelected = (selectedSubstituentN != null)
+                ? moleculeContainer.getAtomCount() + selectedSubstituentN // NOSONAR
                 : moleculeContainer.getAtomCount();
 
         MoleculeData moleculeDataSubstituent = (MoleculeData) moleculeSubstituent.getMoleculeData();
         moleculeContainer.add(moleculeDataSubstituent.moleculeContainer);
         int totalNumAtoms = moleculeContainer.getAtomCount();
+
         for (int i = initNumAtoms; i < totalNumAtoms; i++) {
             final AtomSelectable temporal = new AtomSelectable(moleculeContainer.getAtom(i), i);
             listAtoms.add(temporal);
         }
         if (molecule.hasHydrogenImplicit()) {
-            numAtomPrincipalSelected = realSelectedAndDecrease(numAtomPrincipalSelected, numBond);
+            numAtomPrincipalSelected = realSelectedAndDecrease(numAtomPrincipalSelected, bond.numeric());
         }
-        if (moleculeSubstituent.hasHydrogenImplicit()) {
-            numAtomSubstituentSelected = realSelectedAndDecrease(numAtomSubstituentSelected, numBond);
+        if (moleculeSubstituent.hasHydrogenImplicit() && !susR) {
+            numAtomSubstituentSelected = realSelectedAndDecrease(numAtomSubstituentSelected, bond.numeric());
         }
+
         moleculeContainer.addBond(numAtomPrincipalSelected, numAtomSubstituentSelected, bond);
+
         /* unselected IAtom */
         if (selectedPrincipal != null) {
             selectOrderAtom(getAtom(selectedPrincipal));
@@ -231,7 +253,7 @@ public class MoleculeData implements MoleculeDataInterface {
             break;
         }
         return bond;
-    };
+    }
 
     /**
      * @param atom1P
@@ -277,7 +299,6 @@ public class MoleculeData implements MoleculeDataInterface {
      */
     private int realSelectedAndDecrease(final Integer selected, final Integer numBond) {
         int numReal = selected;
-
         if (getAtom(selected).getImplicitHydrogens() < numBond) {
             AtomCDK atom = (AtomCDK) getAtom(selected);
             for (IBond bond : atom.bonds()) {

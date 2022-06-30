@@ -41,7 +41,7 @@ public class Generator {
         this.moleculeListSubstitutes = moleculeListSubstitutes;
         this.numBounds = numBounds;
 
-        if (principal.getNumberAtoms() > 1
+        if (principal.atomCount() > 1
                 && rSubstitutes > principal.getMoleculeData().getListAtomsSelected().size()) {
             throw new IllegalArgumentException(
                     "The number of substitutes must be less than the number of atoms of the principal molecule.");
@@ -190,19 +190,19 @@ public class Generator {
      *
      */
     private boolean generatePermutes1Molecule1Substitute(Molecule principalM, Molecule substitute, int bound) {//UNCHECK
-        if (principalM.getNumberAtoms() == 1 && substitute.getNumberAtoms() == 1) {
+        if (principalM.atomCount() == 1 && substitute.atomCount() == 1) {
             generatePermuteAtom1Atom(principalM, substitute, bound);
             return true;
         }
-        if (principalM.getNumberAtoms() == 1 && substitute.getNumberAtoms() > 1) {
+        if (principalM.atomCount() == 1 && substitute.atomCount() > 1) {
             generatePermuteAtom1Molecule(principalM, substitute, bound);
             return true;
         }
-        if (principalM.getNumberAtoms() > 1 && substitute.getNumberAtoms() == 1) {
+        if (principalM.atomCount() > 1 && substitute.atomCount() == 1) {
             generatePermuteMolecule1Atom(principalM, substitute, bound);
             return true;
         }
-        if (principalM.getNumberAtoms() > 1 && substitute.getNumberAtoms() > 1) {
+        if (principalM.atomCount() > 1 && substitute.atomCount() > 1) {
             generatePermuteMolecule1Molecule(principalM, substitute, bound);
             return true;
         }

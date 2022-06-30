@@ -82,7 +82,7 @@ abstract class JpanelDrawMoleculeAbstract extends JPanel {
         generators.add(new BasicSceneGenerator());
         generators.add(new BasicBondGenerator());
         generators.add(new BasicAtomGenerator());
-        if (getMolecule().getNumberAtoms() == 1) {
+        if (getMolecule().atomCount() == 1) {
             generators.add(genera);
         }
         renderer = new AtomContainerRenderer(generators, new AWTFontManager());
@@ -117,16 +117,16 @@ abstract class JpanelDrawMoleculeAbstract extends JPanel {
      * @return the tolerance of the molecule selected.
      */
     protected double tolerance() {
-        if (molecule.getNumberAtoms() < 6) {
+        if (molecule.atomCount() < 6) {
             return 20;
         }
-        if (molecule.getNumberAtoms() < 9) {
+        if (molecule.atomCount() < 9) {
             return 18;
         }
-        if (molecule.getNumberAtoms() < 13) {
+        if (molecule.atomCount() < 13) {
             return 15;
         }
-        if (molecule.getNumberAtoms() < 18) {
+        if (molecule.atomCount() < 18) {
             return 10;
         }
         return 5;
