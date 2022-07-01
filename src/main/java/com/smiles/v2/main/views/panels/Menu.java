@@ -12,6 +12,7 @@ import javax.swing.JMenuItem;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.smiles.v2.main.domain.models.Molecule;
+import com.smiles.v2.main.views.About;
 import com.smiles.v2.main.views.PrincipalView;
 
 public class Menu extends JMenuBar {
@@ -37,7 +38,8 @@ public class Menu extends JMenuBar {
     /** Show the about dialog. */
 
     private void showAbout() {
-
+        About about = new About();
+        about.setVisible(true);
     }
     /** Save the principal view. */
     private void savePrincipal() {
