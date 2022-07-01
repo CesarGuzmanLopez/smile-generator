@@ -8,8 +8,13 @@ import com.smiles.v2.main.framework.cdk.MoleculeDataFactory;
 import com.smiles.v2.main.framework.cdk.VerifiedSmile;
 import com.smiles.v2.main.interfaces.AtomInterface;
 
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
+
+import javax.imageio.ImageIO;
 
 /**
  * Test of Molecule.
@@ -190,20 +195,21 @@ public class MoleculeTest {
                 }
                 ORIGINAL_OUT.println(fusion.isSelected(1));
                 ORIGINAL_OUT.println(fusion.isSelected(2));
-                Molecule sustituto = fusion.getSubstitute(1);
-                ORIGINAL_OUT.println(sustituto.smile());
+                Molecule substitute = fusion.getSubstitute(1);
+                ORIGINAL_OUT.println(substitute.smile());
                 fusion = Molecule.fusionMolecule(fusion, mol2, 2, 1);
                 ORIGINAL_OUT.println(fusion.isSelected(1));
                 ORIGINAL_OUT.println(fusion.isSelected(2));
-                sustituto = fusion.getSubstitute(1);
-                ORIGINAL_OUT.println(sustituto.smile());
-                assertEquals("C=ON", sustituto.smile(), "Error generate smile fusion");
+                substitute = fusion.getSubstitute(1);
+                ORIGINAL_OUT.println(substitute.smile());
+                assertEquals("C=ON", substitute.smile(), "Error generate smile fusion");
         }
         /**
          * Test of the molecule important methods.
+         * @throws IOException
         */
         @Test
-        public void testSaveImage() {
+        public void testSaveImage()  {
                 Molecule molecule1 = new Molecule("Primero", "C=CN", "Is a prove", true, new VerifiedSmile(),
                                 new MoleculeDataFactory());
                 molecule1.selectAtom(1);
@@ -222,6 +228,12 @@ public class MoleculeTest {
                 Molecule sustituto = fusion.getSubstitute(1);
                 ORIGINAL_OUT.println(sustituto.smile());
                 fusion = Molecule.fusionMolecule(fusion, mol2, 2, 1);
+                BufferedImage bi = fusion.getImage(700, 700);
+                try {
+                        ImageIO.write(bi, "png", new File("test.png"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e.getMessage());
+                }
 
         }
 

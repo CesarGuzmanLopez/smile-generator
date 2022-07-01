@@ -70,8 +70,11 @@ public interface MoleculeDataInterface extends MoleculeComparableInterface {
     */
     boolean isSelected(int index);
 
-    /**
-     * @return image of the molecule.
-     */
-    BufferedImage getImage();
+    /** Generate Molecule of MoleculeData.
+     * @param width of image.
+     * @param height of image.
+     * @return BufferedImage.
+     *
+    */
+    BufferedImage getImage(final int width, final int height);
 }

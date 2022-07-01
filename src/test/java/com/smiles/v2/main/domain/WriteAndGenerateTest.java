@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 
+import javax.swing.JFileChooser;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -63,11 +65,15 @@ public class WriteAndGenerateTest {
 
         WriteAndGenerate writeAndGenerate = new WriteAndGenerate(moleculesList, molecule1, 2, 2,
                 new File("./fileDescription.log"), new File("./Output.txt"));
+
+
+        writeAndGenerate.setSaveImages(new File("Imagenes/").getAbsolutePath() );
         try {
             writeAndGenerate.generate();
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
+
 
     }
 }

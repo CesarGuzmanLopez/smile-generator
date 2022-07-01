@@ -53,7 +53,7 @@ public class WindowsGenerate extends JFrame {
             final WriteAndGenerate generator = new WriteAndGenerate(moleculeList, principal,
                     (int) rSubstitutes.getValue(), (int) numBounds.getValue(), saveFileListDescriptive,
                     saveFileListSmile);
-            generator.setSaveImages(saveImages);
+            generator.setSaveImages(saveImages.getSelectedFile().getAbsolutePath());
             generator.generate();
         } catch (Exception e) { // NOSONAR
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

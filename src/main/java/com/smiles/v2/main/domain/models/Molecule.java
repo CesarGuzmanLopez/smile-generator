@@ -254,10 +254,16 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
         }
         throw new NullPointerException("this molecule no selected");
     }
+
     /**
-     * @return image of molecule.
-    */
-    public BufferedImage getImage() {
-        return moleculeDataOfSmile.getImage();
+     * Generate Molecule of MoleculeData.
+     *
+     * @param width  of image.
+     * @param height of image.
+     * @return BufferedImage.
+     *
+     */
+    public BufferedImage getImage(final int width, final int height) {
+        return moleculeDataOfSmile.getImage(width, height);
     }
 }

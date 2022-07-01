@@ -5,6 +5,8 @@ import com.smiles.v2.main.domain.models.MoleculesList;
 import com.smiles.v2.main.domain.models.MoleculesListAbstract;
 import com.smiles.v2.main.interfaces.AtomInterface;
 import com.smiles.v2.main.interfaces.MoleculeDataInterface;
+
+import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
@@ -13,8 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
-
-import javax.swing.JFileChooser;
+import javax.imageio.ImageIO;
 
 /**
  * Class WriteAndGenerate.
@@ -38,7 +39,7 @@ public class WriteAndGenerate {
     private int numBounds;
     private boolean repeated;
 
-    private JFileChooser saveImages;
+    private String saveImages;
 
     public WriteAndGenerate(final MoleculesList substitutes, final Molecule principal, final int rSubstitutes,
             final int numBounds, final File fileDescription, final File fileOutput) {
@@ -112,7 +113,7 @@ public class WriteAndGenerate {
      * @param directory to save images.
      */
 
-    public void setSaveImages(final JFileChooser directory) {
+    public void setSaveImages(final String directory) {
         this.saveImages = directory;
     }
 
@@ -193,7 +194,17 @@ public class WriteAndGenerate {
      * @param generateList List of molecules permutes.
      */
     private void saveImages(MoleculesListAbstract generateList) { // UNCHECK
-
+        final List<Molecule> list = generateList.getListMolecule();
+        int i = 0;
+        for (Molecule molecule : list) {
+            String name =principal.getName() + "_" + i++ +".png";
+            BufferedImage bi = molecule.getImage(700, 700);
+            try {
+                    ImageIO.write(bi, "png", new File( saveImages + System.getProperty("file.separator") + name));
+            } catch (IOException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        }
     }
 
     /**
