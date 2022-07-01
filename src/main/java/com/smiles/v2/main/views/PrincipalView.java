@@ -23,11 +23,12 @@ import com.smiles.v2.main.views.panels.Menu;
 import com.smiles.v2.main.views.panels.MoleculePanel;
 import com.smiles.v2.main.views.panels.OptionPanel;
 import com.smiles.v2.main.views.panels.WindowsGenerate;
+
 /**
  * @author Cesar G. Guzman Lopez
  * @version 1.0
  * @since 1.0
-*/
+ */
 
 @SuppressWarnings("java:S1948")
 public final class PrincipalView extends javax.swing.JFrame {
@@ -49,18 +50,20 @@ public final class PrincipalView extends javax.swing.JFrame {
     private MoleculeGraphPainterInterface moleculeGraphPainter;
 
     private MoleculeDataFactoryInterface moleculeFactory;
-  //Check:OFF: MagicNumber
+    // Check:OFF: MagicNumber
     /*
-    * Constructor of the class
-    * @author Cesar G. Guzman Lopez
-    * @version 1.0
-    * @since 1.0
-   */
+     * Constructor of the class
+     *
+     * @author Cesar G. Guzman Lopez
+     *
+     * @version 1.0
+     *
+     * @since 1.0
+     */
 
     public PrincipalView(final MoleculeListInterface smilesList,
 
-        final SmileVerificationInterface verifySmile,
-            final MoleculeGraphPainterInterface moleculeGraphPainter,
+            final SmileVerificationInterface verifySmile, final MoleculeGraphPainterInterface moleculeGraphPainter,
             final MoleculeDataFactoryInterface moleculeFactory) {
         super("Smile generator");
         setSize(850, 550);
@@ -83,8 +86,7 @@ public final class PrincipalView extends javax.swing.JFrame {
         final boolean implicitHydrogen = checkBoxHydrogenImplicit.isSelected();
         try {
             final Smiles smileH = new Smiles(name, smile, "Select hydrogens to replace", implicitHydrogen, verifySmile);
-            moleculePanelPrincipal
-                    .setMolecule(new Molecule(smileH, moleculeFactory));
+            moleculePanelPrincipal.setMolecule(new Molecule(smileH, moleculeFactory));
         } catch (Exception e) {
             generateButton.setEnabled(false);
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -98,7 +100,7 @@ public final class PrincipalView extends javax.swing.JFrame {
         new WindowsGenerate(moleculePanelPrincipal.getMolecule(), selected);
     }
 
-    /** initialize all JPanels.*/
+    /** initialize all JPanels. */
     public void initialize() {
         setJMenuBar(new Menu(this));
         setLayout(new GridBagLayout());
@@ -270,13 +272,17 @@ public final class PrincipalView extends javax.swing.JFrame {
                 return;
             }
             if (textName.length() > textSmile.length()
-                && textSmile.equals(textName.substring(0, textName.length() - 1))) {
+                    && textSmile.equals(textName.substring(0, textName.length() - 1))) {
                 textFieldName.setText(textSmile);
             }
 
         }
     }
-    public Molecule getPrincipal(){
+    /**
+     *
+     * @return the Molecule principal.
+     */
+    public Molecule getPrincipal() {
         return moleculePanelPrincipal.getMolecule();
     }
 }

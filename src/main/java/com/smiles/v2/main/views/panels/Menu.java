@@ -9,13 +9,15 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.smiles.v2.main.domain.models.Molecule;
 import com.smiles.v2.main.views.PrincipalView;
 
 public class Menu extends JMenuBar {
-    PrincipalView principalView;
-    public Menu(PrincipalView principalView) {
+    private PrincipalView principalView;
+
+    public Menu(final PrincipalView principalView) {
         super();
         final JMenu menuFile = new JMenu("File");
         add(menuFile);
@@ -32,21 +34,24 @@ public class Menu extends JMenuBar {
         about.addActionListener(e -> showAbout());
 
     }
-    private void showAbout() {
-        
-    }
-    private void savePrincipal(){
+    /** Show the about dialog. */
 
+    private void showAbout() {
+
+    }
+    /** Save the principal view. */
+    private void savePrincipal() {
         Molecule molecule = principalView.getPrincipal();
-        if(molecule == null) return;
+        if (molecule == null) return;
         JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("*.png", "png"));
         fileChooser.setDialogTitle("Specify a file to save");
         int userSelection = fileChooser.showSaveDialog(principalView);
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             File fileToSave = fileChooser.getSelectedFile();
             BufferedImage bi = molecule.getImage(700, 700, molecule.getName());
             try {
-                    ImageIO.write(bi, "png", fileToSave);
+                ImageIO.write(bi, "png", fileToSave);
             } catch (IOException e) {
                 throw new RuntimeException(e.getMessage());
             }

@@ -34,7 +34,8 @@ import org.openscience.cdk.renderer.visitor.AWTDrawVisitor;
 public class GenerateImage {
     private MoleculeData molecule;
     private String title;
-    GenerateImage(final MoleculeData moleculeData,String title) {
+
+    GenerateImage(final MoleculeData moleculeData, final String title) {
         this.molecule = moleculeData;
         this.title = title;
     }
@@ -98,7 +99,7 @@ public class GenerateImage {
         String smile = molecule.absoluteSmile();
         FontMetrics metrics = graphics2D.getFontMetrics(font);
         int x = (width - metrics.stringWidth(smile)) / 2;
-        if(title != null) graphics2D.drawString(title, x, height - 30);
+        if (title != null)  graphics2D.drawString(title, x, height - 30);// UNCHECK
 
         return image;
     }

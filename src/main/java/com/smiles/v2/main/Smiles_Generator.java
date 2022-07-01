@@ -1,5 +1,6 @@
 package com.smiles.v2.main;
 
+import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import com.smiles.v2.main.domain.models.MoleculesList;
@@ -8,8 +9,6 @@ import com.smiles.v2.main.framework.cdk.MoleculeGraphPainter;
 import com.smiles.v2.main.framework.cdk.VerifiedSmile;
 import com.smiles.v2.main.infrastructure.FirstSubstituent;
 import com.smiles.v2.main.views.PrincipalView;
-
-import ch.randelshofer.quaqua.QuaquaManager;
 
 /**
  * This class is the main class of the application. It is the entry point of the
@@ -45,7 +44,7 @@ public final class Smiles_Generator { // NOSONAR
             themeSelected();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
                 | UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
+                e.printStackTrace();
         }
         final MoleculeGraphPainter moleculeGraphPainter = new MoleculeGraphPainter();
         final MoleculeDataFactory moleculeFactory = new MoleculeDataFactory();
@@ -70,21 +69,30 @@ public final class Smiles_Generator { // NOSONAR
 
         String themeDefault = "";
 
-        final String firsTheme = javax.swing.UIManager.getInstalledLookAndFeels()[0].getClassName();
+        final String firsTheme = UIManager.getInstalledLookAndFeels()[0].getClassName();
         String themePoint = "";
-        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-            if ("Nimbus".equals(info.getName())) {
-                themeDefault = info.getClassName();
+        for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+            String classname = info.getClassName();
+            if ("GTKLookAndFeel".equals(info.getName())) {
+                themePoint = classname;
+                UIManager.setLookAndFeel(themePoint);
+                break;
             }
-            themePoint = info.getClassName();
-            javax.swing.UIManager.setLookAndFeel(themePoint);
+            if ("Nimbus".equals(info.getName())) {
+                themeDefault = classname;
+            }
+            if ("Windows".equals(info.getName())) {
+                themePoint = classname;
+            }
+            if ("Metal".equals(info.getName())) {
+                themePoint = classname;
+            }
+
+            UIManager.setLookAndFeel(themePoint);
         }
         if (!themeDefault.equals("") && themePoint.equals(firsTheme)) {
-            javax.swing.UIManager.setLookAndFeel(themeDefault);
+            UIManager.setLookAndFeel(themeDefault);
         }
-        /*
-        javax.swing.UIManager.setLookAndFeel(QuaquaManager.getLookAndFeel());
-        javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getCrossPlatformLookAndFeelClassName());
-*/
+
     }
 }

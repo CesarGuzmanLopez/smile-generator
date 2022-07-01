@@ -209,7 +209,7 @@ public class MoleculeTest {
          * @throws IOException
         */
         @Test
-        public void testSaveImage()  {// NOSONAR
+        public void testSaveImage() { // NOSONAR
                 Molecule molecule1 = new Molecule("Primero", "C=CN", "Is a prove", true, new VerifiedSmile(),
                                 new MoleculeDataFactory());
                 molecule1.selectAtom(1);
@@ -225,8 +225,8 @@ public class MoleculeTest {
                 }
                 ORIGINAL_OUT.println(fusion.isSelected(1));
                 ORIGINAL_OUT.println(fusion.isSelected(2));
-                Molecule sustituto = fusion.getSubstitute(1);
-                ORIGINAL_OUT.println(sustituto.smile());
+                Molecule substitute = fusion.getSubstitute(1);
+                ORIGINAL_OUT.println(substitute.smile());
                 fusion = Molecule.fusionMolecule(fusion, mol2, 2, 1);
                 BufferedImage bi = fusion.getImage(700, 700, "Test");
                 try {
