@@ -17,20 +17,9 @@
   <dependencies>
 
     <dependency>
-      <groupId>net.sf.jni-inchi</groupId>
-      <artifactId>jni-inchi</artifactId>
-      <version>0.8</version>
-    </dependency>
-
-    <dependency>
       <groupId>org.openscience.cdk</groupId>
-      <artifactId>cdk-inchi</artifactId>
+      <artifactId>cdk-interfaces</artifactId>
       <version>2.7.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.wcdevs.blog</groupId>
-      <artifactId>cdk</artifactId>
-      <version>3.0.0</version>
     </dependency>
     <dependency>
       <groupId>org.openscience.cdk</groupId>
@@ -38,7 +27,12 @@
       <version>2.7.1</version>
       <type>pom</type>
     </dependency>
-
+    <!-- https://mvnrepository.com/artifact/javax.vecmath/vecmath -->
+    <dependency>
+      <groupId>javax.vecmath</groupId>
+      <artifactId>vecmath</artifactId>
+      <version>1.5.2</version>
+    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
