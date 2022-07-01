@@ -419,8 +419,8 @@ public class MoleculeData implements MoleculeDataInterface {
      * {@inheritDoc}
      */
     @Override
-    public BufferedImage getImage(final int width, final int height) {
-        GenerateImage generateImage = new GenerateImage(this);
+    public BufferedImage getImage(final int width, final int height, final String title) {
+        GenerateImage generateImage = new GenerateImage(this, title);
         return generateImage.getImage(width, height);
     }
 }

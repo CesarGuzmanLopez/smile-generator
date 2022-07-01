@@ -194,13 +194,13 @@ public class WriteAndGenerate {
      *
      * @param generateList List of molecules permutes.
      */
-    private void saveImages(MoleculesListAbstract generateList) { // UNCHECK
+    private void saveImages(final MoleculesListAbstract generateList) { // UNCHECK
         final List<Molecule> list = generateList.getListMolecule();
         int i = 0;
         for (Molecule molecule : list) {
             String name = principal.getName() + "_" + i++ + ".png";
 
-            BufferedImage bi = molecule.getImage(WIDTH, HEIGHT);
+            BufferedImage bi = molecule.getImage(WIDTH, HEIGHT, "SMILE: " + molecule.smile());
             try {
                 ImageIO.write(bi, "png", new File(saveImages + System.getProperty("file.separator") + name));
             } catch (IOException e) {

@@ -260,10 +260,12 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
      *
      * @param width  of image.
      * @param height of image.
+     * @param title
      * @return BufferedImage.
      *
+     *
      */
-    public BufferedImage getImage(final int width, final int height) {
-        return moleculeDataOfSmile.getImage(width, height);
+    public BufferedImage getImage(final int width, final int height, final String title) {
+        return moleculeDataOfSmile.getImage(width, height, title);
     }
 }

@@ -90,8 +90,9 @@ public interface MoleculeDataInterface extends MoleculeComparableInterface {
      *
      * @param width  of image.
      * @param height of image.
+     * @param title  of image.
      * @return BufferedImage.
      *
      */
-    BufferedImage getImage(int width, int height);
+    BufferedImage getImage(int width, int height, String title);
 }

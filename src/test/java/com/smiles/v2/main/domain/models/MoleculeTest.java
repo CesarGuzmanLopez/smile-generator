@@ -228,7 +228,7 @@ public class MoleculeTest {
                 Molecule sustituto = fusion.getSubstitute(1);
                 ORIGINAL_OUT.println(sustituto.smile());
                 fusion = Molecule.fusionMolecule(fusion, mol2, 2, 1);
-                BufferedImage bi = fusion.getImage(700, 700);
+                BufferedImage bi = fusion.getImage(700, 700, "Test");
                 try {
                         ImageIO.write(bi, "png", new File("test.png"));
                 } catch (IOException e) {
