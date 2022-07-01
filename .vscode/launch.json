@@ -4,7 +4,13 @@
     // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-      
+        {
+            "type": "java",
+            "name": "Launch GraphicController",
+            "request": "launch",
+            "mainClass": "com.smiles.v1.Controladores.GraphicController",
+            "projectName": "smiles"
+        },
         {
             "type": "java",
             "name": "Launch Current File",

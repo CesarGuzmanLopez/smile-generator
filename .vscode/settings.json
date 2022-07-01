@@ -6,10 +6,13 @@
         "Chloromethane",
         "Difluoromethane",
         "Diichloromethane",
+        "Dimetoxianfetamine",
         "Fluoromethane",
         "fusioned",
         "Kekule",
         "mensajebox",
+        "Moleculesubsitute",
+        "Ncccc",
         "proporcion"
     ],
     "DockerRun.DisableAutoGenerateConfig": true,
