@@ -17,10 +17,23 @@
   <dependencies>
 
     <dependency>
+      <groupId>net.sf.jni-inchi</groupId>
+      <artifactId>jni-inchi</artifactId>
+      <version>0.8</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.openscience.cdk</groupId>
+      <artifactId>cdk-inchi</artifactId>
+      <version>2.7.1</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.openscience.cdk/cdk-interfaces -->
+    <dependency>
       <groupId>org.openscience.cdk</groupId>
       <artifactId>cdk-interfaces</artifactId>
       <version>2.7.1</version>
     </dependency>
+
     <dependency>
       <groupId>org.openscience.cdk</groupId>
       <artifactId>cdk</artifactId>
@@ -33,6 +46,7 @@
       <artifactId>vecmath</artifactId>
       <version>1.5.2</version>
     </dependency>
+
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -87,11 +101,6 @@
       <version>2.7.1</version>
     </dependency>
 
-    <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-      <version>1.2</version>
-    </dependency>
     <dependency>
       <groupId>org.openscience.cdk</groupId>
       <artifactId>cdk-tool</artifactId>
