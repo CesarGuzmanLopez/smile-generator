@@ -40,6 +40,12 @@ public final class Smiles_Generator { // NOSONAR
      */
 
     public static void main(final String[] args) {
+        if (args.length == 0) {
+            graphic();
+        }
+    }
+
+    private static void graphic() {
         try {
             themeSelected();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException

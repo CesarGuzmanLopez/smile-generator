@@ -275,7 +275,6 @@ public final class PrincipalView extends javax.swing.JFrame {
                     && textSmile.equals(textName.substring(0, textName.length() - 1))) {
                 textFieldName.setText(textSmile);
             }
-
         }
     }
     /**
