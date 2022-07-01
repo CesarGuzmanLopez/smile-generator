@@ -44,7 +44,7 @@ public final class Smiles_Generator { // NOSONAR
             themeSelected();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
                 | UnsupportedLookAndFeelException e) {
-                e.printStackTrace();
+            e.printStackTrace();
         }
         final MoleculeGraphPainter moleculeGraphPainter = new MoleculeGraphPainter();
         final MoleculeDataFactory moleculeFactory = new MoleculeDataFactory();

@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch preta",
+            "request": "launch",
+            "mainClass": "com.smiles.v2.main.preta",
+            "projectName": "smiles"
+        },
+        {
+            "type": "java",
             "name": "Launch GraphicController",
             "request": "launch",
             "mainClass": "com.smiles.v1.Controladores.GraphicController",

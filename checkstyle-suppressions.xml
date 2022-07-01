@@ -2,6 +2,7 @@
 
 <suppressions>
   <suppress files="[\\/]com\/smiles\/v1[\\/]" checks="[a-zA-Z0-9]*"/>
+  <suppress files="[\\/]com\/smiles\/v2\/main\/preta.java" checks="[a-zA-Z0-9]*"/>
   <suppress files="[\\/]com\/smiles\/v2\/main\/views[\\/]" checks="MagicNumber"/>
   <suppress files="[\\/]com\/smiles\/v2\/main\/framework\/cdk\/views[\\/]" checks="MagicNumber"/>
   <suppress files="[\\/]com[\\/]" checks="JavadocVariable"/>

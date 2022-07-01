@@ -10,6 +10,8 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.plaf.FontUIResource;
 import javax.vecmath.Point2d;
@@ -18,11 +20,7 @@ import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.layout.StructureDiagramGenerator;
 import org.openscience.cdk.renderer.AtomContainerRenderer;
-import org.openscience.cdk.renderer.RendererModel;
 import org.openscience.cdk.renderer.font.AWTFontManager;
-import org.openscience.cdk.renderer.generators.BasicAtomGenerator;
-import org.openscience.cdk.renderer.generators.BasicBondGenerator;
-import org.openscience.cdk.renderer.generators.BasicGenerator;
 import org.openscience.cdk.renderer.generators.BasicSceneGenerator;
 import org.openscience.cdk.renderer.generators.IGenerator;
 import org.openscience.cdk.renderer.generators.standard.StandardGenerator;
@@ -62,8 +60,7 @@ abstract class JpanelDrawMoleculeAbstract extends JPanel {
     @Override
     protected void paintComponent(final Graphics graphicsJpanel) {
         super.paintComponent(graphicsJpanel);
-        final float width = getWidth();
-        final float height = getHeight();
+
         graphicsJpanel.setFont(new FontUIResource("Arial", Font.PLAIN, 12));
         final StructureDiagramGenerator sdg;
         // layout the molecule
@@ -77,29 +74,21 @@ abstract class JpanelDrawMoleculeAbstract extends JPanel {
             throw new RuntimeException(e.getMessage());
         }
         // make generators
-        final List<IGenerator<IAtomContainer>> generators = new ArrayList<>();
-        final StandardGenerator genera = new StandardGenerator(new Font("Arial", Font.BOLD, 0));
-
-        generators.add(new BasicGenerator());
+        List<IGenerator<IAtomContainer>> generators = new ArrayList<>();
         generators.add(new BasicSceneGenerator());
-        generators.add(new BasicBondGenerator());
-        generators.add(new BasicAtomGenerator());
-        if (getMolecule().atomCount() == 1) {
-            generators.add(genera);
-        }
-        renderer = new  AtomContainerRenderer(generators, new AWTFontManager());
-        RendererModel model;
-        model = renderer.getRenderer2DModel();
-        model.getParameter(BasicAtomGenerator.ShowExplicitHydrogens.class).setValue(true);
-        model.set(BasicAtomGenerator.ShowEndCarbons.class, true);
-        model.set(BasicAtomGenerator.CompactAtom.class, false);
-        model.set(BasicAtomGenerator.AtomRadius.class, 0.5);
-        model.set(BasicAtomGenerator.CompactShape.class, BasicAtomGenerator.Shape.OVAL);
-        model.set(BasicAtomGenerator.KekuleStructure.class, false);
-        model.set(BasicBondGenerator.BondWidth.class, 1.0);
-        model.set(BasicSceneGenerator.FitToScreen.class, true);
-        model.set(BasicSceneGenerator.ShowMoleculeTitle.class, true);
-        model.set(BasicSceneGenerator.BackgroundColor.class, Color.white);
+        generators.add(new StandardGenerator(new JLabel().getFont()));
+        generators.add(new BasicSceneGenerator());
+        // the renderer needs to have a toolkit-specific font manager
+        renderer = new AtomContainerRenderer(generators, new AWTFontManager());
+        renderer.getRenderer2DModel().set(StandardGenerator.Highlighting.class,
+                StandardGenerator.HighlightStyle.OuterGlow);
+
+        renderer.getRenderer2DModel().set(BasicSceneGenerator.FitToScreen.class, true);
+        renderer.getRenderer2DModel().set(BasicSceneGenerator.ShowMoleculeTitle.class, true);
+        renderer.getRenderer2DModel().set(BasicSceneGenerator.BackgroundColor.class, Color.white);
+
+        final float width = getWidth();
+        final float height = getHeight();
         renderer.paint(iAtomContainer, new AWTDrawVisitor((Graphics2D) graphicsJpanel),
                 new Rectangle2D.Double(0, 0, width, height), false);
         paintHerder(graphicsJpanel);
