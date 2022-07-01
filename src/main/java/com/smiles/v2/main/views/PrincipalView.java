@@ -97,9 +97,10 @@ public final class PrincipalView extends javax.swing.JFrame {
                 optionPanel.getListMolecule());
         new WindowsGenerate(moleculePanelPrincipal.getMolecule(), selected);
     }
+
     /** initialize all JPanels.*/
     public void initialize() {
-        setJMenuBar(new Menu());
+        setJMenuBar(new Menu(this));
         setLayout(new GridBagLayout());
         // the order is important in the initialization of the components
         initializeEntrySmile(0, 0, 1, 1);
@@ -274,5 +275,8 @@ public final class PrincipalView extends javax.swing.JFrame {
             }
 
         }
+    }
+    public Molecule getPrincipal(){
+        return moleculePanelPrincipal.getMolecule();
     }
 }

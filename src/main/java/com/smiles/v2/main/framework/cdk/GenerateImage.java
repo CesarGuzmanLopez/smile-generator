@@ -80,9 +80,8 @@ public class GenerateImage {
         model.set(BasicAtomGenerator.CompactAtom.class, false);
         model.set(BasicAtomGenerator.AtomRadius.class, 0.5); // UNCHECK
         model.set(BasicAtomGenerator.CompactShape.class, BasicAtomGenerator.Shape.OVAL);
-        model.set(BasicAtomGenerator.KekuleStructure.class, true);
+        model.set(BasicAtomGenerator.KekuleStructure.class, false);
         model.set(BasicBondGenerator.BondWidth.class, 2.0);// UNCHECK
-
         model.set(BasicSceneGenerator.FitToScreen.class, true);
         model.set(BasicSceneGenerator.BackgroundColor.class, Color.white);
 

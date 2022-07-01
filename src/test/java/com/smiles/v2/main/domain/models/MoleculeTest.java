@@ -205,11 +205,11 @@ public class MoleculeTest {
                 assertEquals("C=ON", substitute.smile(), "Error generate smile fusion");
         }
         /**
-         * Test of the molecule important methods.
+         * Test of the molecule generate image.
          * @throws IOException
         */
         @Test
-        public void testSaveImage()  {
+        public void testSaveImage()  {// NOSONAR
                 Molecule molecule1 = new Molecule("Primero", "C=CN", "Is a prove", true, new VerifiedSmile(),
                                 new MoleculeDataFactory());
                 molecule1.selectAtom(1);

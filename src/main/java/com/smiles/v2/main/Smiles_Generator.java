@@ -9,6 +9,8 @@ import com.smiles.v2.main.framework.cdk.VerifiedSmile;
 import com.smiles.v2.main.infrastructure.FirstSubstituent;
 import com.smiles.v2.main.views.PrincipalView;
 
+import ch.randelshofer.quaqua.QuaquaManager;
+
 /**
  * This class is the main class of the application. It is the entry point of the
  * application.
@@ -80,6 +82,9 @@ public final class Smiles_Generator { // NOSONAR
         if (!themeDefault.equals("") && themePoint.equals(firsTheme)) {
             javax.swing.UIManager.setLookAndFeel(themeDefault);
         }
-
+        /*
+        javax.swing.UIManager.setLookAndFeel(QuaquaManager.getLookAndFeel());
+        javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getCrossPlatformLookAndFeelClassName());
+*/
     }
 }

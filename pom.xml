@@ -93,6 +93,12 @@
       <version>2.7.1</version>
       <type>pom</type>
     </dependency>
+
+    <dependency>
+      <groupId>org.devzendo</groupId>
+      <artifactId>quaqua</artifactId>
+      <version>9.1</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
