@@ -27,7 +27,8 @@ import javax.imageio.ImageIO;
  * @Date: 01/05/20201 CHARSET
  */
 public class WriteAndGenerate {
-
+    static final int WIDTH = 700;
+    static final int HEIGHT = 700;
     static final Charset CHARSET = StandardCharsets.UTF_8;
     private MoleculesList substitutes;
     private Molecule principal;
@@ -197,10 +198,11 @@ public class WriteAndGenerate {
         final List<Molecule> list = generateList.getListMolecule();
         int i = 0;
         for (Molecule molecule : list) {
-            String name =principal.getName() + "_" + i++ +".png";
-            BufferedImage bi = molecule.getImage(700, 700);
+            String name = principal.getName() + "_" + i++ + ".png";
+
+            BufferedImage bi = molecule.getImage(WIDTH, HEIGHT);
             try {
-                    ImageIO.write(bi, "png", new File( saveImages + System.getProperty("file.separator") + name));
+                ImageIO.write(bi, "png", new File(saveImages + System.getProperty("file.separator") + name));
             } catch (IOException e) {
                 throw new RuntimeException(e.getMessage());
             }

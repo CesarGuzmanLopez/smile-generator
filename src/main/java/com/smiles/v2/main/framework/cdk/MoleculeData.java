@@ -75,6 +75,7 @@ public class MoleculeData implements MoleculeDataInterface {
         AtomSelectable(final IAtom atom, final int id) {
             super(atom, id);
         }
+
         @Override
         public void select() {
             super.select();
@@ -413,12 +414,13 @@ public class MoleculeData implements MoleculeDataInterface {
         }
         return false;
     }
+
     /**
      * {@inheritDoc}
-    */
+     */
     @Override
-    public BufferedImage getImage(int width, int height) {
+    public BufferedImage getImage(final int width, final int height) {
         GenerateImage generateImage = new GenerateImage(this);
-        return generateImage.getImage( width,  height);
+        return generateImage.getImage(width, height);
     }
 }

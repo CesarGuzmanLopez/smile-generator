@@ -77,10 +77,10 @@ public class GenerateImage {
         model.getParameter(BasicAtomGenerator.ShowExplicitHydrogens.class).setValue(true);
         model.set(BasicAtomGenerator.ShowEndCarbons.class, true);
         model.set(BasicAtomGenerator.CompactAtom.class, false);
-        model.set(BasicAtomGenerator.AtomRadius.class, 0.5);
+        model.set(BasicAtomGenerator.AtomRadius.class, 0.5); // UNCHECK
         model.set(BasicAtomGenerator.CompactShape.class, BasicAtomGenerator.Shape.OVAL);
         model.set(BasicAtomGenerator.KekuleStructure.class, true);
-        model.set(BasicBondGenerator.BondWidth.class, 2.0);
+        model.set(BasicBondGenerator.BondWidth.class, 2.0);// UNCHECK
 
         model.set(BasicSceneGenerator.FitToScreen.class, true);
         model.set(BasicSceneGenerator.BackgroundColor.class, Color.white);
@@ -93,13 +93,13 @@ public class GenerateImage {
         // TODO model.setHighlightedBond(highlightedBond(containerMolecules));
 
         graphics2D.setColor(Color.black);
-        Font font = new Font("Arial", Font.BOLD, 30);
+        Font font = new Font("Arial", Font.BOLD, 30);// UNCHECK
         graphics2D.setFont(font);
         String smile = molecule.absoluteSmile();
         FontMetrics metrics = graphics2D.getFontMetrics(font);
         int x = (width - metrics.stringWidth(smile)) / 2;
 
-        graphics2D.drawString("SMILE: " + molecule.absoluteSmile(), x, height - 30);
+        graphics2D.drawString("SMILE: " + molecule.absoluteSmile(), x, height - 30); // UNCHECK
         return image;
     }
 
