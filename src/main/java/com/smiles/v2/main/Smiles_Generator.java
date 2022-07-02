@@ -3,6 +3,12 @@ package com.smiles.v2.main;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.smiles.v2.main.command.Command;
+import com.smiles.v2.main.command.EnumMolecule;
+import com.smiles.v2.main.command.Img;
 import com.smiles.v2.main.domain.models.MoleculesList;
 import com.smiles.v2.main.framework.cdk.MoleculeDataFactory;
 import com.smiles.v2.main.framework.cdk.MoleculeGraphPainter;
@@ -42,9 +48,38 @@ public final class Smiles_Generator { // NOSONAR
     public static void main(final String[] args) {
         if (args.length == 0) {
             graphic();
+        } else {
+            commandLine(args);
         }
     }
 
+    private static void commandLine(final String[] args) {
+        final MoleculeDataFactory moleculeFactory = new MoleculeDataFactory();
+        final VerifiedSmile verifierSmile = new VerifiedSmile();
+        List<Command> commands = new ArrayList<>();
+        for (String arg : args) {
+            String argument = arg.toUpperCase();
+            switch (argument) {
+            case "--IMG":
+                commands.add(new Img(verifierSmile, moleculeFactory));
+                break;
+            case "--ENUM":
+                commands.add(new EnumMolecule(verifierSmile, moleculeFactory));
+                break;
+            default:
+            }
+            if (!commands.isEmpty()) {
+                commands.get(commands.size() - 1).setCommands(arg);
+            }
+        }
+        for (Command command : commands) {
+            command.execute();
+        }
+    }
+
+    /**
+     * this method execute the graphic interface.
+     */
     private static void graphic() {
         try {
             themeSelected();
