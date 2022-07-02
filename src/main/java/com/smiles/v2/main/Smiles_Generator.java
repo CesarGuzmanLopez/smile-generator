@@ -132,6 +132,8 @@ public final class Smiles_Generator { // NOSONAR
         output.append("\t\t-explicit  (No implicit Hydrogens) \n");
         output.append("\t\t-Bounds [bounds] \n");
         output.append("\t\t--S SmileSubstitute [select1,select2,select3,...] \n");
+        output.append("\n\n\t\tExample:\n\t java -jar smile-generator.jar  --swaps ccNccO "
+                + " -P 2,3,4 -Output ./output.txt -Log ./log.log -path " + "./Images/ --S N --S NC -P 1,0 ");
         String outputString = output.toString();
         Command.LOGGER.log(Level.INFO, outputString);
 
