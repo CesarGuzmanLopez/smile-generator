@@ -5,6 +5,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import com.smiles.v2.main.command.Command;
 import com.smiles.v2.main.command.EnumMolecule;
@@ -66,7 +67,15 @@ public final class Smiles_Generator { // NOSONAR
             case "--ENUM":
                 commands.add(new EnumMolecule(verifierSmile, moleculeFactory));
                 break;
+            case "/help":
+            case "-h":
+            case "--help":
+            case "/ayuda":
+            case "-ayuda":
+            case "--ayuda":
+                help(); return;
             default:
+
             }
             if (!commands.isEmpty()) {
                 commands.get(commands.size() - 1).setCommands(arg);
@@ -75,6 +84,28 @@ public final class Smiles_Generator { // NOSONAR
         for (Command command : commands) {
             command.execute();
         }
+    }
+    /**
+     *  This method print the help of the application.
+     *  @since 1.0
+    */
+    private static void help() {
+        StringBuilder output = new StringBuilder();
+        output.append( "Usage: java -jar smiles-generator.jar  [options]\n");
+        output.append( "Options:\n");
+        output.append( " --IMG [smile]: Create a image of the molecule.\n");
+        output.append( "\t\t-nane Name \n");
+        output.append( "\t\t-smile Size \n");
+        output.append( "\t\t-width width \n");
+        output.append( "\t\t-height height \n");
+        output.append( "\t\t-path \n");
+        output.append( "\t\t-explicit  (implicit Hydrogens) \n");
+        output.append( " --ENUM smile : Enumerate the atoms of the molecule.\n");
+
+        String outputString = output.toString();
+        Command.LOGGER.log(Level.INFO, outputString);
+
+
     }
 
     /**

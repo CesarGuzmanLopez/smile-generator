@@ -55,6 +55,10 @@ public abstract class Command {
 
     private void obtainName() {
         name = getArg("-name");
+        if(name == null) {
+            name = getArg("-n");
+        }
+
     }
 
     private void obtainMolecule() {
@@ -95,7 +99,7 @@ public abstract class Command {
      * view implicit hydrogens.
      */
     public void viewHydrogensImplicit() {
-        hydrogensImplicit = getArg("-implicit") == null;
+        hydrogensImplicit = getArg("-explicit") == null;
     }
 
     /**
@@ -119,9 +123,10 @@ public abstract class Command {
      * @return parameters of the command.
      */
     protected String getArg(final String stringSearch) {
+        String search = stringSearch.toLowerCase();
         for (int i = 0; i < args.size(); i++) {
             String lowerCase = args.get(i).toLowerCase();
-            if (lowerCase.equals(stringSearch)) {
+            if (lowerCase.equals(search)) {
                 return args.get(i + 1);
             }
         }

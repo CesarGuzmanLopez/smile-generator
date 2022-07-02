@@ -45,7 +45,6 @@ public class Img extends Command {
         } else {
             route += getName() + ".png";
         }
-
         try {
             ImageIO.write(image, "png", new File(route));
         } catch (IOException e) {
