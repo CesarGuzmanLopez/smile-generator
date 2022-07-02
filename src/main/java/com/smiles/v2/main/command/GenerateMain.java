@@ -16,7 +16,7 @@ public class GenerateMain extends GenerateSubstitute {
     private int nunBounds;
     private int rSubstitutes;
 
-    public GenerateMain(SmileVerificationInterface verification, MoleculeDataFactoryInterface factory) {
+    public GenerateMain(final SmileVerificationInterface verification, final MoleculeDataFactoryInterface factory) {
         super(verification, factory);
         listMolecules = new MoleculesList(verification, factory);
         outputFileName = null;
@@ -29,12 +29,12 @@ public class GenerateMain extends GenerateSubstitute {
     /**
      * @param substitute
      */
-    public void addSubstitute(final GenerateSubstitute substitute) {
+    public void addSubstitute(final GenerateSubstitute substitute) { //NOSONAR
         listMolecules.addMolecule(substitute.molecule());
     }
 
     /**
-     * {inheritDoc}
+     * {@inheritDoc}
      */
     @Override
     public void execute() {
@@ -43,7 +43,7 @@ public class GenerateMain extends GenerateSubstitute {
     }
 
     /**
-     * @return rSubstitutes to permute
+     * @return rSubstitutes to permute.
      */
     public int getRSubstitutes() {
         return rSubstitutes;

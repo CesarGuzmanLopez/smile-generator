@@ -3,12 +3,14 @@ package com.smiles.v2.main.command;
 import com.smiles.v2.main.interfaces.MoleculeDataFactoryInterface;
 import com.smiles.v2.main.interfaces.SmileVerificationInterface;
 
-public class GenerateSubstitute extends Command  {
+public class GenerateSubstitute extends Command {
 
-    public GenerateSubstitute(SmileVerificationInterface verification, MoleculeDataFactoryInterface factory) {
+    public GenerateSubstitute(final SmileVerificationInterface verification,
+            final MoleculeDataFactoryInterface factory) {
         super(verification, factory);
 
     }
+
     /**
      * {@inheritDoc}
      */
@@ -17,6 +19,7 @@ public class GenerateSubstitute extends Command  {
         super.execute();
         generateSelects();
     }
+
     private void generateSelects() {
         String selects = getArg("-p");
         if (selects != null) {

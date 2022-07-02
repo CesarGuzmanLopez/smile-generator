@@ -28,8 +28,8 @@ import com.smiles.v2.main.views.PrincipalView;
  * @since 1.0
  */
 public final class Smiles_Generator { // NOSONAR
-    public static final MoleculeDataFactory moleculeFactory = new MoleculeDataFactory();
-    public static final VerifiedSmile verifierSmile = new VerifiedSmile();
+    public static final MoleculeDataFactory MOLECULE_FACTORY = new MoleculeDataFactory();
+    public static final VerifiedSmile VERIFIER_SMILE = new VerifiedSmile();
 
     /**
      * This method is the main method of the application. It is the entry point of
@@ -65,17 +65,17 @@ public final class Smiles_Generator { // NOSONAR
             String argument = arg.toUpperCase();
             switch (argument) {
             case "--IMG":
-                commands.add(new Img(verifierSmile, moleculeFactory));
+                commands.add(new Img(VERIFIER_SMILE, MOLECULE_FACTORY));
                 break;
             case "--ENUM":
-                commands.add(new EnumMolecule(verifierSmile, moleculeFactory));
+                commands.add(new EnumMolecule(VERIFIER_SMILE, MOLECULE_FACTORY));
                 break;
             case "--SWAPS":
-                mainGenerate = new GenerateMain(verifierSmile, moleculeFactory);
+                mainGenerate = new GenerateMain(VERIFIER_SMILE, MOLECULE_FACTORY);
                 commands.add(mainGenerate);
                 break;
             case "--S":
-                GenerateSubstitute substitute = new GenerateSubstitute(verifierSmile, moleculeFactory);
+                GenerateSubstitute substitute = new GenerateSubstitute(VERIFIER_SMILE, MOLECULE_FACTORY);
                 substitutes.add(substitute);
                 commands.add(substitute);
                 break;
@@ -118,9 +118,9 @@ public final class Smiles_Generator { // NOSONAR
         output.append("\t\t-path \n");
         output.append("\t\t-explicit  (implicit Hydrogens) \n");
         output.append("\n --ENUM smile : Enumerate the atoms of the molecule.\n");
-        output.append(
-                "\n--swaps smile -p [select1,select2,select3,...]  -r r-substitutes -Output [FileOutput] -Log [FileLog] -path[Directory Images] [...]"
-                        + " --S SmileSubstitute -p [select1,select2,select3,...]  ... \n");
+        output.append("\n--swaps smile -p [select1,select2,select3,...]  -r r-substitutes "
+                + " -Output [FileOutput] -Log [FileLog] -path[Directory Images] [...]"
+                + " --S SmileSubstitute -p [select1,select2,select3,...]  ... \n");
         output.append("\t\t-name Name \n");
         output.append("\t\t-p [{1,2,3,...}] selects Atoms \n");
         output.append("\t\t-smile [smile] \n");
@@ -149,9 +149,9 @@ public final class Smiles_Generator { // NOSONAR
         }
         final MoleculeGraphPainter moleculeGraphPainter = new MoleculeGraphPainter();
 
-        final MoleculesList smiles = FirstSubstituent.getMoleculeListInitializer(verifierSmile, moleculeFactory);
-        final PrincipalView principalView = new PrincipalView(smiles, verifierSmile, moleculeGraphPainter,
-                moleculeFactory);
+        final MoleculesList smiles = FirstSubstituent.getMoleculeListInitializer(VERIFIER_SMILE, MOLECULE_FACTORY);
+        final PrincipalView principalView = new PrincipalView(smiles, VERIFIER_SMILE, moleculeGraphPainter,
+                MOLECULE_FACTORY);
         principalView.initialize();
     }
 

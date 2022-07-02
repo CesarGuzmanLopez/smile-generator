@@ -153,7 +153,7 @@ public class Molecule extends Smiles implements MoleculeComparableInterface {
      * @param index the atom id.
      */
     public void selectAtom(final int index) {
-        if(index<0 || index>=atomCount()) {
+        if (index < 0 || index >= atomCount()) {
             throw new IllegalArgumentException("Atom index out of range");
         }
         moleculeDataOfSmile.selectOrderAtom(getAtom(index));
