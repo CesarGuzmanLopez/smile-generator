@@ -17,6 +17,7 @@ import javax.swing.JTextArea;
 import javax.swing.border.MatteBorder;
 
 public class About extends JFrame {
+    public static final boolean ACTIVATE_ABOUT = false;
     public About() {
         super();
         setTitle("About");
@@ -85,7 +86,8 @@ public class About extends JFrame {
         text += "This program is a molecular viewer and generate SMILES.\n";
         text += "The program is developed by:\n";
         text += "Cesar Gerardo Guzman Lopez(88-8@live.com.mx)\n";
-        return text;
+        if (ACTIVATE_ABOUT)  return text;
+        else return "";
     }
 
 }
