@@ -9,6 +9,8 @@ import java.util.logging.Level;
 
 import com.smiles.v2.main.command.Command;
 import com.smiles.v2.main.command.EnumMolecule;
+import com.smiles.v2.main.command.GenerateMain;
+import com.smiles.v2.main.command.GenerateSubstitute;
 import com.smiles.v2.main.command.Img;
 import com.smiles.v2.main.domain.models.MoleculesList;
 import com.smiles.v2.main.framework.cdk.MoleculeDataFactory;
@@ -26,6 +28,8 @@ import com.smiles.v2.main.views.PrincipalView;
  * @since 1.0
  */
 public final class Smiles_Generator { // NOSONAR
+    public static final MoleculeDataFactory moleculeFactory = new MoleculeDataFactory();
+    public static final VerifiedSmile verifierSmile = new VerifiedSmile();
 
     /**
      * This method is the main method of the application. It is the entry point of
@@ -34,7 +38,6 @@ public final class Smiles_Generator { // NOSONAR
      * @since 1.0
      */
     private Smiles_Generator() {
-
     }
 
     /**
@@ -55,9 +58,9 @@ public final class Smiles_Generator { // NOSONAR
     }
 
     private static void commandLine(final String[] args) {
-        final MoleculeDataFactory moleculeFactory = new MoleculeDataFactory();
-        final VerifiedSmile verifierSmile = new VerifiedSmile();
         List<Command> commands = new ArrayList<>();
+        List<GenerateSubstitute> substitutes = new ArrayList<>();
+        GenerateMain mainGenerate = null;
         for (String arg : args) {
             String argument = arg.toUpperCase();
             switch (argument) {
@@ -67,15 +70,21 @@ public final class Smiles_Generator { // NOSONAR
             case "--ENUM":
                 commands.add(new EnumMolecule(verifierSmile, moleculeFactory));
                 break;
-            case "/help":
-            case "-h":
-            case "--help":
-            case "/ayuda":
-            case "-ayuda":
-            case "--ayuda":
-                help(); return;
+            case "--SWAPS":
+                mainGenerate = new GenerateMain(verifierSmile, moleculeFactory);
+                commands.add(mainGenerate);
+                break;
+            case "--S":
+                GenerateSubstitute substitute = new GenerateSubstitute(verifierSmile, moleculeFactory);
+                substitutes.add(substitute);
+                commands.add(substitute);
+                break;
             default:
-
+                if (argument.startsWith("--H") || argument.startsWith("-H") || argument.startsWith("-A")
+                        || argument.startsWith("/H")) {
+                    help();
+                    return;
+                }
             }
             if (!commands.isEmpty()) {
                 commands.get(commands.size() - 1).setCommands(arg);
@@ -84,27 +93,47 @@ public final class Smiles_Generator { // NOSONAR
         for (Command command : commands) {
             command.execute();
         }
+        if (mainGenerate != null) {
+            for (GenerateSubstitute substitute : substitutes) {
+                mainGenerate.addSubstitute(substitute);
+            }
+            mainGenerate.generate();
+        }
     }
+
     /**
-     *  This method print the help of the application.
-     *  @since 1.0
-    */
+     * This method print the help of the application.
+     *
+     * @since 1.0
+     */
     private static void help() {
         StringBuilder output = new StringBuilder();
-        output.append( "Usage: java -jar smiles-generator.jar  [options]\n");
-        output.append( "Options:\n");
-        output.append( " --IMG [smile]: Create a image of the molecule.\n");
-        output.append( "\t\t-nane Name \n");
-        output.append( "\t\t-smile Size \n");
-        output.append( "\t\t-width width \n");
-        output.append( "\t\t-height height \n");
-        output.append( "\t\t-path \n");
-        output.append( "\t\t-explicit  (implicit Hydrogens) \n");
-        output.append( " --ENUM smile : Enumerate the atoms of the molecule.\n");
-
+        output.append("Usage: java -jar smiles-generator.jar  [options]\n");
+        output.append("Options:\n");
+        output.append(" --IMG [smile]: Create a image of the molecule.\n");
+        output.append("\t\t-name Name \n");
+        output.append("\t\t-smile [smile] \n");
+        output.append("\t\t-width width \n");
+        output.append("\t\t-height height \n");
+        output.append("\t\t-path \n");
+        output.append("\t\t-explicit  (implicit Hydrogens) \n");
+        output.append("\n --ENUM smile : Enumerate the atoms of the molecule.\n");
+        output.append(
+                "\n--swaps smile -p [select1,select2,select3,...]  -r r-substitutes -Output [FileOutput] -Log [FileLog] -path[Directory Images] [...]"
+                        + " --S SmileSubstitute -p [select1,select2,select3,...]  ... \n");
+        output.append("\t\t-name Name \n");
+        output.append("\t\t-p [{1,2,3,...}] selects Atoms \n");
+        output.append("\t\t-smile [smile] \n");
+        output.append("\t\t-width width of the images \n");
+        output.append("\t\t-height width of the images \n");
+        output.append("\t\t-Output [FileOutput] \n");
+        output.append("\t\t-Log [Filelog] \n");
+        output.append("\t\t-path \n");
+        output.append("\t\t-explicit  (No implicit Hydrogens) \n");
+        output.append("\t\t-Bounds [bounds] \n");
+        output.append("\t\t--S SmileSubstitute [select1,select2,select3,...] \n");
         String outputString = output.toString();
         Command.LOGGER.log(Level.INFO, outputString);
-
 
     }
 
@@ -119,8 +148,7 @@ public final class Smiles_Generator { // NOSONAR
             e.printStackTrace();
         }
         final MoleculeGraphPainter moleculeGraphPainter = new MoleculeGraphPainter();
-        final MoleculeDataFactory moleculeFactory = new MoleculeDataFactory();
-        final VerifiedSmile verifierSmile = new VerifiedSmile();
+
         final MoleculesList smiles = FirstSubstituent.getMoleculeListInitializer(verifierSmile, moleculeFactory);
         final PrincipalView principalView = new PrincipalView(smiles, verifierSmile, moleculeGraphPainter,
                 moleculeFactory);
@@ -138,9 +166,7 @@ public final class Smiles_Generator { // NOSONAR
      */
     private static void themeSelected() throws ClassNotFoundException, InstantiationException, IllegalAccessException,
             UnsupportedLookAndFeelException {
-
         String themeDefault = "";
-
         final String firsTheme = UIManager.getInstalledLookAndFeels()[0].getClassName();
         String themePoint = "";
         for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -159,7 +185,6 @@ public final class Smiles_Generator { // NOSONAR
             if ("Metal".equals(info.getName())) {
                 themePoint = classname;
             }
-
             UIManager.setLookAndFeel(themePoint);
         }
         if (!themeDefault.equals("") && themePoint.equals(firsTheme)) {

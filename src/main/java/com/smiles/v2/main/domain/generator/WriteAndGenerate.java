@@ -218,7 +218,7 @@ public class WriteAndGenerate {
             for (Molecule molecule : generateList.getListMolecule()) {
                 for (AtomInterface toSubstitute : principal.getMoleculeData().getListAtomsSelected()) {
                     String symbol = molecule.isOnlySubstitutedHydrogens() ? "H" : "*"; // NOSONAR
-                    if (!molecule.isSelected(toSubstitute.getId())) {
+                    if (!molecule.isSelected(toSubstitute.getId()) || molecule.atomCount() == 1 ) {
                         Molecule a = molecule.getSubstitute(toSubstitute.getId());
                         symbol = a.smile();
                     }

@@ -110,6 +110,7 @@ public class MoleculeData implements MoleculeDataInterface {
      */
     @Override
     public void selectOrderAtom(final AtomInterface atom) {
+
         if (!selectedList.contains(atom)) {
             selectedList.add(atom);
         } else {

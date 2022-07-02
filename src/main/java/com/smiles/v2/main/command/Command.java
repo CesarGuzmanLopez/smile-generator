@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Command {
-    public static final Logger LOGGER = Logger.getLogger("MyLog");
+    public static final Logger LOGGER = Logger.getLogger("Command Smile Generator");
     private List<String> args;
     private SmileVerificationInterface smileVerification;
     private MoleculeDataFactoryInterface moleculeFactory;
@@ -55,7 +55,7 @@ public abstract class Command {
 
     private void obtainName() {
         name = getArg("-name");
-        if(name == null) {
+        if (name == null) {
             name = getArg("-n");
         }
 
