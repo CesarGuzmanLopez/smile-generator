@@ -33,7 +33,16 @@
           "request": "launch",
           "mainClass": "com.smiles.v2.main.Smiles_Generator",
           "projectName": "smiles",
-          "args": "--swaps \"ccNccO\" -P \"2,3,4\" --S \"N\" --S \"NC\" -P 1,0,    "
+          "args": "--swaps \"ccNccO\" -P \"2,3,4\" -Output \"./salida.txt\" -Log \"./log.log\" -path \"./Imagenes/\" --S \"N\" --S \"NC\" -P 1,0,    "
+        }
+        ,
+        {
+          "type": "java",
+          "name": "Launch Smiles_Generator help",
+          "request": "launch",
+          "mainClass": "com.smiles.v2.main.Smiles_Generator",
+          "projectName": "smiles",
+          "args": "--help "
         }
     ]
 }

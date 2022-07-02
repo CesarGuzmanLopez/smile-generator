@@ -127,7 +127,7 @@ public final class Smiles_Generator { // NOSONAR
         output.append("\t\t-width width of the images \n");
         output.append("\t\t-height width of the images \n");
         output.append("\t\t-Output [FileOutput] \n");
-        output.append("\t\t-Log [Filelog] \n");
+        output.append("\t\t-Log [FileLog] \n");
         output.append("\t\t-path \n");
         output.append("\t\t-explicit  (No implicit Hydrogens) \n");
         output.append("\t\t-Bounds [bounds] \n");
