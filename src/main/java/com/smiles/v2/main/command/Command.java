@@ -19,10 +19,10 @@ public abstract class Command {
     private Molecule molecule;
     private boolean hydrogensImplicit;
 
-    protected Command(SmileVerificationInterface Verification, MoleculeDataFactoryInterface Factory) { // UNCHECK
+    protected Command(final SmileVerificationInterface verification, final MoleculeDataFactoryInterface factory) {
         this.args = new ArrayList<>();
-        this.smileVerification = Verification;
-        this.moleculeFactory = Factory;
+        this.smileVerification = verification;
+        this.moleculeFactory = factory;
         smile = null;
         name = null;
         hydrogensImplicit = true;
