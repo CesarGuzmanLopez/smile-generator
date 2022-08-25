@@ -1,5 +1,6 @@
 package com.smiles.v2.main.infrastructure;
 
+import com.smiles.v2.main.domain.models.Molecule;
 import com.smiles.v2.main.domain.models.MoleculesList;
 import com.smiles.v2.main.interfaces.MoleculeDataFactoryInterface;
 import com.smiles.v2.main.interfaces.SmileVerificationInterface;
@@ -15,21 +16,42 @@ public final class FirstSubstituent {
     public static MoleculesList getMoleculeListInitializer(final SmileVerificationInterface verificationSmile,
             final MoleculeDataFactoryInterface factory) {
         final MoleculesList list = new MoleculesList(verificationSmile, factory);
-        list.addSmiles("Alcohol", "[OH]", "Over Oxygen", false);
-        list.addSmiles("Thiol", "[SH]", "Over Sulfur", true);
-        list.addSmiles("Amine", "[NH2]", "Over Nitrogen", false);
-        list.addSmiles("Chlorine", "[Cl]", "Over Chloride", false);
-        list.addSmiles("CarboxylicAcid", "[C](=O)O", "Over Carbon", false);
-        list.addSmiles("Chloromethane", "[CH2]Cl", "Over CH2", false);
-        list.addSmiles("Aldehyde", "[CH]=O", "Over Carbon", false);
-        list.addSmiles("Benzene", "c1ccccc1", "Over C", false);
-        list.addSmiles("Diichloromethane", "[CH](Cl)Cl", "Over Carbon", false);
-        list.addSmiles("Fluoromethane", "[CH2]F", "Over Carbon", false);
-        list.addSmiles("Difluoromethane", "[CH](F)F", "Over Carbon", false);
-        list.addSmiles("Nitro", "[N](=O)([O])", "Over Nitrogen", false);
-        list.addSmiles("CH2_SH", "[CH2]S", "Over CH2", false);
-        list.addSmiles("S_CH3", "C[S]", "Over Sulfur", false);
-        list.addSmiles("C2C", "[CH]=C", "Over CH", false);
+        Molecule aNew = new Molecule("Alcohol", "[OH]", "Over Oxygen", true,verificationSmile,factory);
+        aNew.selectAtom(0);
+        list.addMolecule(aNew);
+        aNew = new Molecule("Thiol", "[SH]", "Over Sulfur", true,verificationSmile,factory);
+        aNew.selectAtom(0);
+        list.addMolecule(aNew);
+        aNew = new Molecule("Amine", "[NH2]", "Over Nitrogen", true,verificationSmile,factory);
+        aNew.selectAtom(0);
+        list.addMolecule(aNew);
+        aNew = new Molecule("Chlorine", "[Cl]", "Over Chlorine", false,verificationSmile,factory);
+        aNew.selectAtom(0);
+        list.addMolecule(aNew);
+        aNew = new Molecule("CarboxylicAcid", "[C](=O)O", "Over Carbon", false,verificationSmile,factory);
+        aNew.selectAtom(0);
+        list.addMolecule(aNew);
+        aNew = new Molecule("Chloromethane", "[CH2]Cl", "Over Carbon", true,verificationSmile,factory);
+        aNew.selectAtom(0);
+        list.addMolecule(aNew);
+        aNew = new Molecule("Aldehyde", "[CH]=O", "Over Carbon", true,verificationSmile,factory);
+        aNew.selectAtom(0);
+        list.addMolecule(aNew);
+        aNew = new Molecule("Benzene", "c1ccccc1", "Over Carbon", false,verificationSmile,factory);
+        aNew.selectAtom(0);
+        list.addMolecule(aNew);
+        aNew = new Molecule("Diichloromethane", "[CH](Cl)Cl", "Over Carbon", true,verificationSmile,factory);
+        aNew.selectAtom(0);
+        list.addMolecule(aNew);
+        aNew = new Molecule("Fluoromethane", "[CH2]F", "Over Carbon", true,verificationSmile,factory);
+        aNew.selectAtom(0);
+        list.addMolecule(aNew);
+        aNew = new Molecule("Difluoromethane", "[CH](F)F", "Over Carbon", true,verificationSmile,factory);
+        aNew.selectAtom(0);
+        list.addMolecule(aNew);
+        aNew = new Molecule("Nitro", "[N](=O)([O])", "Over Nitrogen", false,verificationSmile,factory);
+        aNew.selectAtom(0);
+        list.addMolecule(aNew);
         return list;
     }
 }

@@ -230,10 +230,10 @@ public class WriteAndGenerate {
      */
     private void writeHeadDescription() throws IOException {
         if (writeDescription != null) {
-            writeDescription.write("Main molecule: " + principal.getName() + " Smile " + principal.smile() + "\n");
-            writeDescription.write("No Substitutes " + substitutes.getListMolecule().size() + "\n");
-            writeDescription.write("R Substitutes" + rSubstitutes + "\n");
-            writeDescription.write("substitutes: " + "\n");
+            writeDescription.write("Parent molecule: " + principal.getName() + "\nSmile " + principal.smile() + "\n");
+            writeDescription.write("Number of substituents: " + substitutes.getListMolecule().size() + "\n");
+            writeDescription.write("Simultaneous substitutions allowed: " + rSubstitutes + "\n");
+            writeDescription.write("Substitutes: " + "\n");
             for (Molecule molecule : substitutes.getListMolecule()) {
                 writeDescription.write("\t " + molecule.getName());
                 writeDescription.write("\n");

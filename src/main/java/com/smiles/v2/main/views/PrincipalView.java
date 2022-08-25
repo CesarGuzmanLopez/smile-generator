@@ -85,7 +85,7 @@ public final class PrincipalView extends javax.swing.JFrame {
         final String name = textFieldName.getText();
         final boolean implicitHydrogen = checkBoxHydrogenImplicit.isSelected();
         try {
-            final Smiles smileH = new Smiles(name, smile, "Select hydrogens to replace", implicitHydrogen, verifySmile);
+            final Smiles smileH = new Smiles(name, smile, "Select sites over molecule to substitute", implicitHydrogen, verifySmile);
             moleculePanelPrincipal.setMolecule(new Molecule(smileH, moleculeFactory));
         } catch (Exception e) { //NOSONAR
             generateButton.setEnabled(false);

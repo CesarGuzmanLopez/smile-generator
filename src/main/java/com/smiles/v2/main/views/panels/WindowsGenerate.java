@@ -6,6 +6,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseListener;
+
+import org.w3c.dom.events.MouseEvent;
+
 import com.smiles.v2.main.domain.generator.WriteAndGenerate;
 import com.smiles.v2.main.domain.models.Molecule;
 import com.smiles.v2.main.domain.models.MoleculesList;
@@ -19,7 +24,6 @@ public class WindowsGenerate extends JFrame {
     private JSpinner rSubstitutes;
     private Molecule principal;
     private MoleculesList moleculeList;
-    private JSpinner numBounds;
     private JFileChooser savePath;
     private String path;
     private JLabel selectedFolder;
@@ -34,27 +38,25 @@ public class WindowsGenerate extends JFrame {
         this.principal = principal;
         this.moleculeList = moleculeList;
         setVisible(true);
-        if (principal.hasHydrogenImplicit()) {
-            numBounds.setEnabled(true);
-        }
+
         path = System.getProperty("user.dir");
     }
 
     /** Genera View Principal generate. */
     void generate() {
         File saveFileListDescriptive = new File(savePath.getSelectedFile().getAbsolutePath(),
-                principal.getName() + ".log");
+                principal.getName() + "/info.log");
         File saveFileListSmile = new File(savePath.getSelectedFile().getAbsolutePath(),
-                principal.getName() + ".smiles");
+                principal.getName() + "/output.smiles");
 
         try {
             WriteAndGenerate.verifyEntry(principal, moleculeList, (int) rSubstitutes.getValue(),
                     saveFileListDescriptive, saveFileListSmile);
             final WriteAndGenerate generator = new WriteAndGenerate(moleculeList, principal,
-                    (int) rSubstitutes.getValue(), (int) numBounds.getValue(), saveFileListDescriptive,
+                    (int) rSubstitutes.getValue(), 1, saveFileListDescriptive,
                     saveFileListSmile);
 
-            File directory = new File(savePath.getSelectedFile().getAbsolutePath(), principal.getName());
+            File directory = new File(savePath.getSelectedFile().getAbsolutePath(), principal.getName() + "/Structures-png");
             if (!directory.exists()) {
                 directory.mkdir();
             }
@@ -70,7 +72,7 @@ public class WindowsGenerate extends JFrame {
 
     private void initialize() {
         final GridBagConstraints gbc = new GridBagConstraints();
-        final JLabel labelSmileName = new JLabel("Path select to save: ");
+        final JLabel labelSmileName = new JLabel("Select path to save files:  ");
         labelSmileName.setPreferredSize(new java.awt.Dimension(210, 30));
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -90,36 +92,75 @@ public class WindowsGenerate extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 3;
         add(labelSmileDesc, gbc);
+        final JLabel labelQuestionSubs = new JLabel("<html><b style=\"color:green; padding:5px;\">?</b></html>");
+
+
+
+        labelQuestionSubs.setPreferredSize(new java.awt.Dimension(50, 30));
+        gbc.gridx = 2;
+        gbc.gridy = 3;
+        add(labelQuestionSubs, gbc);
+
+
+
+
+
         rSubstitutes = new JSpinner();
         rSubstitutes.setValue(1);
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         add(rSubstitutes, gbc);
-        final JLabel num = new JLabel("bounds: ");
-        num.setPreferredSize(new java.awt.Dimension(210, 30));
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        add(num, gbc);
-        numBounds = new JSpinner();
-        numBounds.setValue(1);
-        numBounds.setEnabled(false);
-        gbc.gridx = 1;
-        gbc.gridy = 4;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        add(numBounds, gbc);
-        final JButton cancelButton = new JButton("cancel");
+
+        final JButton cancelButton = new JButton("Cancel");
         gbc.gridx = 0;
         gbc.gridy = 5;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         cancelButton.addActionListener(e -> dispose());
         add(cancelButton, gbc);
-        final JButton generateButton = new JButton("Generate");
+        final JButton generateButton = new JButton("Generate structures!");
         gbc.gridx = 1;
         gbc.gridy = 5;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         generateButton.addActionListener(e -> generate());
         add(generateButton, gbc);
+        final JLabel labelQuestion = new JLabel("<html><b style=\"color:green; padding:5px;\"></b></html>");
+        labelQuestion.setPreferredSize(new java.awt.Dimension(50, 30));
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        gbc.gridwidth = 2;
+        add(labelQuestion, gbc);
+
+        labelQuestionSubs.addMouseListener(new MouseListener() {
+
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(java.awt.event.MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                labelQuestion.setText("<html><b style=\"color:green; padding:5px;\">How many simultaneous substitutions are will be allowed?</b></html>");
+
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                labelQuestion.setText("<html><b style=\"color:green; padding:5px;\"></b></html>");
+
+            }
+
+         });
     }
 
     private void selectSave() {
