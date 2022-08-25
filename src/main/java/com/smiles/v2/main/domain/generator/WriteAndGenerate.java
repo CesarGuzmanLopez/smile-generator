@@ -175,12 +175,8 @@ public class WriteAndGenerate {
         if (writeDescription != null) {
             writeDescription.write("\n\n\t=== ===\t\tTotal: " + generateList.getListMolecule().size() + "\t=== ===\n");
         }
-        int numAtoms = 0;
         for (Molecule molecule : generateList.getListMolecule()) {
             writeOutput.write(molecule.smile() + "\n");
-            if (writeDescription != null) {
-                writeDescription.write(numAtoms++ + " " + molecule + "\n");
-            }
         }
         printStructureSubstitute(generateList);
         if (saveImages != null) {
@@ -224,7 +220,7 @@ public class WriteAndGenerate {
                     }
                     writeDescription.write("\t\t" + symbol);
                 }
-                writeDescription.write("\n");
+                writeDescription.write("\t\t"+molecule.smile()+"\n");
             }
         }
     }
@@ -239,17 +235,11 @@ public class WriteAndGenerate {
             writeDescription.write("R Substitutes" + rSubstitutes + "\n");
             writeDescription.write("substitutes: " + "\n");
             for (Molecule molecule : substitutes.getListMolecule()) {
-                MoleculeDataInterface moleculeData = molecule.getMoleculeData();
-                writeDescription.write("\t " + molecule.getName()
-                        + (moleculeData.getListAtomsSelected().isEmpty() ? " selected :\t " : "")); // NOSONAR
-                for (AtomInterface atom : moleculeData.getListAtomsSelected()) {
-                    writeDescription.write("\t\t" + atom.getSymbol() + ",");
-                }
+                writeDescription.write("\t " + molecule.getName());
                 writeDescription.write("\n");
             }
         }
     }
-
     /**
      * Close Files.
      */

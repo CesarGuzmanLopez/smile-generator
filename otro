@@ -1,0 +1,17 @@
+Main molecule: cccc Smile C=CC=C
+No Substitutes 4
+R Substitutes1
+substitutes: 
+	 Alcohol selected :	 
+	 Thiol selected :	 
+	 Amine selected :	 
+	 Chlorine selected :	 
+
+
+	=== ===		Total: 5	=== ===
+==========================================================
+		H		H		C=CC=C
+		[OH]		H		C=CC(=C)O
+		[SH]		H		C=CC(=C)[S]
+		[NH2]		H		C=CC(=C)N
+		[Cl]		H		C=CC(=C)Cl
