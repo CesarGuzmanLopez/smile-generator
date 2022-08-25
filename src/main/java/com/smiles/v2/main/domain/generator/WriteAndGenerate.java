@@ -220,7 +220,7 @@ public class WriteAndGenerate {
                     }
                     writeDescription.write("\t\t" + symbol);
                 }
-                writeDescription.write("\t\t"+molecule.smile()+"\n");
+                writeDescription.write("\t\t" + molecule.smile() + "\n");
             }
         }
     }

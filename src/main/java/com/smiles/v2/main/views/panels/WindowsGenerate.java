@@ -19,8 +19,6 @@ public class WindowsGenerate extends JFrame {
     private JSpinner rSubstitutes;
     private Molecule principal;
     private MoleculesList moleculeList;
-    private File saveFileListSmile;
-    private File saveFileListDescriptive;
     private JSpinner numBounds;
     private JFileChooser savePath;
     private String path;
@@ -44,8 +42,10 @@ public class WindowsGenerate extends JFrame {
 
     /** Genera View Principal generate. */
     void generate() {
-        saveFileListDescriptive = new File(savePath.getSelectedFile().getAbsolutePath(), principal.getName() + ".log");
-        saveFileListSmile = new File(savePath.getSelectedFile().getAbsolutePath(), principal.getName() + ".smiles");
+        File saveFileListDescriptive = new File(savePath.getSelectedFile().getAbsolutePath(),
+                principal.getName() + ".log");
+        File saveFileListSmile = new File(savePath.getSelectedFile().getAbsolutePath(),
+                principal.getName() + ".smiles");
 
         try {
             WriteAndGenerate.verifyEntry(principal, moleculeList, (int) rSubstitutes.getValue(),
