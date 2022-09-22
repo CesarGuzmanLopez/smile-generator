@@ -6,10 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseListener;
+import javax.swing.JTextField;
 
-import org.w3c.dom.events.MouseEvent;
+import java.awt.event.MouseListener;
 
 import com.smiles.v2.main.domain.generator.WriteAndGenerate;
 import com.smiles.v2.main.domain.models.Molecule;
@@ -27,6 +26,7 @@ public class WindowsGenerate extends JFrame {
     private JFileChooser savePath;
     private String path;
     private JLabel selectedFolder;
+    private JTextField nameField;
 
     public WindowsGenerate(final Molecule principal, final MoleculesList moleculeList) {
         setTitle("Generate");
@@ -44,6 +44,7 @@ public class WindowsGenerate extends JFrame {
 
     /** Genera View Principal generate. */
     void generate() {
+        principal.setName(nameField.getText());
         File saveFileListDescriptive = new File(savePath.getSelectedFile().getAbsolutePath(),
                 principal.getName() + "/info.log");
         File saveFileListSmile = new File(savePath.getSelectedFile().getAbsolutePath(),
@@ -53,10 +54,10 @@ public class WindowsGenerate extends JFrame {
             WriteAndGenerate.verifyEntry(principal, moleculeList, (int) rSubstitutes.getValue(),
                     saveFileListDescriptive, saveFileListSmile);
             final WriteAndGenerate generator = new WriteAndGenerate(moleculeList, principal,
-                    (int) rSubstitutes.getValue(), 1, saveFileListDescriptive,
-                    saveFileListSmile);
+                    (int) rSubstitutes.getValue(), 1, saveFileListDescriptive, saveFileListSmile);
 
-            File directory = new File(savePath.getSelectedFile().getAbsolutePath(), principal.getName() + "/Structures-png");
+            File directory = new File(savePath.getSelectedFile().getAbsolutePath(),
+                    principal.getName() + "/Structures-png");
             if (!directory.exists()) {
                 directory.mkdir();
             }
@@ -72,6 +73,18 @@ public class WindowsGenerate extends JFrame {
 
     private void initialize() {
         final GridBagConstraints gbc = new GridBagConstraints();
+
+        final JLabel nameLabel = new JLabel("Name ");
+        nameLabel.setPreferredSize(new java.awt.Dimension(210, 30));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        add(nameLabel, gbc);
+        nameField = new JTextField();
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        add(nameField, gbc);
+
         final JLabel labelSmileName = new JLabel("Select path to save files:  ");
         labelSmileName.setPreferredSize(new java.awt.Dimension(210, 30));
         gbc.gridx = 0;
@@ -94,16 +107,10 @@ public class WindowsGenerate extends JFrame {
         add(labelSmileDesc, gbc);
         final JLabel labelQuestionSubs = new JLabel("<html><b style=\"color:green; padding:5px;\">?</b></html>");
 
-
-
         labelQuestionSubs.setPreferredSize(new java.awt.Dimension(50, 30));
         gbc.gridx = 2;
         gbc.gridy = 3;
         add(labelQuestionSubs, gbc);
-
-
-
-
 
         rSubstitutes = new JSpinner();
         rSubstitutes.setValue(1);
@@ -134,33 +141,35 @@ public class WindowsGenerate extends JFrame {
         labelQuestionSubs.addMouseListener(new MouseListener() {
 
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
-
+            public void mouseClicked(final java.awt.event.MouseEvent e) {
+                return;
             }
 
             @Override
-            public void mousePressed(java.awt.event.MouseEvent e) {
-
+            public void mousePressed(final java.awt.event.MouseEvent e) {
+                return;
             }
 
             @Override
-            public void mouseReleased(java.awt.event.MouseEvent e) {
-
+            public void mouseReleased(final java.awt.event.MouseEvent e) {
+                return;
             }
 
             @Override
-            public void mouseEntered(java.awt.event.MouseEvent e) {
-                labelQuestion.setText("<html><b style=\"color:green; padding:5px;\">How many simultaneous substitutions are will be allowed?</b></html>");
-
+            public void mouseEntered(final java.awt.event.MouseEvent e) {
+                labelQuestion.setText(
+                  "<html><b style=\"color:green; padding:5px;\">How many simultaneous"
+                  + " substitutions are will be allowed?</b></html>"
+                );
             }
 
             @Override
-            public void mouseExited(java.awt.event.MouseEvent e) {
+            public void mouseExited(final java.awt.event.MouseEvent e) {
                 labelQuestion.setText("<html><b style=\"color:green; padding:5px;\"></b></html>");
 
             }
 
-         });
+        });
     }
 
     private void selectSave() {

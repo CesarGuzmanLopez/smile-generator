@@ -108,7 +108,7 @@ public final class Smiles_Generator { // NOSONAR
      */
     private static void help() {
         StringBuilder output = new StringBuilder();
-        output.append("Usage: java -jar smiles-generator.jar  [options]\n");
+        output.append("Usage: java -jar smiles-it.jar  [options]\n");
         output.append("Options:\n");
         output.append(" --IMG [smile]: Create a image of the molecule.\n");
         output.append("\t\t-name Name \n");

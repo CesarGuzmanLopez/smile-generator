@@ -10,7 +10,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentListener;
 
 import com.smiles.v2.main.domain.models.Molecule;
 import com.smiles.v2.main.domain.models.MoleculesList;
@@ -40,7 +39,6 @@ public final class PrincipalView extends javax.swing.JFrame {
 
     // entry point for the program
     private JTextField textFieldSmile;
-    private JTextField textFieldName;
     private JCheckBox checkBoxHydrogenImplicit;
     private JButton drawSmileButton;
 
@@ -65,7 +63,7 @@ public final class PrincipalView extends javax.swing.JFrame {
 
             final SmileVerificationInterface verifySmile, final MoleculeGraphPainterInterface moleculeGraphPainter,
             final MoleculeDataFactoryInterface moleculeFactory) {
-        super("Smile generator");
+        super("Smile-it");
         setSize(850, 550);
         setMinimumSize(new Dimension(750, 500));
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -82,10 +80,10 @@ public final class PrincipalView extends javax.swing.JFrame {
             moleculePanelPrincipal.setMolecule(null);
             generateButton.setEnabled(false);
         }
-        final String name = textFieldName.getText();
         final boolean implicitHydrogen = checkBoxHydrogenImplicit.isSelected();
         try {
-            final Smiles smileH = new Smiles(name, smile, "Select sites over molecule to substitute", implicitHydrogen, verifySmile);
+            final Smiles smileH = new Smiles(smile, smile, "Select sites over molecule to substitute",
+                 implicitHydrogen, verifySmile);
             moleculePanelPrincipal.setMolecule(new Molecule(smileH, moleculeFactory));
         } catch (Exception e) { //NOSONAR
             generateButton.setEnabled(false);
@@ -112,8 +110,7 @@ public final class PrincipalView extends javax.swing.JFrame {
         initializeActionGeneratorPanel(0, 3, 3, 1);
         drawSmileButton.addActionListener(e -> createAndDrawSmile());
         generateButton.addActionListener(e -> generate());
-        textFieldSmile.getDocument().addDocumentListener(new ChangeTextFieldSmile());
-        drawSmileButton.setEnabled(false);
+        drawSmileButton.setEnabled(true);
         generateButton.setEnabled(false);
         checkBoxHydrogenImplicit.setSelected(true);
         setVisible(true);
@@ -139,17 +136,6 @@ public final class PrincipalView extends javax.swing.JFrame {
         panelSmile.add(textFieldSmile, gbcPanel);
         checkBoxHydrogenImplicit = new JCheckBox("Implicit hydrogen");
 
-        final JLabel labelSmileName = new JLabel("Name: ");
-        gbcPanel.gridx = 2;
-        gbcPanel.gridy = 0;
-        panelSmile.add(labelSmileName, gbcPanel);
-
-        textFieldName = new JTextField();
-        textFieldName.setPreferredSize(new Dimension(200, 30));
-        textFieldName.setMinimumSize(new Dimension(100, 30));
-        gbcPanel.gridx = 3;
-        gbcPanel.gridy = 0;
-        panelSmile.add(textFieldName, gbcPanel);
 
         gbcPanel.gridx = 4;
         gbcPanel.gridy = 0;
@@ -241,42 +227,6 @@ public final class PrincipalView extends javax.swing.JFrame {
         add(panelAction, gbc);
     }
 
-    class ChangeTextFieldSmile implements DocumentListener {
-        public void changedUpdate(final javax.swing.event.DocumentEvent e) {
-            change();
-        }
-
-        public void insertUpdate(final javax.swing.event.DocumentEvent e) {
-            change();
-        }
-
-        public void removeUpdate(final javax.swing.event.DocumentEvent e) {
-            change();
-        }
-
-        public void change() {
-            final String textSmile = textFieldSmile.getText();
-            drawSmileButton.setEnabled(textSmile.length() > 0);
-
-            if (textSmile.length() == 0) {
-                textFieldName.setText(textSmile);
-                return;
-            }
-            final String textName = textFieldName.getText();
-            if (textName.length() == 0) {
-                textFieldName.setText(textSmile);
-                return;
-            }
-            if (textName.equals(textSmile.substring(0, textSmile.length() - 1))) {
-                textFieldName.setText(textSmile);
-                return;
-            }
-            if (textName.length() > textSmile.length()
-                    && textSmile.equals(textName.substring(0, textName.length() - 1))) {
-                textFieldName.setText(textSmile);
-            }
-        }
-    }
     /**
      *
      * @return the Molecule principal.

@@ -44,7 +44,7 @@ public class Smiles implements SmilesHInterface {
     /**
      * @param newName
     */
-    protected void setName(final String newName) {
+    public void setName(final String newName) {
         this.name = newName;
     }
     /**
