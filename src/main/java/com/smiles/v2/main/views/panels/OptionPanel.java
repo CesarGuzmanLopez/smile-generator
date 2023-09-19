@@ -26,12 +26,10 @@ import com.smiles.v2.main.views.events.AddSmileHListener;
 public final class OptionPanel extends javax.swing.JPanel
         implements MoleculeListInterface, ItemListener, AddSmileHListener {
     private MoleculeListInterface moleculeList;
-
     private List<JCheckBox> substituentCheckBox;
     private JPanel panelWithCheckBox;
     private SmileVerificationInterface smileVerify;
     private MoleculePanel moleculePreview;
-
     public OptionPanel(final MoleculeListInterface smilesList, final SmileVerificationInterface smileVerify,
             final MoleculePanel moleculePreview) {
         super();

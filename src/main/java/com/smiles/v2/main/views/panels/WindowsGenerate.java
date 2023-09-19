@@ -1,6 +1,7 @@
 package com.smiles.v2.main.views.panels;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -27,6 +28,7 @@ public class WindowsGenerate extends JFrame {
     private String path;
     private JLabel selectedFolder;
     private JTextField nameField;
+    private boolean images_active = false;
 
     public WindowsGenerate(final Molecule principal, final MoleculesList moleculeList) {
         setTitle("Generate");
@@ -61,7 +63,9 @@ public class WindowsGenerate extends JFrame {
             if (!directory.exists()) {
                 directory.mkdir();
             }
-            generator.setSaveImages(directory.getAbsolutePath());
+            if (images_active){
+                generator.setSaveImages(directory.getAbsolutePath());
+            }
             generator.generate();
         } catch (Exception e) { // NOSONAR
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -100,6 +104,7 @@ public class WindowsGenerate extends JFrame {
         gbc.gridx = 2;
         gbc.gridy = 1;
         add(selectedFolder, gbc);
+
         final JLabel labelSmileDesc = new JLabel("r-substitutions: ");
         labelSmileDesc.setPreferredSize(new java.awt.Dimension(210, 30));
         gbc.gridx = 0;
@@ -111,6 +116,13 @@ public class WindowsGenerate extends JFrame {
         gbc.gridx = 2;
         gbc.gridy = 3;
         add(labelQuestionSubs, gbc);
+
+        final JCheckBox checkBox = new JCheckBox("Generate images");
+        checkBox.addActionListener(e -> images_active = !images_active);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        add(checkBox, gbc);
 
         rSubstitutes = new JSpinner();
         rSubstitutes.setValue(1);

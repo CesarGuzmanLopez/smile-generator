@@ -17,12 +17,29 @@ public final class FirstSubstituent {
     public static MoleculesList getMoleculeListInitializer(final SmileVerificationInterface verificationSmile,
             final MoleculeDataFactoryInterface factory) {
         final MoleculesList list = new MoleculesList(verificationSmile, factory);
-        Molecule aNew = new Molecule("Alcohol", "[OH]", "Over Oxygen", true, verificationSmile, factory);
+        Molecule aNew = new Molecule("Alcohol", "[OH]", "Over Oxygen", false, verificationSmile, factory);
         aNew.selectAtom(0);
         list.addMolecule(aNew);
+        aNew = new Molecule("Alcohol2", "O", "Over Oxygen", true, verificationSmile, factory);
+        aNew.selectAtom(0);
+        list.addMolecule(aNew);
+
         aNew = new Molecule("Thiol", "[SH]", "Over Sulfur", true, verificationSmile, factory);
         aNew.selectAtom(0);
         list.addMolecule(aNew);
+
+        aNew = new Molecule("Trifluoromethane", "[CH](F)(F)F", "Over Carbon", true, verificationSmile, factory);
+        aNew.selectAtom(0);
+        list.addMolecule(aNew);
+        //fluor
+        aNew = new Molecule("Fluor", "[F]", "Over Fluor", false, verificationSmile, factory);
+        aNew.selectAtom(0);
+        list.addMolecule(aNew);
+        //metoxi
+        aNew = new Molecule("Metoxi", "[O][CH3]", "Over Oxygen", false, verificationSmile, factory);
+        aNew.selectAtom(0);
+        list.addMolecule(aNew);
+
         aNew = new Molecule("Amine", "[NH2]", "Over Nitrogen", true, verificationSmile, factory);
         aNew.selectAtom(0);
         list.addMolecule(aNew);
