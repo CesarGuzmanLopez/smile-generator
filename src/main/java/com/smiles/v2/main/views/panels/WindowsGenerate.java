@@ -72,7 +72,7 @@ public class WindowsGenerate extends JFrame {
             return;
         }
         dispose();
-        JOptionPane.showMessageDialog(this, "Generate", "Generate", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Generated 😊!", "Generate", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void initialize() {

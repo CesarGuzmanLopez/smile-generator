@@ -212,10 +212,10 @@ public final class PrincipalView extends javax.swing.JFrame {
             final double weighty) {
         final JPanel panelAction = new JPanel();
         panelAction.setLayout(new GridBagLayout());
-        panelAction.setBorder(javax.swing.BorderFactory.createTitledBorder("Action"));
+        panelAction.setBorder(javax.swing.BorderFactory.createTitledBorder("Generate derivatives: "));
         final GridBagConstraints gbcPanel = new GridBagConstraints();
 
-        generateButton = new JButton("Generate");
+        generateButton = new JButton("Run");
         panelAction.add(generateButton, gbcPanel);
         final GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = gridx;
