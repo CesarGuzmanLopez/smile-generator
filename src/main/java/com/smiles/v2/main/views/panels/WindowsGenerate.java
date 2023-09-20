@@ -31,7 +31,7 @@ public class WindowsGenerate extends JFrame {
     private boolean images_active = false;
 
     public WindowsGenerate(final Molecule principal, final MoleculesList moleculeList) {
-        setTitle("Generate");
+        setTitle("Generatee");
         setSize(550, 300);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);

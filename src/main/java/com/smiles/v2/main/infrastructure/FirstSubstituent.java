@@ -15,61 +15,79 @@ public final class FirstSubstituent {
      * @return MoleculesList prepared to use.
      */
     public static MoleculesList getMoleculeListInitializer(final SmileVerificationInterface verificationSmile,
-            final MoleculeDataFactoryInterface factory) {
-        final MoleculesList list = new MoleculesList(verificationSmile, factory);
-        Molecule aNew = new Molecule("Alcohol", "[OH]", "Over Oxygen", false, verificationSmile, factory);
-        aNew.selectAtom(0);
-        list.addMolecule(aNew);
-        aNew = new Molecule("Alcohol2", "O", "Over Oxygen", true, verificationSmile, factory);
-        aNew.selectAtom(0);
-        list.addMolecule(aNew);
+                                                       final MoleculeDataFactoryInterface factory) {
+    final MoleculesList list = new MoleculesList(verificationSmile, factory);
+    
+    Molecule aNew; 
+    
+    aNew = new Molecule("Amine", "[NH2]", "Over Nitrogen", false, verificationSmile, factory);
+    aNew.selectAtom(0);
+    list.addMolecule(aNew);
+    
+    aNew = new Molecule("Alcohol", "[OH]", "Over Oxygen", false, verificationSmile, factory);
+    aNew.selectAtom(0);
+    list.addMolecule(aNew);
 
-        aNew = new Molecule("Thiol", "[SH]", "Over Sulfur", true, verificationSmile, factory);
-        aNew.selectAtom(0);
-        list.addMolecule(aNew);
+    aNew = new Molecule("Aldehyde", "[CH]=O", "Over Carbon", false, verificationSmile, factory);
+    aNew.selectAtom(0);
+    list.addMolecule(aNew);
 
-        aNew = new Molecule("Trifluoromethane", "[CH](F)(F)F", "Over Carbon", true, verificationSmile, factory);
-        aNew.selectAtom(0);
-        list.addMolecule(aNew);
-        //fluor
-        aNew = new Molecule("Fluor", "[F]", "Over Fluor", false, verificationSmile, factory);
-        aNew.selectAtom(0);
-        list.addMolecule(aNew);
-        //metoxi
-        aNew = new Molecule("Metoxi", "[O][CH3]", "Over Oxygen", false, verificationSmile, factory);
-        aNew.selectAtom(0);
-        list.addMolecule(aNew);
+    aNew = new Molecule("Benzene", "c1ccccc1", "Over Carbon",true, verificationSmile, factory);
+    aNew.selectAtom(0);
+    list.addMolecule(aNew);
 
-        aNew = new Molecule("Amine", "[NH2]", "Over Nitrogen", true, verificationSmile, factory);
-        aNew.selectAtom(0);
-        list.addMolecule(aNew);
-        aNew = new Molecule("Chlorine", "[Cl]", "Over Chlorine", false, verificationSmile, factory);
-        aNew.selectAtom(0);
-        list.addMolecule(aNew);
-        aNew = new Molecule("CarboxylicAcid", "[C](=O)O", "Over Carbon", false, verificationSmile, factory);
-        aNew.selectAtom(0);
-        list.addMolecule(aNew);
-        aNew = new Molecule("Chloromethane", "[CH2]Cl", "Over Carbon", true, verificationSmile, factory);
-        aNew.selectAtom(0);
-        list.addMolecule(aNew);
-        aNew = new Molecule("Aldehyde", "[CH]=O", "Over Carbon", true, verificationSmile, factory);
-        aNew.selectAtom(0);
-        list.addMolecule(aNew);
-        aNew = new Molecule("Benzene", "c1ccccc1", "Over Carbon", false, verificationSmile, factory);
-        aNew.selectAtom(0);
-        list.addMolecule(aNew);
-        aNew = new Molecule("Diichloromethane", "[CH](Cl)Cl", "Over Carbon", true, verificationSmile, factory);
-        aNew.selectAtom(0);
-        list.addMolecule(aNew);
-        aNew = new Molecule("Fluoromethane", "[CH2]F", "Over Carbon", true, verificationSmile, factory);
-        aNew.selectAtom(0);
-        list.addMolecule(aNew);
-        aNew = new Molecule("Difluoromethane", "[CH](F)F", "Over Carbon", true, verificationSmile, factory);
-        aNew.selectAtom(0);
-        list.addMolecule(aNew);
-        aNew = new Molecule("Nitro", "[N](=O)([O])", "Over Nitrogen", false, verificationSmile, factory);
-        aNew.selectAtom(0);
-        list.addMolecule(aNew);
-        return list;
-    }
+    aNew = new Molecule("CarboxylicAcid", "[C](=O)O", "Over Carbon", true, verificationSmile, factory);
+    aNew.selectAtom(0);
+    list.addMolecule(aNew);
+
+    aNew = new Molecule("Chlorine", "[Cl]", "Over Chlorine", false, verificationSmile, factory);
+    aNew.selectAtom(0);
+    list.addMolecule(aNew);
+
+    aNew = new Molecule("Chloromethane", "[CH2]Cl", "Over Carbon", false, verificationSmile, factory);
+    aNew.selectAtom(0);
+    list.addMolecule(aNew);
+
+    aNew = new Molecule("Diichloromethane", "[CH](Cl)Cl", "Over Carbon", false, verificationSmile, factory);
+    aNew.selectAtom(0);
+    list.addMolecule(aNew);
+
+    aNew = new Molecule("Difluoromethane", "[CH](F)F", "Over Carbon", false, verificationSmile, factory);
+    aNew.selectAtom(0);
+    list.addMolecule(aNew);
+    //ethyl methyl amine
+    aNew = new Molecule("Ethyl-methyl-amine", "N(C)(CC)", "Over Nitrogen",true, verificationSmile, factory);
+    aNew.selectAtom(0);
+    list.addMolecule(aNew);
+
+    aNew = new Molecule("Fluorine", "[F]", "Over Fluor", false, verificationSmile, factory);
+    aNew.selectAtom(0);
+    list.addMolecule(aNew);
+
+    aNew = new Molecule("Fluoromethane", "[CH2]F", "Over Carbon", false, verificationSmile, factory);
+    aNew.selectAtom(0);
+    list.addMolecule(aNew);
+
+    aNew = new Molecule("Methyl-ester", "[C](=O)OC", "Over Carbon",true, verificationSmile, factory);
+    aNew.selectAtom(0);
+    list.addMolecule(aNew);
+
+    aNew = new Molecule("Metoxi", "[O][CH3]", "Over Oxygen", false, verificationSmile, factory);
+    aNew.selectAtom(0);
+    list.addMolecule(aNew);
+
+    aNew = new Molecule("Nitro", "[N](=O)([O])", "Over Nitrogen", false, verificationSmile, factory);
+    aNew.selectAtom(0);
+    list.addMolecule(aNew);
+
+    aNew = new Molecule("Thiol", "[SH]", "Over Sulfur", false, verificationSmile, factory);
+    aNew.selectAtom(0);
+    list.addMolecule(aNew);
+
+    aNew = new Molecule("Trifluoromethane", "[CH](F)(F)F", "Over Carbon", true, verificationSmile, factory);
+    aNew.selectAtom(0);
+    list.addMolecule(aNew);
+
+    return list;
+}
 }
