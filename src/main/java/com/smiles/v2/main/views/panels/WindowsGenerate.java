@@ -137,7 +137,7 @@ public class WindowsGenerate extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         cancelButton.addActionListener(e -> dispose());
         add(cancelButton, gbc);
-        final JButton generateButton = new JButton("Generate structures!");
+        final JButton generateButton = new JButton("Generate derivates!");
         gbc.gridx = 1;
         gbc.gridy = 5;
         gbc.fill = GridBagConstraints.HORIZONTAL;

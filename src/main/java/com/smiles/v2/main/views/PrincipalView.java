@@ -104,10 +104,10 @@ public final class PrincipalView extends javax.swing.JFrame {
         setLayout(new GridBagLayout());
         // the order is important in the initialization of the components
         initializeEntrySmile(0, 0, 1, 1);
-        initializeMoleculePanelPrincipal(0, 1, 1, 1);
+        initializeMoleculePanelPrincipal(0, 1, 1, 3);
         initializeMoleculePreviewPanel(2, 1, 1, 1);
         initializeOptionPanel(1, 1, 0, 1);
-        initializeActionGeneratorPanel(0, 3, 3, 1);
+        initializeActionGeneratorPanel(0, 3, 3, 5);
         drawSmileButton.addActionListener(e -> createAndDrawSmile());
         generateButton.addActionListener(e -> generate());
         drawSmileButton.setEnabled(true);
@@ -222,7 +222,7 @@ public final class PrincipalView extends javax.swing.JFrame {
         gbc.gridy = gridy;
         gbc.weightx = weightx;
         gbc.weighty = weighty;
-        gbc.gridwidth = 4;
+        gbc.gridwidth = 16;
         gbc.anchor = GridBagConstraints.EAST;
         add(panelAction, gbc);
     }
